@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ZZZ ダメージ計算ツール</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>ゼンレスゾーンゼロ ダメージ計算ツール</h1>
+
+    <section class="grid">
+        <div class="card">
+            <h2>エージェント選択</h2>
+            <label>
+                <select id="charSelect">
+                <option value="">-- 選択してください --</option>
+                <option value="エレン">エレン</option>
+                <option value="ニコ">ニコ</option>
+                <option value="ビリー">ビリー</option>
+                </select>
+            </label>
+            <label>陣営</label>
+            <label>役割</label>
+            <label>属性</label>
+
+            <div class="card">
+                <h2>基礎パラメータ</h2>
+                <label>キャラクターレベル [N]
+                    <input type="number" id="atkLevel" value="60" min="1" max="60" />
+                </label>
+                <label>最終攻撃力 [N]
+                    <input type="number" id="atk" value="1500" min="0" />
+                </label>
+                <label>貫通率 [%]
+                    <input type="number" id="penRetioPct" value="0" step="0.1" />
+                </label>
+                <label>貫通値 [N]
+                    <input type="number" id="pen" value="0" min="0" />
+                </label>
+            </div>
+
+            <div class="card">
+                <h2>会心補正</h2>
+                <label>会心率 [%]
+                    <input type="number" id="critRatePct" value="5" min="5" max="100" step="0.1" />
+                </label>
+                <label>会心ダメージ [%]
+                    <input type="number" id="critDmgPct" value="50" min="50" step="0.1" />
+                </label>
+            </div>
+
+            <div class="card">
+                <h2>属性ダメ・与ダメ補正</h2>
+                <label>属性ダメージUP [%]
+                    <input type="number" id="skillPct" value="0" min="0" step="0.1" />
+                </label>
+                <label>与ダメージUP [%]
+                    <input type="number" id="dmgBonusPct" value="0" min="0" step="0.1" />
+                </label>
+                <label>与ダメージUP (メンバー全員) [%]
+                    <input type="number" id="dmgBonusPtPct" value="0" step="0.1" />
+                </label>
+            </div>
+
+            <div class="card">
+                <h2>その他</h2>
+                <label>スキルダメージ倍率 [%]
+                    <input type="number" id="skillPct" value="0" step="0.1" />
+                </label>
+                <label>ブレイク弱体倍率 [%]
+                    <input type="number" id="breakBonusPct" value="100" step="0.1" />
+                </label>
+                <label>距離減衰補正 [m]
+                    <input type="number" id="Pct" value="0" />
+                </label>
+            </div>
+        </div>  
+
+        <div class="card">
+            <h2>エネミー選択</h2>
+            <label>
+                <select id="eneSelect">
+                <option value="">-- 選択してください --</option>
+                <option value="ティルウィング">ティルウィング</option>
+                <option value="ガーディアン">ガーディアン</option>
+                <option value="タナトス">タナトス</option>
+                </select>
+            </label>
+            <label>弱点属性</label>
+            <label>耐性属性</label>
+            <div class="card">
+                <h2>パラメータ</h2>
+                <label>エネミーレベル
+                    <input type="number" id="eneLevel" value="60" min="1" max="70" />
+                </label>
+                <label>基礎防御力 [R]
+                    <input type="number" id="def" value="10" step="0.1" />
+                </label>
+                <label>防御実数 [N]
+                    <input type="number" id="resShredPct" value="0" step="0.1" />
+                </label>
+                <label>防御力UP [%]
+                    <input type="number" id="defUpPct" value="0" step="0.1" />
+                </label>
+                <label>防御力DOWN [%]
+                    <input type="number" id="defDownPct" value="0" step="0.1" />
+                </label>
+                <label>属性ダメージ耐性 [%]
+                    <input type="number" id="Pct" value="0" step="0.1" />
+                </label>
+                <label>属性相性補正
+                    <input type="number" id="attrMatch" value="0" step="0.1" />
+                </label>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>オプション</h2>
+            <label>耐性上下限（最小・最大）
+                <div class="row">
+                    <input type="number" id="resMin" value="-100" step="1" />
+                    <span class="sep">〜</span>
+                    <input type="number" id="resMax" value="90" step="1" />
+                </div>
+            </label>
+            <label>小数点桁数
+                <input type="number" id="digits" value="0" min="0" max="6" />
+            </label>
+            <button id="resetBtn" class="ghost">初期値に戻す</button>
+        </div>
+    </section>
+
+    <section class="result">
+      <h2>結果</h2>
+      <div class="result-grid">
+        <div class="result-card">
+          <div class="label">非会心</div>
+          <div class="value" id="nonCrit">-</div>
+        </div>
+        <div class="result-card">
+          <div class="label">会心</div>
+          <div class="value" id="crit">-</div>
+        </div>
+        <div class="result-card">
+          <div class="label">期待値</div>
+          <div class="value" id="expected">-</div>
+        </div>
+      </div>
+
+      <details class="details">
+        <summary>中間倍率を見る</summary>
+        <div class="kv"><span>基礎ダメージ</span><span id="base">-</span></div>
+        <div class="kv"><span>ダメ%補正</span><span id="dmgMul">-</span></div>
+        <div class="kv"><span>防御補正</span><span id="defMul">-</span></div>
+        <div class="kv"><span>耐性補正</span><span id="resMul">-</span></div>
+        <div class="kv"><span>脆弱補正</span><span id="vulnMul">-</span></div>
+        <div class="kv"><span>非会心倍率</span><span id="nonCritMul">1.00</span></div>
+        <div class="kv"><span>会心倍率</span><span id="critMul">-</span></div>
+        <div class="kv"><span>期待値会心倍率</span><span id="expCritMul">-</span></div>
+      </details>
+    </section>
+
+    <footer>
+      <p>© Fan-made Calculator</p>
+    </footer>
+  </main>
+
+  <script src="./script.js"></script>
+</body>
+</html>
