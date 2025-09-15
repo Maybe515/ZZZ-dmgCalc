@@ -1,101 +1,231 @@
 :root{
-  --bg:#0f1220; --fg:#e7e9f5; --muted:#a6accd; --card:#171a2b; --accent:#6aa8ff; --border:#262a42;
-  --ok:#7ee081; --warn:#ffd166;
+  /* カラーパレット */
+  --bg: #0f1220;
+  --fg: #e7e9f5;
+  --muted: #a6accd;
+  --card: #171a2b;
+  --accent: #6aa8ff;
+  --border: #262a42;
+  --ok: #7ee081;
+  --warn: #ffd166;
 }
+
 *{box-sizing:border-box}
 
-html,body{
-    margin:0;
-    padding:0;
-    background:var(--bg);
-    color:var(--fg);
-    font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
 }
 
-.container{
-    max-width:1000px;
-    margin:0 auto;
-    padding:24px
+/* レイアウト */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px;
 }
 
-h1{font-size:1.6rem;
-    margin:0 0 16px
+.grid {
+  display: flex;
+  gap: 16px;
+  align-items: stretch;     /* 高さを揃える */
+  justify-content: space-between;
+  flex-wrap: nowrap;        /* 折り返さない（必要なら wrap に） */
+  overflow-x: auto;         /* 幅が足りないとき横スクロール */
+  padding-bottom: 8px;
+  align-items: stretch;
 }
 
-h2{font-size:1.1rem;
-    margin:0 0 12px;
-    color:var(--accent)
+/* 直下のカード3枚を横並びに見せる幅指定 */
+.grid > .card,
+.grid > .vertical-stack {
+  flex: 1 1 0;              /* 均等に伸縮 */
+  min-width: 280px;         /* 最小幅（横スクロールの閾値） */
+  display: flex;
+  flex-direction: column;
 }
 
-.grid{
-    display:flex;
-    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-    gap:16px
-}
-.card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px;
+/* カード共通 */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 16px;
 }
 
-label{display:flex;
-    flex-direction:column;
-    gap:6px;margin-bottom:10px;
-    font-size:.95rem
+/* カード内の「入れ子の.card」は通常レイアウトでOK */
+.card .card {
+  flex: 0 0 auto;
+  margin-top: 12px;         /* 内部カードの余白 */
 }
 
-input[type=number]{
-    background:#0a0d18;
-    color:var(--fg);
-    border:1px solid var(--border);
-    border-radius:8px;
-    padding:8px;
-    font-size:.95rem
+/* ブレークポイント：モバイルでは縦並び */
+@media (max-width: 900px) {
+  .grid {
+    flex-wrap: wrap;        /* 折り返して縦並びに */
+    overflow-x: visible;
+  }
+  .grid > .card,
+  .grid > .vertical-stack {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
 }
 
-.row{
-    display:flex;
-    align-items:center;
-    gap:8px
+.vertical-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1 1 0;
+  min-width: 280px;
 }
 
-.sep{color:var(--muted)}
-
-button{
-    cursor:pointer;
-    border:none;
-    border-radius:8px;
-    padding:10px 12px;
-    background:var(--accent);
-    color:#0a1020;
-    font-weight:600
+.hideable-normal.hidden {
+  display: none;
 }
 
-button.ghost{
-    background:transparent;
-    border:1px solid var(--border);
-    color:var(--fg)
+.hideable-anomaly.hidden {
+  display: none;
 }
 
-.result{margin-top:20px}
-.result-grid{display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:12px
+/* タイトル */
+h1 {
+  font-size: 1.6rem;
+  margin-bottom: 16px;
 }
 
-.result-card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:14px
+h2 {
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  color: var(--accent);
 }
 
-.result-card .label{color:var(--muted); font-size:.9rem}
-.result-card .value{font-size:1.6rem; margin-top:6px; color:var(--ok)}
+h3 {
+  font-size: 1rem;
+  margin: 12px 0;
+  color: var(--accent);
+}
 
-.details{margin-top:12px}
-.kv{display:flex; justify-content:space-between; border-top:1px dashed var(--border); padding:8px 0; color:var(--muted)}
-.kv span:last-child{color:var(--fg)}
+/* ラベルと入力 */
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
 
-footer{margin-top:24px; color:var(--muted); font-size:.85rem}
+input[type="number"],
+select {
+  background: #0a0d18;
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  font-size: 0.95rem;
+}
+
+input[readonly] {
+  background-color: #1a1d2a;
+  color: var(--muted);
+  cursor: default;
+}
+
+
+/* 行内要素 */
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.row select,
+.row input[type="number"] {
+    flex: 1;
+    min-width: 140px;
+    width: 100%;
+}
+
+.row label{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sep {
+  color: var(--muted);
+}
+
+/* ボタン */
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: var(--accent);
+  color: #0a1020;
+  font-weight: 600;
+}
+
+button.ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+
+/* 結果表示 */
+.result {
+  margin-top: 20px;
+}
+
+.result-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+}
+
+.result-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  max-width: 400px;
+}
+
+.result-card .label {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.result-card .value {
+  font-size: 1.6rem;
+  margin-top: 6px;
+  color: var(--ok);
+}
+
+/* 中間倍率詳細 */
+.details {
+  margin-top: 12px;
+}
+
+.kv {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px dashed var(--border);
+  padding: 8px 0;
+  color: var(--muted);
+}
+
+.kv span:last-child {
+  color: var(--fg);
+}
+
+/* フッター */
+footer {
+  margin-top: 24px;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
