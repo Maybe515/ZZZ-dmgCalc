@@ -118,6 +118,34 @@ label {
   font-size: 0.95rem;
 }
 
+.mode-toggle {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.mode-toggle input[type="radio"] {
+  display: none;
+}
+
+.mode-toggle label {
+  border: 2px solid #888;
+  border-radius: 6px;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  min-width: 100px;
+  padding: 0.5em 1em;
+  text-align: center;
+}
+
+.mode-toggle input[type="radio"]:checked + label {
+  background-color: #2e6eea;
+  color: white;
+  border-color: #2e6eea;
+}
+
 input[type="number"],
 select {
   background: #0a0d18;
@@ -134,6 +162,24 @@ input[readonly] {
   cursor: default;
 }
 
+/* サイズ指定クラス */
+.size-sm label {
+  font-size: 0.75rem;
+  padding: 0.3em 0.6em;
+  width: 150px;
+}
+
+.size-md label {
+  font-size: 1rem;
+  padding: 0.5em 1em;
+  width: 200px;
+}
+
+.size-lg label {
+  font-size: 1.25rem;
+  padding: 0.75em 1.25em;
+  width: 250px;
+}
 
 /* 行内要素 */
 .row {

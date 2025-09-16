@@ -10,10 +10,17 @@
   <main class="container">
     <h1>ゼンレスゾーンゼロ ダメージ計算ツール</h1>
     <!-- <p>LastUpdate: 2025/9/13</p> -->
-    <div class="row">
-        <input type="radio" name="calcMode" value="normal" checked /> 通常ダメージ
-        <input type="radio" name="calcMode" value="anomaly" /> 状態異常ダメージ
-    </div>
+    
+    <!-- <div class="card"> -->
+        <h2>計算モード</h2>
+        <div class="mode-toggle size-md">
+            <input type="radio" name="calcMode" value="normal" id="modeNormal" checked />
+            <label for="modeNormal">通常ダメージ</label>
+
+            <input type="radio" name="calcMode" value="anomaly" id="modeAnomaly" />
+            <label for="modeAnomaly">状態異常ダメージ</label>
+        </div>
+    <!-- </div> -->
 
     <section class="grid">
         <!-- エージェント -->
