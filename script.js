@@ -258,9 +258,9 @@
 
   async function init() {
     await Promise.all([
-      loadJSON("./characters.json", characters, () => populateSelect("charSelect", characters)),
-      loadJSON("./enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
-      loadJSON("./lvCoeffTable.json", lvCoeffTable)
+      loadJSON("./json/characters.json", characters, () => populateSelect("charSelect", characters)),
+      loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
+      loadJSON("./json/lvCoeffTable.json", lvCoeffTable)
     ]);
     applyDefaults();
     bindEvents();
@@ -270,4 +270,5 @@
   }
 
   init();
+
 })();
