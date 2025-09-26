@@ -45,38 +45,41 @@
     "none": 0, "weak": -20, "resist": 20
   };
 
+  const factionIconPath = "assets/faction/";
   const factionIcons = {
-    "邪兎屋": "assets/faction/cunning_hares.webp",
-    "白祇重工": "assets/faction/belobog_heavy_industries.webp",
-    "ヴィクトリア家政": "assets/faction/victoria.webp",
-    "オボルス小隊": "assets/faction/obol_squad.webp",
-    "カリュドーンの子": "assets/faction/sons_of_calydon.webp",
-    "対ホロウ特別行動部第六課": "assets/faction/hsos6.webp",
-    "特務捜査班": "assets/faction/neps.webp",
-    "スターズ・オブ・リラ": "assets/faction/stars_of_lyra.webp",
-    "防衛軍・シルバー小隊": "assets/faction/silver_squad.webp",
-    "モッキンバード": "assets/faction/mockingbird.webp",
-    "雲嶽山": "assets/faction/yunkui_summit.webp",
-    "怪啖屋": "assets/faction/spook_shack.webp",
+    "邪兎屋": "cunning_hares.webp",
+    "白祇重工": "belobog_heavy_industries.webp",
+    "ヴィクトリア家政": "victoria.webp",
+    "オボルス小隊": "obol_squad.webp",
+    "カリュドーンの子": "sons_of_calydon.webp",
+    "対ホロウ特別行動部第六課": "hsos6.webp",
+    "特務捜査班": "neps.webp",
+    "スターズ・オブ・リラ": "stars_of_lyra.webp",
+    "防衛軍・シルバー小隊": "silver_squad.webp",
+    "モッキンバード": "mockingbird.webp",
+    "雲嶽山": "yunkui_summit.webp",
+    "怪啖屋": "spook_shack.webp",
   };
 
+  const specialtyIconPath = "assets/specialty/";
   const specialtyIcons = {
-    "強攻": "assets/specialty/attack.webp",
-    "撃破": "assets/specialty/stun.webp",
-    "支援": "assets/specialty/support.webp",
-    "異常": "assets/specialty/anomaly.webp",
-    "防護": "assets/specialty/defense.webp",
-    "命破": "assets/specialty/rupture.webp"
+    "強攻": "attack.webp",
+    "撃破": "stun.webp",
+    "支援": "support.webp",
+    "異常": "anomaly.webp",
+    "防護": "defense.webp",
+    "命破": "rupture.webp"
   };
 
+  const attributeIconPath = "assets/stats/"
   const attributeIcons = {
-    "物理": "assets/stats/physical.webp",
-    "電気": "assets/stats/electric.webp",
-    "炎": "assets/stats/fire.webp",
-    "氷": "assets/stats/ice.webp",
-    "エーテル": "assets/stats/ether.webp",
-    "霜烈": "assets/stats/frost.webp",
-    "玄墨": "assets/stats/auric_ink.webp"
+    "物理": "physical.webp",
+    "電気": "electric.webp",
+    "炎": "fire.webp",
+    "氷": "ice.webp",
+    "エーテル": "ether.webp",
+    "霜烈": "frost.webp",
+    "玄墨": "auric_ink.webp"
   };
 
   const attributeValueMap = {
@@ -95,18 +98,33 @@
 
   function updateVisibilityByMode() {
     const mode = getCalcMode();
-    document.querySelectorAll(".hideable-normal").forEach(el => {
-      el.classList.toggle("hidden", mode === "normal");
+    const toggleByMode = (selector, className, activeMode) => {
+    document.querySelectorAll(selector).forEach(el => {
+      el.classList.toggle(className, mode === activeMode);
     });
-    document.querySelectorAll(".hideable-anomaly").forEach(el => {
-      el.classList.toggle("hidden", mode === "anomaly");
-    });
-  }
+  };
+
+  toggleByMode(".disable-normal",  "mode-disabled", "normal");
+  toggleByMode(".disable-anomaly", "mode-disabled", "anomaly");
+  toggleByMode(".hideable-normal", "mode-hidden",   "normal");
+  toggleByMode(".hideable-anomaly","mode-hidden",   "anomaly");
+}
 
   function updateAnomalyCorr() {
     const selected = $("attrSelect").value;
     const corr = anomalyCorrTable[selected] ?? "-";
     setValue("anomalyCorrPct", corr);
+  }
+
+  const breakToggle = document.getElementById('breakToggle');
+  const breakControls = document.getElementById('breakControls');
+
+  function updateBreakControls() {
+    if (!breakToggle.checked) {
+      breakControls.classList.add('break-disabled');
+    } else {
+      breakControls.classList.remove('break-disabled');
+    }
   }
 
    // 🔹 計算ロジック
@@ -119,7 +137,7 @@
     const critMul = 1 + pctToFrac(v.critDmgPct);
     const expCritMul = 1 + pctToFrac(v.critRatePct) * pctToFrac(v.critDmgPct);
     const totalBonus = 1 + pctToFrac(v.attrBonusPct) + pctToFrac(v.dmgBonusPct) + pctToFrac(v.dmgBonusPtPct);
-    const breakBonus = pctToFrac(v.breakBonusPct);
+    const breakBonus = breakToggle.checked ? pctToFrac(v.breakBonusPct) : 1.0;
     const rangeWeak = pctToFrac(v.rangeWeakPct);
 
     const defEff = v.def * (1 + pctToFrac(v.defUpPct) - pctToFrac(v.defDownPct));
@@ -223,11 +241,11 @@
         setText("faction", char.faction || "-");
         setText("specialty", char.specialty || "-");
         setText("attribute", char.attribute || "-");
-        $("factionIcon").src = factionIcons[char.faction] || "";
+        $("factionIcon").src = factionIconPath + factionIcons[char.faction] || "";
         $("factionIcon").alt = char.faction || "";
-        $("specialtyIcon").src = specialtyIcons[char.specialty] || "";
+        $("specialtyIcon").src = specialtyIconPath + specialtyIcons[char.specialty] || "";
         $("specialtyIcon").alt = char.specialty || "";
-        $("attributeIcon").src = attributeIcons[char.attribute] || "";
+        $("attributeIcon").src = attributeIconPath + attributeIcons[char.attribute] || "";
         $("attributeIcon").alt = char.attribute || "";
 
       } else {
@@ -280,6 +298,11 @@
       });
     });
 
+    $("breakToggle")?.addEventListener("change", () => {
+      updateBreakControls();
+      compute();
+    });
+
     const KEY = 'theme-preference'; // 'light' | 'dark'
     const body = document.body;
     const btn = document.getElementById('toggleTheme');
@@ -310,16 +333,18 @@
       if (!getPref()) applyTheme(media.matches ? 'dark' : 'light');
     });
 
-    // ボタンで light ↔ dark のみ切替
+    // ボタンで切替
     btn?.addEventListener('click', () => {
       const curr = getPref() || (media.matches ? 'dark' : 'light');
       const next = curr === 'light' ? 'dark' : 'light';
       setPref(next);
-      btn.textContent = `テーマ: ${next}`;
+      const labelTheme = next === 'light' ? '☀ ライト' : '🌙 ダーク' ;
+      btn.textContent = `${labelTheme}`;
     });
 
     // 初期ボタン表示
-    btn && (btn.textContent = `テーマ: ${saved || (media.matches ? 'dark' : 'light')}`);
+    const labelTheme = saved === 'light' ? '☀ ライト' : '🌙 ダーク' || (media.matches ? 'dark' : 'light') ;
+    btn && (btn.textContent = `${labelTheme}`);
   }
 
   async function init() {
@@ -332,6 +357,7 @@
     bindEvents();
     updateVisibilityByMode();
     updateAnomalyCorr();
+    updateBreakControls();
     compute();
   }
 

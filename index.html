@@ -4,15 +4,21 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ZZZ Dmg Calc</title>
+  <link rel="icon" href="/assets/favicon-32x32.ico?v=1" type="image/x-icon">
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body class="theme-dark">
   <main class="container">
-    <h1>ゼンレスゾーンゼロ ダメージ計算ツール　- ZZZ Dmg Calc. -</h1>
-    <!-- <p>LastUpdate: 2025/9/13</p> -->
+    <header id="pageHeader">
+        <div class="header-row">
+            <h1 class="title">ゼンレスゾーンゼロ ダメージ計算ツール　- ZZZ Dmg Calc. -</h1>
+            <div class="header-meta">
+                <span class="lastUpdate" id="lastUpdate">Last Update: 2025/9/26</span>
+                <button id="toggleTheme" class="ghost">テーマ切替</button>
+            </div>
+        </div>
+    </header>
     
-    <button id="toggleTheme" class="ghost">テーマ切替</button>
-
     <h2>計算モード</h2>
     <div class="mode-toggle size-md">
         <input type="radio" name="calcMode" value="normal" id="modeNormal" checked />
@@ -21,12 +27,13 @@
         <input type="radio" name="calcMode" value="anomaly" id="modeAnomaly" />
         <label for="modeAnomaly">状態異常ダメージ</label>
     </div>
-    
+
+    <h2>入力項目</h2>
     <section class="grid">
     <!-- エージェント＋パラメータ -->
     <div class="card two-column">
         <div class="left-col">
-        <h2>エージェント</h2>
+        <h3>エージェント</h3>
         <select id="charSelect">
             <option value=""></option>
         </select>
@@ -60,7 +67,7 @@
             <label>キャラクターレベル [N]
             <input type="number" id="playerLevel" value="60" min="1" max="60" />
             </label>
-            <label class="hideable-normal">キャラレベル補正 [%]
+            <label class="disable-normal">キャラレベル補正 [%]
             <input type="number" id="lvCorrPct" value="200.00" max="200" readonly />
             </label>
         </div>
@@ -68,7 +75,7 @@
             <label>最終攻撃力 [N]
             <input type="number" id="atk" value="1500" min="0" />
             </label>
-            <label class="hideable-normal">異常マスタリー [N]
+            <label class="disable-normal">異常マスタリー [N]
             <input type="number" id="anomalyMastery" value="100" min="0" />
             </label>
             <label>貫通率 [%]
@@ -81,7 +88,7 @@
         </div>
 
         <div class="right-col">
-        <div class="hideable-anomaly">
+        <div class="disable-anomaly">
             <h3>会心補正</h3>
             <div class="form-grid">
             <label>会心率 [%]
@@ -101,20 +108,20 @@
         </label>
         <div class="form-grid">
             <label>与ダメージUP [%]
-            <input type="number" id="dmgBonusPct" value="0" min="0" />
+                <input type="number" id="dmgBonusPct" value="0" min="0" />
             </label>
             <label>与ダメージUP (全員) [%]
-            <input type="number" id="dmgBonusPtPct" value="0" min="0" />
+                <input type="number" id="dmgBonusPtPct" value="0" min="0" />
             </label>
         </div>
 
         <hr class="section-divider" />
 
         <h3>その他</h3>
-        <label class="hideable-anomaly">スキルダメージ倍率 [%]
+        <label class="disable-anomaly">スキルダメージ倍率 [%]
             <input type="number" id="skillPct" value="240" min="0" step="0.1" />
         </label>
-        <label class="hideable-normal">状態異常補正倍率 [%]
+        <label class="disable-normal">状態異常補正倍率 [%]
             <div class="form-grid">
             <select id="attrSelect">
                 <option value="physical">物理</option>
@@ -128,7 +135,7 @@
             <input type="number" id="anomalyCorrPct" value="713" readonly />
             </div>
         </label>
-        <label class="hideable-anomaly">距離減衰補正 [%]
+        <label class="disable-anomaly">距離減衰補正 [%]
             <div class="form-grid">
             <select id="rangeSelect">
                 <option value="0-15">0~15m</option>
@@ -144,7 +151,7 @@
 
     <!-- エネミー -->
     <div class="card">
-        <h2>エネミー</h2>
+        <h3>エネミー</h3>
         <select id="enemSelect">
         <option value=""></option>
         </select>
@@ -168,7 +175,7 @@
 
         <hr class="section-divider" />
 
-        <h2>バフ補正</h2>
+        <h3>バフ補正</h3>
         <div class="form-grid">
         <label>防御力UP [%]
             <input type="number" id="defUpPct" value="0" min="0" step="0.1" />
@@ -196,16 +203,23 @@
 
         <hr class="section-divider" />
 
-        <h2>その他</h2>
-        <label>ブレイク倍率 [%]
+        <h3>その他</h3>
+        <div class="row">            
+            <input type="checkbox" id="breakToggle">
+            <label for="breakToggle">敵をブレイク状態にする</label>
+        </div>
+        <div id="breakControls">
+        <label>ブレイク倍率 [%]</label>
         <input type="number" id="breakBonusPct" value="100" min="0" />
-        </label>
+        
+        
+        </div>
     </div>
 
     <!-- オプション -->
     <div class="vertical-stack">
         <div class="card">
-        <h2>オプション</h2>
+        <h3>オプション</h3>
         <div class="form-grid">
             <label>小数点桁数
             <input type="number" id="digits" value="0" min="0" max="6" />
@@ -214,8 +228,6 @@
         </div>
     </div>
     </section>
-
-
 
     <section class="result">
       <h2>結果</h2>

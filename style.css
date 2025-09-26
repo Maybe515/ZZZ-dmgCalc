@@ -91,9 +91,39 @@
 html, body {
   margin: 0;
   padding: 0;
+  padding-top: 1rem;
   background: var(--bg);
   color: var(--fg);
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+/* ヘッダー */
+#pageHeader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: var(--card);
+  color: var(--fg);
+  padding: 0 1rem;
+  border-bottom: 1px solid var(--border);
+  z-index: 1000;
+}
+
+.header-meta {
+  display: flex;
+  gap: 0.8rem;
+  font-size: 0.9rem;
+}
+
+.header-row {
+  display: flex;
+  gap: 0.5rem;
+  line-height: 1.2;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  min-width: max-content;
 }
 
 /* レイアウト */
@@ -121,10 +151,11 @@ html, body {
 
 /* カード */
 .card {
+  display: flex;
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 1rem;
+  padding: 0.75rem;
 }
 
 .card .card {
@@ -135,7 +166,7 @@ html, body {
 .card.two-column {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .card.two-column .left-col {
@@ -171,6 +202,9 @@ label {
 
 input[type="number"],
 select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
   background: var(--input-bg);
   color: var(--input-fg);
   border: 1px solid var(--border);
@@ -224,20 +258,23 @@ input[readonly] {
 .row {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.25rem;
 }
 
 .row select,
 .row input[type="number"] {
-  flex: 1;
-  min-width: 140px;
+  flex: 1 1 100%;
+  min-width: 0;
   width: 100%;
 }
 
 .row label {
-  flex: 1;
   display: flex;
+  flex: 1;
   flex-direction: column;
+  font-weight: 500;
 }
 
 /* アイコン */
@@ -254,15 +291,22 @@ input[readonly] {
   margin: 1rem 0 0.5rem;
 }
 
-/* タイトル */
-h1 { font-size: 1.6rem; margin-bottom: 1rem; }
-h2 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--accent); }
-h3 { font-size: 1rem; margin: 0.75rem 0; color: var(--accent); }
+/* 見出し */
+h1 { font-size: 1.6rem; margin-bottom: 1rem;}
+h2 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--accent); }
+h3 { font-size: 1rem; margin: 0.5rem 0; color: var(--accent); }
+.title { font-size: 1.4rem; font-weight: bold; margin-right: 1rem;}
+.lastUpdate { align-content: center;}
 
-/* 隠し要素（グレーアウト） */
-.hidden {
+/* グレーアウト */
+.mode-disabled, .break-disabled {
   opacity: 0.5;
   pointer-events: none;
+}
+
+/* 非表示 */
+.mode-hidden {
+  display: none;
 }
 
 /* ボタン */
@@ -289,6 +333,8 @@ button.ghost {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.75rem;
+  justify-content: center;
+  max-width: 1000px;              
 }
 
 .result-card {
@@ -296,7 +342,8 @@ button.ghost {
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 0.9rem;
-  max-width: 400px;
+  width: 100%;
+  max-width: unset;
 }
 
 .result-card .label {
@@ -343,7 +390,7 @@ footer {
 }
 
 /* レスポンシブ */
-@media (max-width: 900px) {
+@media (max-width: 600px) {
   .grid {
     flex-wrap: wrap;
     overflow-x: visible;
@@ -353,7 +400,11 @@ footer {
     flex: 1 1 100%;
     min-width: 0;
   }
-  .card.two-column {
+  .card.two-column, .form-grid {
     grid-template-columns: 1fr;
+  }
+  .card.two-column .left-col {
+    border-right: none;
+    padding-right: 0;
   }
 }
