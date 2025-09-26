@@ -1,4 +1,4 @@
-:root{
+:root {
   /* カラーパレット */
   --bg: #0f1220;
   --fg: #e7e9f5;
@@ -8,9 +8,85 @@
   --border: #262a42;
   --ok: #7ee081;
   --warn: #ffd166;
+
+  /* 入力系 */
+  --input-bg: #0a0d18;
+  --input-fg: var(--fg);
+  --input-readonly-bg: #1a1d2a;
+  --input-readonly-fg: var(--muted);
+
+  /* ラベル系 */
+  --label-fg: #000;
+  --label-bg: #f0f0f0;
+  --label-border: #888;
+  --label-active-bg: #2e6eea;
+  --label-active-fg: #fff;
+  --label-active-border: #2e6eea;
 }
 
-*{box-sizing:border-box}
+/* OSがライト設定のときのデフォルト（クラス未指定時に適用） */
+@media (prefers-color-scheme: light) {
+  :root {
+    --bg: #f9fafc;
+    --fg: #1a1a1a;
+    --muted: #666;
+    --card: #ffffff;
+    --accent: #2e6eea;
+    --border: #ddd;
+    --ok: #2e8b57;
+    --warn: #d97706;
+  }
+}
+
+/* ダークテーマ用変数（デフォルトと同じ） */
+.theme-dark {
+  --bg: #0f1220;
+  --fg: #e7e9f5;
+  --muted: #a6accd;
+  --card: #171a2b;
+  --accent: #6aa8ff;
+  --border: #262a42;
+  --ok: #7ee081;
+  --warn: #ffd166;
+
+  /* ラベル系 */
+  --label-fg: #000;
+  --label-bg: #f0f0f0;
+  --label-border: #888;
+  --label-active-bg: #2e6eea;
+  --label-active-fg: #fff;
+  --label-active-border: #2e6eea;
+}
+
+/* ライトテーマ用変数 */
+.theme-light {
+  --bg: #f9fafc;
+  --fg: #1a1a1a;
+  --muted: #666;
+  --card: #ffffff;
+  --accent: #2e6eea;
+  --border: #ddd;
+  --ok: #2e8b57;
+  --warn: #d97706;
+
+  /* 入力系をライト用に上書き */
+  --input-bg: #ffffff;
+  --input-fg: #1a1a1a;
+  --input-readonly-bg: #f0f0f0;
+  --input-readonly-fg: #888;
+
+  /* ラベル系 */
+  --label-fg: #000;
+  --label-bg: #f0f0f0;
+  --label-border: #888;
+  --label-active-bg: #2e6eea;
+  --label-active-fg: #fff;
+  --label-active-border: #2e6eea;
+}
+
+* {
+  box-sizing: border-box;
+}
 
 html, body {
   margin: 0;
@@ -22,107 +98,94 @@ html, body {
 
 /* レイアウト */
 .container {
-  max-width: 1100px;
   margin: 0 auto;
-  padding: 24px;
+  padding: 1.5rem;
 }
 
 .grid {
   display: flex;
-  gap: 16px;
-  align-items: stretch;     /* 高さを揃える */
+  gap: 1rem;
   justify-content: space-between;
-  flex-wrap: nowrap;        /* 折り返さない（必要なら wrap に） */
-  overflow-x: auto;         /* 幅が足りないとき横スクロール */
-  padding-bottom: 8px;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
   align-items: stretch;
 }
 
-/* 直下のカード3枚を横並びに見せる幅指定 */
 .grid > .card,
 .grid > .vertical-stack {
-  flex: 1 1 0;              /* 均等に伸縮 */
-  min-width: 280px;         /* 最小幅（横スクロールの閾値） */
+  min-width: 280px;
   display: flex;
   flex-direction: column;
 }
 
-/* カード共通 */
+/* カード */
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 12px;
-  margin-bottom: 16px;
+  border-radius: 6px;
+  padding: 1rem;
 }
 
-/* カード内の「入れ子の.card」は通常レイアウトでOK */
 .card .card {
   flex: 0 0 auto;
-  margin-top: 12px;         /* 内部カードの余白 */
+  border: none;
 }
 
-/* ブレークポイント：モバイルでは縦並び */
-@media (max-width: 900px) {
-  .grid {
-    flex-wrap: wrap;        /* 折り返して縦並びに */
-    overflow-x: visible;
-  }
-  .grid > .card,
-  .grid > .vertical-stack {
-    flex: 1 1 100%;
-    min-width: 0;
-  }
+.card.two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
 }
 
-.vertical-stack {
+.card.two-column .left-col {
+  border-right: 1px solid var(--muted);
+  padding-right: 1.5rem;
+}
+
+.left-col, .right-col {
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  flex: 1 1 0;
-  min-width: 280px;
+  gap: 1rem;
 }
 
-.hideable-normal.hidden {
-  display: none;
+/* フォーム */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
 }
 
-.hideable-anomaly.hidden {
-  display: none;
+.form-grid label {
+  display: flex;
+  flex-direction: column;
 }
 
-/* タイトル */
-h1 {
-  font-size: 1.6rem;
-  margin-bottom: 16px;
-}
-
-.subtitle {
-  font-size: 1.4rem;
-  margin-bottom: 14px;
-}
-
-h2 {
-  font-size: 1.1rem;
-  margin-bottom: 12px;
-  color: var(--accent);
-}
-
-h3 {
-  font-size: 1rem;
-  margin: 12px 0;
-  color: var(--accent);
-}
-
-/* ラベルと入力 */
 label {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  margin-bottom: 10px;
+  gap: 0.4rem;
+  margin-bottom: 0.6rem;
   font-size: 0.95rem;
 }
 
+input[type="number"],
+select {
+  background: var(--input-bg);
+  color: var(--input-fg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 0.95rem;
+}
+
+input[readonly] {
+  background-color: var(--input-readonly-bg);
+  color: var(--input-readonly-fg);
+  cursor: default;
+}
+
+/* ラジオボタン（モード切替） */
 .mode-toggle {
   display: flex;
   gap: 1rem;
@@ -134,9 +197,10 @@ label {
 }
 
 .mode-toggle label {
-  border: 2px solid #888;
+  border: 2px solid var(--label-border);
   border-radius: 6px;
-  background-color: #f0f0f0;
+  background-color:var(--label-bg);
+  color: var(--label-fg);
   cursor: pointer;
   font-weight: 600;
   transition: all 0.2s ease;
@@ -146,68 +210,59 @@ label {
 }
 
 .mode-toggle input[type="radio"]:checked + label {
-  background-color: #2e6eea;
-  color: white;
-  border-color: #2e6eea;
+  background-color: var(--label-active-bg);
+  color: var(--label-active-fg);
+  border-color: var(--label-active-border);
 }
 
-input[type="number"],
-select {
-  background: #0a0d18;
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 8px;
-  font-size: 0.95rem;
-}
-
-input[readonly] {
-  background-color: #1a1d2a;
-  color: var(--muted);
-  cursor: default;
-}
-
-/* サイズ指定クラス */
-.size-sm label {
-  font-size: 0.75rem;
-  padding: 0.3em 0.6em;
-  width: 150px;
-}
-
-.size-md label {
-  font-size: 1rem;
-  padding: 0.5em 1em;
-  width: 200px;
-}
-
-.size-lg label {
-  font-size: 1.25rem;
-  padding: 0.75em 1.25em;
-  width: 250px;
-}
+/* サイズ指定 */
+.size-sm label { font-size: 0.75rem; padding: 0.3em 0.6em; width: 150px; }
+.size-md label { font-size: 1rem;   padding: 0.5em 1em;   width: 200px; }
+.size-lg label { font-size: 1.25rem; padding: 0.75em 1.25em; width: 250px; }
 
 /* 行内要素 */
 .row {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .row select,
 .row input[type="number"] {
-    flex: 1;
-    min-width: 140px;
-    width: 100%;
+  flex: 1;
+  min-width: 140px;
+  width: 100%;
 }
 
-.row label{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
+.row label {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.sep {
-  color: var(--muted);
+/* アイコン */
+.icon-sm {
+  height: 20px;
+  vertical-align: middle;
+  margin-right: 6px;
+}
+
+/* 区切り線 */
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--muted);
+  margin: 1rem 0 0.5rem;
+}
+
+/* タイトル */
+h1 { font-size: 1.6rem; margin-bottom: 1rem; }
+h2 { font-size: 1.1rem; margin-bottom: 0.75rem; color: var(--accent); }
+h3 { font-size: 1rem; margin: 0.75rem 0; color: var(--accent); }
+
+/* 隠し要素（グレーアウト） */
+.hidden {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 /* ボタン */
@@ -215,7 +270,7 @@ button {
   cursor: pointer;
   border: none;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 0.6rem 0.8rem;
   background: var(--accent);
   color: #0a1020;
   font-weight: 600;
@@ -228,21 +283,19 @@ button.ghost {
 }
 
 /* 結果表示 */
-.result {
-  margin-top: 20px;
-}
+.result { margin-top: 1.25rem; }
 
 .result-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  gap: 0.75rem;
 }
 
 .result-card {
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
-  padding: 14px;
+  padding: 0.9rem;
   max-width: 400px;
 }
 
@@ -253,20 +306,18 @@ button.ghost {
 
 .result-card .value {
   font-size: 1.6rem;
-  margin-top: 6px;
+  margin-top: 0.4rem;
   color: var(--ok);
 }
 
-/* 中間倍率詳細 */
-.details {
-  margin-top: 12px;
-}
+/* 詳細表示 */
+.details { margin-top: 0.75rem; }
 
 .kv {
   display: flex;
   justify-content: space-between;
   border-top: 1px dashed var(--border);
-  padding: 8px 0;
+  padding: 0.5rem 0;
   color: var(--muted);
 }
 
@@ -274,9 +325,35 @@ button.ghost {
   color: var(--fg);
 }
 
+/* 縦積みカード */
+.vertical-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  flex: 1 1 0;
+  min-width: 280px;
+  margin-top: 1.5rem;
+}
+
 /* フッター */
 footer {
-  margin-top: 24px;
+  margin-top: 1.5rem;
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+/* レスポンシブ */
+@media (max-width: 900px) {
+  .grid {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  .grid > .card,
+  .grid > .vertical-stack {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .card.two-column {
+    grid-template-columns: 1fr;
+  }
 }

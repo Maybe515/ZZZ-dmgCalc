@@ -41,6 +41,10 @@
     "0-15": 100, "20": 75, "25": 50, "30-": 25
   };
 
+  const matchTable = {
+    "none": 0, "weak": -20, "resist": 20
+  };
+
   const factionIcons = {
     "邪兎屋": "assets/faction/cunning_hares.webp",
     "白祇重工": "assets/faction/belobog_heavy_industries.webp",
@@ -76,13 +80,13 @@
   };
 
   const attributeValueMap = {
-  "物理": "physical",
-  "電気": "electric",
-  "炎": "fire",
-  "氷": "ice",
-  "エーテル": "ether",
-  "霜烈": "frost",
-  "玄墨": "auric_ink"
+    "物理": "physical",
+    "電気": "electric",
+    "炎": "fire",
+    "氷": "ice",
+    "エーテル": "ether",
+    "霜烈": "frost",
+    "玄墨": "auric_ink"
   };
 
   function getCalcMode() {
@@ -205,35 +209,56 @@
       }
     });
 
+    $("matchSelect")?.addEventListener("change", () => {
+      const selected = $("matchSelect").value;
+      if (matchTable[selected] !== undefined) {
+        setValue("attrMatchPct", matchTable[selected]);
+        compute();
+      }
+    });
+
     $("charSelect")?.addEventListener("change", () => {
       const char = characters[$("charSelect").value];
-      if (!char) return;
+      if (char) {
+        setText("faction", char.faction || "-");
+        setText("specialty", char.specialty || "-");
+        setText("attribute", char.attribute || "-");
+        $("factionIcon").src = factionIcons[char.faction] || "";
+        $("factionIcon").alt = char.faction || "";
+        $("specialtyIcon").src = specialtyIcons[char.specialty] || "";
+        $("specialtyIcon").alt = char.specialty || "";
+        $("attributeIcon").src = attributeIcons[char.attribute] || "";
+        $("attributeIcon").alt = char.attribute || "";
 
-      setText("faction", char.faction || "-");
-      setText("specialty", char.specialty || "-");
-      setText("attribute", char.attribute || "-");
+      } else {
+        setText("faction", "-");
+        setText("specialty", "-");
+        setText("attribute", "-");
+        $("factionIcon").src = "";
+        $("factionIcon").alt = "";
+        $("specialtyIcon").src = "";
+        $("specialtyIcon").alt = "";
+        $("attributeIcon").src = "";
+        $("attributeIcon").alt = "";
+      }
 
       const attrValue = attributeValueMap[char.attribute];
       if (attrValue) {
         setValue("attrSelect", attrValue);
         updateAnomalyCorr();
       }
-
-      $("factionIcon").src = factionIcons[char.faction] || "";
-      $("factionIcon").alt = char.faction || "";
-      $("specialtyIcon").src = specialtyIcons[char.specialty] || "";
-      $("specialtyIcon").alt = char.specialty || "";
-      $("attributeIcon").src = attributeIcons[char.attribute] || "";
-      $("attributeIcon").alt = char.attribute || "";
-
       compute();
     });
 
     $("enemSelect")?.addEventListener("change", () => {
       const enem = enemies[$("enemSelect").value];
-      if (!enem) return;
-      setText("attrWeak", enem.attrWeak || "-");
-      setText("attrResist", enem.attrResist || "-");
+      if (enem) {
+        setText("attrWeak", enem.attrWeak || "-");
+        setText("attrResist", enem.attrResist || "-");
+      } else {
+        setText("attrWeak", "-");
+        setText("attrResist", "-");
+      }
       compute();
     });
 
@@ -254,6 +279,47 @@
         compute();
       });
     });
+
+    const KEY = 'theme-preference'; // 'light' | 'dark'
+    const body = document.body;
+    const btn = document.getElementById('toggleTheme');
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+
+    const applyTheme = (pref) => {
+      body.classList.remove('theme-light', 'theme-dark');
+      if (pref) body.classList.add(`theme-${pref}`);
+    };
+
+    const getPref = () => localStorage.getItem(KEY);
+
+    const setPref = (pref) => {
+      localStorage.setItem(KEY, pref);
+      applyTheme(pref);
+    };
+
+    // 初期適用：保存がなければ OS 設定に従う
+    const saved = getPref();
+    if (saved) {
+      applyTheme(saved);
+    } else {
+      applyTheme(media.matches ? 'dark' : 'light');
+    }
+
+    // OS設定が変わったら、ユーザーが手動指定していない場合のみ追従
+    media.addEventListener('change', () => {
+      if (!getPref()) applyTheme(media.matches ? 'dark' : 'light');
+    });
+
+    // ボタンで light ↔ dark のみ切替
+    btn?.addEventListener('click', () => {
+      const curr = getPref() || (media.matches ? 'dark' : 'light');
+      const next = curr === 'light' ? 'dark' : 'light';
+      setPref(next);
+      btn.textContent = `テーマ: ${next}`;
+    });
+
+    // 初期ボタン表示
+    btn && (btn.textContent = `テーマ: ${saved || (media.matches ? 'dark' : 'light')}`);
   }
 
   async function init() {
@@ -270,5 +336,4 @@
   }
 
   init();
-
 })();
