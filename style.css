@@ -129,6 +129,8 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  background: transparent;
+  /* border: 1px solid var(--muted); */
 }
 
 .card__col {
@@ -140,13 +142,18 @@ body {
 .card--option {
   max-width: 275px;
   margin-top: .25rem;
+  gap: .25rem;
+}
+
+.card--other, .card--buff {
+  gap: .4rem;
 }
 
 /* ---------------- Form ---------------- */
 .form--grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: .8rem;
+  gap: .5rem;
 }
 
 .form--row {
@@ -159,8 +166,9 @@ body {
   display: flex;
   flex-direction: column;
   gap: .4rem;
-  margin-bottom: .6rem;
   font-size: .95rem;
+  justify-content: center;
+  height: 100%;
 }
 
 .form__input {
@@ -185,14 +193,20 @@ body {
 
 /* ---------------- Mode toggle ---------------- */
 .mode {
-  padding: 1rem 0;
+  padding: 1rem .25rem .1rem;
+}
+
+.mode--grid {
+  display:  flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: .5rem;
 }
 
 .mode__toggle {
   display: flex;
   gap: 1rem;
   flex-wrap: wrap;
-  margin-bottom: .5rem;
 }
 
 .mode__toggle input[type="radio"] {
@@ -235,12 +249,21 @@ body {
   color: var(--fg);
 }
 
-.btn--sm {
+.btn--thm {
   height: 2rem;
   padding: 0 .75rem;
   font-size: .9rem;
   line-height: 1;
   white-space: nowrap;
+}
+
+.btn--rst {
+  height: 2.25rem;
+  padding: 0 .75rem;
+  font-size: .9rem;
+  line-height: 1;
+  white-space: nowrap;
+  background: var(--card);
 }
 
 /* ---------------- Result ---------------- */
@@ -325,9 +348,7 @@ body {
 }
 
 /* ---------------- Utility ---------------- */
-.is-disabled,
-.is-hidden-normal,
-.is-hidden-anomaly {
+.is-disabled {
   opacity: .5;
   pointer-events: none;
 }
@@ -351,7 +372,9 @@ body {
 }
 
 /* ---------------- Headings ---------------- */
-h1,h2,h3 {
+h1,
+h2,
+h3 {
   margin: 0;
   font-weight: 600;
 }

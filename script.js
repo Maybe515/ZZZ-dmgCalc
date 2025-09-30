@@ -13,18 +13,18 @@
   const setText = (id, value) => { const el = $(id); if (el) el.textContent = value; };
   const setValue = (id, value) => { const el = $(id); if (el) el.value = value; };
 
-  const pctToMul  = (p) => 1 + p / 100;
+  const pctToMul = (p) => 1 + p / 100;
   const pctToFrac = (p) => p / 100;
   const fmt = (v, d) => Number.isFinite(v) ? Number(v).toFixed(d) : "-";
 
   // ---------------- Data ----------------
-  const characters = {};
+  const agents = {};
   const enemies = {};
   const lvCoeffTable = {};
 
   // NOTE: penRatioPct: ensure consistent naming across HTML/JS (fix typo from penRetioPct)
   const fields = [
-    "playerLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
+    "agentLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
     "critRatePct", "critDmgPct",
     "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
     "skillPct", "anomalyCorrPct", "breakBonusPct", "rangeWeakPct",
@@ -34,7 +34,7 @@
   ];
 
   const defaults = {
-    playerLevel: 60, lvCorrPct: 200, atk: 1500, anomalyMastery: 100, penRatioPct: 0, pen: 0,
+    agentLevel: 60, lvCorrPct: 200, atk: 1500, anomalyMastery: 100, penRatioPct: 0, pen: 0,
     critRatePct: 5, critDmgPct: 50,
     attrBonusPct: 0, dmgBonusPct: 0, dmgBonusPtPct: 0,
     skillPct: 240, anomalyCorrPct: 713, breakBonusPct: 0, rangeWeakPct: 100,
@@ -51,7 +51,7 @@
 
   const matchTable = { none: 0, weak: -20, resist: 20 };
 
-  const factionIconPath   = "assets/faction/";
+  const factionIconPath = "assets/faction/";
   const specialtyIconPath = "assets/specialty/";
   const attributeIconPath = "assets/stats/";
 
@@ -131,12 +131,12 @@
   }
 
   function updateAgentInfo() {
-    const sel = $("charSelect")?.value;
-    const char = characters[sel] || null;
+    const sel = $("agentSelect")?.value;
+    const agent = agents[sel] || null;
 
-    const faction   = char?.faction   || "";
-    const specialty = char?.specialty || "";
-    const attribute = char?.attribute || "";
+    const faction = agent?.faction || "";
+    const specialty = agent?.specialty || "";
+    const attribute = agent?.attribute || "";
 
     updateFieldWithIcon("faction", faction, factionIconPath, factionIcons, "陣営");
     updateFieldWithIcon("specialty", specialty, specialtyIconPath, specialtyIcons, "役割");
@@ -187,13 +187,13 @@
       + pctToFrac(v.dmgBonusPtPct);
 
     const breakBonusMul = breakToggle?.checked ? pctToMul(v.breakBonusPct) : 1.0;
-    const rangeWeakMul  = pctToMul(v.rangeWeakPct - 100); // convert 100% baseline to 1.0
+    const rangeWeakMul = pctToMul(v.rangeWeakPct - 100); // convert 100% baseline to 1.0
     // Alternatively, if rangeWeakPct already represents multiplier (e.g., 100 -> 1.0), use:
     // const rangeWeakMul = pctToFrac(v.rangeWeakPct);
 
-    const defEff   = v.def * (1 + pctToFrac(v.defUpPct) - pctToFrac(v.defDownPct));
+    const defEff = v.def * (1 + pctToFrac(v.defUpPct) - pctToFrac(v.defDownPct));
     const defValid = defEff * (1 - pctToFrac(v.penRatioPct)) - v.pen;
-    const defMul   = v.lvCoeff / Math.max(1e-9, (v.lvCoeff + Math.max(0, defValid)));
+    const defMul = v.lvCoeff / Math.max(1e-9, (v.lvCoeff + Math.max(0, defValid)));
 
     const resistMul = 1
       - pctToFrac(v.attrMatchPct)
@@ -204,30 +204,30 @@
     if (mode === "normal") {
       dmgFn = (mul) => base * totalBonus * mul * breakBonusMul * rangeWeakMul * defMul * resistMul;
 
-      setText("base",        fmt(base, digits));
-      setText("nonCritMul",  fmt(1, digits + 2));
-      setText("critMul",     fmt(critMul, digits + 2));
-      setText("expCritMul",  fmt(expCritMul, digits + 2));
-      setText("nonCrit",     fmt(dmgFn(1), digits));
-      setText("crit",        fmt(dmgFn(critMul), digits));
-      setText("expected",    fmt(dmgFn(expCritMul), digits));
+      setText("base", fmt(base, digits));
+      setText("nonCritMul", fmt(1, digits + 2));
+      setText("critMul", fmt(critMul, digits + 2));
+      setText("expCritMul", fmt(expCritMul, digits + 2));
+      setText("nonCrit", fmt(dmgFn(1), digits));
+      setText("crit", fmt(dmgFn(critMul), digits));
+      setText("expected", fmt(dmgFn(expCritMul), digits));
     } else {
-      const anomaly    = v.anomalyMastery / 100;
-      const lvCorrMul  = pctToMul(v.lvCorrPct);
+      const anomaly = v.anomalyMastery / 100;
+      const lvCorrMul = pctToMul(v.lvCorrPct);
       const anomalyMul = pctToMul(v.anomalyCorrPct);
 
       dmgFn = (mul) => v.atk * totalBonus * mul * breakBonusMul * anomaly * lvCorrMul * anomalyMul * defMul * resistMul;
 
-      setText("base",        fmt(v.atk, digits));
-      setText("nonCritMul",  "-");
-      setText("critMul",     "-");
-      setText("expCritMul",  "-");
-      setText("expected",    fmt(dmgFn(1), digits));
+      setText("base", fmt(v.atk, digits));
+      setText("nonCritMul", "-");
+      setText("critMul", "-");
+      setText("expCritMul", "-");
+      setText("expected", fmt(dmgFn(1), digits));
     }
 
     setText("totalBonus", fmt(totalBonus, digits + 2));
-    setText("defMul",     fmt(defMul, digits + 2));
-    setText("resiMul",    fmt(resistMul, digits + 2));
+    setText("defMul", fmt(defMul, digits + 2));
+    setText("resiMul", fmt(resistMul, digits + 2));
   }
 
   // ---------------- Defaults & Reset ----------------
@@ -289,7 +289,7 @@
     breakToggle?.addEventListener("change", () => { updateBreakControls(); compute(); });
 
     // Agent select
-    $("charSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
+    $("agentSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
 
     // Reset
     $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
@@ -314,17 +314,17 @@
   // Example loaders (paths to be adjusted as needed)
   async function loadAllData() {
     await Promise.all([
-      // loadJSON("./data/characters.json", characters, populateCharSelect),
+      // loadJSON("./data/agents.json", agents, populateagentSelect),
       // loadJSON("./data/enemies.json", enemies, populateEnemySelect),
       // loadJSON("./data/lv_coeff.json", lvCoeffTable, () => {/* optional post-load */})
     ]);
   }
 
-  function populateCharSelect() {
-    const sel = $("charSelect");
+  function populateagentSelect() {
+    const sel = $("agentSelect");
     if (!sel) return;
     sel.innerHTML = `<option value=""></option>` +
-      Object.keys(characters).map(k => `<option value="${k}">${k}</option>`).join("");
+      Object.keys(agents).map(k => `<option value="${k}">${k}</option>`).join("");
   }
 
   function populateEnemySelect() {
@@ -390,17 +390,17 @@
     $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
 
     // Agent selection and dependent updates
-    $("charSelect")?.addEventListener("change", () => {
-      const sel = $("charSelect").value;
-      const char = characters[sel] || null;
+    $("agentSelect")?.addEventListener("change", () => {
+      const sel = $("agentSelect").value;
+      const agent = agents[sel] || null;
 
       // Update agent info
-      updateFieldWithIcon("faction",   char?.faction   || "", factionIconPath,   factionIcons,   "陣営");
-      updateFieldWithIcon("specialty", char?.specialty || "", specialtyIconPath, specialtyIcons, "役割");
-      updateFieldWithIcon("attribute", char?.attribute || "", attributeIconPath, attributeIcons, "属性");
+      updateFieldWithIcon("faction", agent?.faction || "", factionIconPath, factionIcons, "陣営");
+      updateFieldWithIcon("specialty", agent?.specialty || "", specialtyIconPath, specialtyIcons, "役割");
+      updateFieldWithIcon("attribute", agent?.attribute || "", attributeIconPath, attributeIcons, "属性");
 
       // Sync anomaly attribute select from agent attribute
-      const attrValue = char?.attribute ? attributeValueMap[char.attribute] : "";
+      const attrValue = agent?.attribute ? attributeValueMap[agent.attribute] : "";
       if (attrValue) {
         setValue("attrSelect", attrValue);
         updateAnomalyCorr();
@@ -412,14 +412,14 @@
     $("enemSelect")?.addEventListener("change", () => {
       const sel = $("enemSelect").value;
       const enem = enemies[sel] || null;
-      updateField("attrWeak",   enem?.attrWeak   || "", null, null);
+      updateField("attrWeak", enem?.attrWeak || "", null, null);
       updateField("attrResist", enem?.attrResist || "", null, null);
       compute();
     });
 
-    // Player level: lvCorrPct and lvCoeff sync
-    $("playerLevel")?.addEventListener("input", () => {
-      const level = Number($("playerLevel")?.value ?? defaults.playerLevel);
+    // agent level: lvCorrPct and lvCoeff sync
+    $("agentLevel")?.addEventListener("input", () => {
+      const level = Number($("agentLevel")?.value ?? defaults.agentLevel);
       const corrMulPct = (1 + 0.016949 * (level - 1)) * 100;
       const corr = fmt(corrMulPct, 2);
       setValue("lvCorrPct", corr);
@@ -485,7 +485,7 @@
   async function init() {
     // Load data then populate selects
     await Promise.all([
-      loadJSON("./json/characters.json", characters, () => populateSelect("charSelect", characters)),
+      loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
       loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
       loadJSON("./json/lvCoeffTable.json", lvCoeffTable)
     ]);

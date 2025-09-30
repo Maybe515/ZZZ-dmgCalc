@@ -17,7 +17,7 @@
                 <h1 class="header__title">ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc. -</h1>
                 <div class="header__meta">
                     <span class="header__last-update" id="lastUpdate">Last Update: 2025/9/29</span>
-                    <button id="toggleTheme" class="btn btn--ghost">テーマ切替</button>
+                    <button id="toggleTheme" class="btn btn--ghost btn--thm">テーマ切替</button>
                 </div>
             </div>
         </header>
@@ -25,24 +25,27 @@
         <!-- モード切替 -->
         <section class="mode">
             <h2 class="mode__title">計算モード</h2>
-            <div class="mode__toggle mode__toggle--md">
-                <input type="radio" name="calcMode" value="normal" id="modeNormal" checked />
-                <label for="modeNormal" class="mode__label">通常ダメージ</label>
+            <div class="mode--grid">
+                <div class="mode__toggle mode__toggle--md">
+                    <input type="radio" name="calcMode" value="normal" id="modeNormal" checked />
+                    <label for="modeNormal" class="mode__label">通常ダメージ</label>
 
-                <input type="radio" name="calcMode" value="anomaly" id="modeAnomaly" />
-                <label for="modeAnomaly" class="mode__label">状態異常ダメージ</label>
+                    <input type="radio" name="calcMode" value="anomaly" id="modeAnomaly" />
+                    <label for="modeAnomaly" class="mode__label">状態異常ダメージ</label>
+                </div>
+                <button id="resetBtn" class="btn btn--ghost btn--rst">初期値に戻す</button>
             </div>
-            <button id="resetBtn" class="btn btn--ghost btn--sm">初期値に戻す</button>
         </section>
 
         <!-- 入力項目 -->
         <section class="grid">
-            <!-- エージェント＋パラメータ -->
+            <!-- エージェント -->
             <div class="card card--two-column">
+                <!-- エージェント＋パラメータ -->
                 <div class="card__col card__col--left">
                     <div class="card card--agent">
                         <h3 class="card__title">エージェント</h3>
-                        <select id="charSelect" class="form__input"></select>
+                        <select id="agentSelect" class="form__input"></select>
 
                         <div class="kv-list">
                             <div class="kv"><span class="kv__label">陣営</span><span id="factionWrapper"
@@ -60,8 +63,8 @@
                     <div class="card card--param">
                         <h3 class="card__title">パラメータ</h3>
                         <div class="form form--grid">
-                            <label for="playerLevel" class="form__label">キャラクターレベル [N]</label>
-                            <input type="number" id="playerLevel" class="form__input" value="60" min="1" max="60" />
+                            <label for="agentLevel" class="form__label">キャラクターレベル [N]</label>
+                            <input type="number" id="agentLevel" class="form__input" value="60" min="1" max="60" />
 
                             <label for="lvCorrPct" class="form__label is-disabled-normal">キャラレベル補正 [%]</label>
                             <input type="number" id="lvCorrPct" class="form__input" value="200.00" max="200" readonly />
@@ -83,6 +86,7 @@
                     </div>
                 </div>
 
+                <!-- 会心補正＋属性・与ダメ補正＋その他 -->
                 <div class="card__col card__col--right">
                     <div class="card card--crit is-disabled-anomaly">
                         <h3 class="card__title">会心補正</h3>
@@ -98,10 +102,10 @@
 
                     <div class="card card--dmgBonus">
                         <h3 class="card__title">属性・与ダメ補正</h3>
-                        <label for="attrBonusPct" class="form__label">属性ダメージUP [%]</label>
-                        <input type="number" id="attrBonusPct" class="form__input" value="0" min="0" />
-
                         <div class="form form--grid">
+                            <label for="attrBonusPct" class="form__label">属性ダメージUP [%]</label>
+                            <input type="number" id="attrBonusPct" class="form__input" value="0" min="0" />
+
                             <label for="dmgBonusPct" class="form__label">与ダメージUP [%]</label>
                             <input type="number" id="dmgBonusPct" class="form__input" value="0" min="0" />
 
@@ -112,9 +116,11 @@
 
                     <div class="card card--other">
                         <h3 class="card__title">その他</h3>
-                        <label for="skillPct" class="form__label is-disabled-anomaly">スキルダメージ倍率 [%]</label>
-                        <input type="number" id="skillPct" class="form__input is-disabled-anomaly" value="240" min="0"
-                            step="0.1" />
+                        <div class="form form--grid">
+                            <label for="skillPct" class="form__label is-disabled-anomaly">スキルダメージ倍率 [%]</label>
+                            <input type="number" id="skillPct" class="form__input is-disabled-anomaly" value="240"
+                                min="0" step="0.1" />
+                        </div>
 
                         <label for="attrSelect" class="form__label is-disabled-normal">状態異常補正倍率 [%]</label>
                         <div class="form form--grid">
@@ -146,6 +152,7 @@
 
             <!-- エネミー -->
             <div class="card card--two-column">
+                <!-- エネミー＋パラメータ -->
                 <div class="card__col card__col--left">
                     <div class="card card--enemy">
                         <h3 class="card__title">エネミー</h3>
@@ -171,6 +178,7 @@
                     </div>
                 </div>
 
+                <!-- バフ補正＋その他 -->
                 <div class="card__col card__col--right">
                     <div class="card card--buff">
                         <h3 class="card__title">バフ補正</h3>
@@ -256,7 +264,7 @@
                     <li class="kv"><span class="kv__label">期待値会心倍率</span><span id="expCritMul"
                             class="kv__value">-</span></li>
                     <li class="kv"><span class="kv__label">防御補正</span><span id="defMul" class="kv__value">-</span></li>
-                    <li class="kv"><span class="kv__label">耐性補正</span><span id="resiMul" class="kv__value">-</span></li>
+                    <li class="kv"><span class="kv__label">相性補正</span><span id="resiMul" class="kv__value">-</span></li>
                 </ul>
             </details>
         </section>
