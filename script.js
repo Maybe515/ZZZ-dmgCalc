@@ -54,6 +54,7 @@
   const factionIconPath = "assets/faction/";
   const specialtyIconPath = "assets/specialty/";
   const attributeIconPath = "assets/stats/";
+  const agentIgamePath = "assets/agent/";
 
   const factionIcons = {
     "邪兎屋": "cunning_hares.webp",
@@ -118,15 +119,22 @@
 
   // ---------------- Icon/text binding ----------------
   function updateFieldWithIcon(id, value, iconPath, iconMap, altPrefix = "") {
-    setText(id, value || "-");
-    const iconEl = $(id + "Icon");
-    if (!iconEl) return;
-    if (value && iconMap[value]) {
-      iconEl.src = iconPath + iconMap[value];
-      iconEl.alt = altPrefix ? `${altPrefix}: ${value}` : value;
+    let Element;
+
+    if (id === "agentImage") {
+      Element = $(id);
     } else {
-      iconEl.src = "";
-      iconEl.alt = "";
+      setText(id, value || "-");
+      Element = $(id + "Icon");
+    }
+
+    if (!Element) return;
+    if (value && iconMap[value]) {
+      Element.src = iconPath + iconMap[value];
+      Element.alt = altPrefix ? `${altPrefix}: ${value}` : value;
+    } else {
+      Element.src = "";
+      Element.alt = "";
     }
   }
 
@@ -137,10 +145,22 @@
     const faction = agent?.faction || "";
     const specialty = agent?.specialty || "";
     const attribute = agent?.attribute || "";
+    const image = agent?.image || "";
 
     updateFieldWithIcon("faction", faction, factionIconPath, factionIcons, "陣営");
     updateFieldWithIcon("specialty", specialty, specialtyIconPath, specialtyIcons, "役割");
     updateFieldWithIcon("attribute", attribute, attributeIconPath, attributeIcons, "属性");
+    updateFieldWithIcon("agentImage", image, agentIgamePath, image, "画像");
+
+    const imgEl = $("agentImage");
+    if (!imgEl) return;
+    if (image) {
+      imgEl.src = agentIgamePath + image || "";
+      imgEl.alt = "画像:" + sel || "";
+    } else {
+      imgEl.src = "";
+      imgEl.alt = "";
+    }
   }
 
   // ---------------- Derived field updates ----------------
@@ -357,14 +377,14 @@
   // Prefer updateFieldWithIcon from previous part for icon-capable fields.
   function updateField(id, value, iconPath, iconMap) {
     setText(id, value || "-");
-    const iconEl = $(id + "Icon");
-    if (!iconEl) return;
+    const Element = $(id + "Icon");
+    if (!Element) return;
     if (value && iconMap && iconMap[value]) {
-      iconEl.src = iconPath + iconMap[value];
-      iconEl.alt = value || "";
+      Element.src = iconPath + iconMap[value];
+      Element.alt = value || "";
     } else {
-      iconEl.src = "";
-      iconEl.alt = "";
+      Element.src = "";
+      Element.alt = "";
     }
   }
 
@@ -398,6 +418,18 @@
       updateFieldWithIcon("faction", agent?.faction || "", factionIconPath, factionIcons, "陣営");
       updateFieldWithIcon("specialty", agent?.specialty || "", specialtyIconPath, specialtyIcons, "役割");
       updateFieldWithIcon("attribute", agent?.attribute || "", attributeIconPath, attributeIcons, "属性");
+      updateFieldWithIcon("agentImage", agent?.image || "", agentIgamePath, agent.image, "画像");
+
+      const imgEl = $("agentImage");
+      if (imgEl) {
+        if (agent?.image) {
+          imgEl.src = agentIgamePath + agent?.image || "";
+          imgEl.alt = "画像:" + sel || "";
+        } else {
+          imgEl.src = "";
+          imgEl.alt = "";
+        }
+      }
 
       // Sync anomaly attribute select from agent attribute
       const attrValue = agent?.attribute ? attributeValueMap[agent.attribute] : "";
