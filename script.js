@@ -6,15 +6,22 @@
 
   const getNum = (id, fallback = 0) => {
     const el = $(id);
-    if (!el) return fallback;
-    const v = Number(el.value);
+    const v = Number(el?.value);
     return Number.isFinite(v) ? v : fallback;
   };
-  const setText = (id, value) => { const el = $(id); if (el) el.textContent = value; };
-  const setValue = (id, value) => { const el = $(id); if (el) el.value = value; };
 
-  const pctToMul = (p) => 1 + p / 100;
-  const pctToFrac = (p) => p / 100;
+  const setEl = (id, prop, value) => {
+    const el = $(id);
+    if (el) el[prop] = value;
+  };
+  const setText = (id, value) => setEl(id, "textContent", value);
+  const setValue = (id, value) => setEl(id, "value", value);
+
+  const percent = {
+    toMul: (p) => 1 + p / 100,
+    toFrac: (p) => p / 100
+  };
+
   const fmt = (v, d) => Number.isFinite(v) ? Number(v).toFixed(d) : "-";
 
   // ---------------- Data ----------------
@@ -22,7 +29,6 @@
   const enemies = {};
   const lvCoeffTable = {};
 
-  // NOTE: penRatioPct: ensure consistent naming across HTML/JS (fix typo from penRetioPct)
   const fields = [
     "agentLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
     "critRatePct", "critDmgPct",
@@ -37,9 +43,10 @@
     agentLevel: 60, lvCorrPct: 200, atk: 1500, anomalyMastery: 100, penRatioPct: 0, pen: 0,
     critRatePct: 5, critDmgPct: 50,
     attrBonusPct: 0, dmgBonusPct: 0, dmgBonusPtPct: 0,
-    skillPct: 240, anomalyCorrPct: 713, breakBonusPct: 0, rangeWeakPct: 100,
-    enemLevel: 60, lvCoeff: 794, def: 571.7, defUpPct: 0, defDownPct: 0,
-    attrMatchPct: 0, attrResiDownPct: 0, attrResiIgnorePct: 0,
+    skillPct: 240, anomalyCorrPct: 713, rangeWeakPct: 100,
+    enemLevel: 60, lvCoeff: 794, def: 571.7,
+    defUpPct: 0, defDownPct: 0, attrMatchPct: 0, attrResiDownPct: 0, attrResiIgnorePct: 0,
+    breakBonusPct: 100,
     digits: 0
   };
 
@@ -48,13 +55,15 @@
   };
 
   const rangeTable = { "0-15": 100, "16-20": 75, "21-25": 50, "26-": 25 };
-
   const matchTable = { none: 0, weak: -20, resist: 20 };
 
-  const factionIconPath = "assets/faction/";
-  const specialtyIconPath = "assets/specialty/";
-  const attributeIconPath = "assets/stats/";
-  const agentIgamePath = "assets/agent/";
+  const paths = {
+    base: "assets/",
+    faction: "assets/faction/",
+    specialty: "assets/specialty/",
+    attribute: "assets/stats/",
+    agent: "assets/agent/"
+  };
 
   const factionIcons = {
     "邪兎屋": "cunning_hares.webp",
@@ -100,149 +109,123 @@
     "玄墨": "auric_ink"
   };
 
-  // ---------------- Mode handling (BEM utilities) ----------------
+  // ---------------- Mode handling ----------------
   const getCalcMode = () => q('input[name="calcMode"]:checked')?.value || "normal";
 
   function updateVisibilityByMode() {
     const mode = getCalcMode();
-
-    const toggle = (selector, activeMode) => {
-      qa(selector).forEach(el => {
-        el.classList.toggle("is-disabled", mode === activeMode);
-      });
-    };
-
-    // These selectors should match BEM-based HTML classes you applied
+    const toggle = (selector, activeMode) =>
+      qa(selector).forEach(el => el.classList.toggle("is-disabled", mode === activeMode));
     toggle(".is-disabled-normal", "normal");
     toggle(".is-disabled-anomaly", "anomaly");
   }
 
   // ---------------- Icon/text binding ----------------
   function updateFieldWithIcon(id, value, iconPath, iconMap, altPrefix = "") {
-    let Element;
-
-    if (id === "agentImage") {
-      Element = $(id);
-    } else {
-      setText(id, value || "-");
-      Element = $(id + "Icon");
-    }
-
-    if (!Element) return;
+    setText(id, value || "-");
+    const el = $(id + "Icon");
+    if (!el) return;
     if (value && iconMap[value]) {
-      Element.src = iconPath + iconMap[value];
-      Element.alt = altPrefix ? `${altPrefix}: ${value}` : value;
+      el.src = iconPath + iconMap[value];
+      el.alt = altPrefix ? `${altPrefix}: ${value}` : value;
     } else {
-      Element.src = "";
-      Element.alt = "";
+      el.src = "";
+      el.alt = "";
     }
   }
 
   function updateAgentInfo() {
     const sel = $("agentSelect")?.value;
-    const agent = agents[sel] || null;
+    const agent = agents[sel] || {};
 
-    const faction = agent?.faction || "";
-    const specialty = agent?.specialty || "";
-    const attribute = agent?.attribute || "";
-    const image = agent?.image || "";
+    ["faction", "specialty", "attribute"].forEach(key => {
+      const el = $(key);
+      el.textContent = agent[key] || "-";
+      el.title = el.textContent;
+    });
 
-    updateFieldWithIcon("faction", faction, factionIconPath, factionIcons, "陣営");
-    updateFieldWithIcon("specialty", specialty, specialtyIconPath, specialtyIcons, "役割");
-    updateFieldWithIcon("attribute", attribute, attributeIconPath, attributeIcons, "属性");
-    updateFieldWithIcon("agentImage", image, agentIgamePath, image, "画像");
+    updateFieldWithIcon("faction", agent.faction, paths.faction, factionIcons, "陣営");
+    updateFieldWithIcon("specialty", agent.specialty, paths.specialty, specialtyIcons, "役割");
+    updateFieldWithIcon("attribute", agent.attribute, paths.attribute, attributeIcons, "属性");
 
-    const imgEl = $("agentImage");
-    if (!imgEl) return;
-    if (image) {
-      imgEl.src = agentIgamePath + image || "";
-      imgEl.alt = "画像:" + sel || "";
-    } else {
-      imgEl.src = "";
-      imgEl.alt = "";
+    const agentEl = $("agentImage");
+    if (agentEl) {
+      agentEl.src = agent.image ? paths.agent + agent.image : "";
+      agentEl.alt = agent.image ? `画像:${sel}` : "";
+    }
+
+    const rankEl = $("rankImage");
+    if (rankEl) {
+      rankEl.src = agent.rank ? `${paths.base}rank_${agent.rank}.png` : "";
+      rankEl.alt = agent.rank ? `ランク${agent.rank}` : "";
     }
   }
 
   // ---------------- Derived field updates ----------------
-  function updateAnomalyCorr() {
-    const selectedAttrKey = $("attrSelect")?.value; // physical, electric, ...
-    const corr = anomalyCorrTable[selectedAttrKey];
-    setValue("anomalyCorrPct", Number.isFinite(corr) ? corr : 0);
-  }
-
-  function updateRangeWeak() {
-    const v = $("rangeSelect")?.value;
-    const pct = rangeTable[v];
-    setValue("rangeWeakPct", Number.isFinite(pct) ? pct : 100);
-  }
-
-  function updateAttrMatchPct() {
-    const v = $("matchSelect")?.value;
-    const pct = matchTable[v];
-    setValue("attrMatchPct", Number.isFinite(pct) ? pct : 0);
-  }
+  const updateAnomalyCorr = () => setValue("anomalyCorrPct", anomalyCorrTable[$("attrSelect")?.value] ?? 0);
+  const updateRangeWeak = () => setValue("rangeWeakPct", rangeTable[$("rangeSelect")?.value] ?? 100);
+  const updateAttrMatchPct = () => setValue("attrMatchPct", matchTable[$("matchSelect")?.value] ?? 0);
 
   // ---------------- Break controls ----------------
   const breakToggle = $("breakToggle");
   const breakControls = $("breakControls");
-
-  function updateBreakControls() {
-    const enabled = !!breakToggle?.checked;
-    breakControls?.classList.toggle("is-disabled", !enabled);
-  }
+  const updateBreakControls = () => breakControls?.classList.toggle("is-disabled", !breakToggle?.checked);
 
   // ---------------- Compute ----------------
+  function computeNormal(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul) {
+    const base = v.atk * percent.toFrac(v.skillPct);
+    const critMul = 1 + percent.toFrac(v.critDmgPct);
+    const expCritMul = 1 + percent.toFrac(v.critRatePct) * percent.toFrac(v.critDmgPct);
+    const dmgFn = (mul) => base * totalBonus * mul * breakBonusMul * rangeWeakMul * defMul * resistMul;
+
+    setText("base", fmt(base, digits));
+    setText("nonCritMul", fmt(1, digits + 2));
+    setText("critMul", fmt(critMul, digits + 2));
+    setText("expCritMul", fmt(expCritMul, digits + 2));
+    setText("nonCrit", fmt(dmgFn(1), digits));
+    setText("crit", fmt(dmgFn(critMul), digits));
+    setText("expected", fmt(dmgFn(expCritMul), digits));
+  }
+
+  function computeAnomaly(v, digits, totalBonus, breakBonusMul, defMul, resistMul) {
+    const anomaly = v.anomalyMastery / 100;
+    const lvCorrMul = percent.toMul(v.lvCorrPct);
+    const anomalyMul = percent.toMul(v.anomalyCorrPct);
+    const dmgFn = (mul) => v.atk * totalBonus * mul * breakBonusMul * anomaly * lvCorrMul * anomalyMul * defMul * resistMul;
+
+    setText("base", fmt(v.atk, digits));
+    setText("nonCritMul", "-");
+    setText("critMul", "-");
+    setText("expCritMul", "-");
+    setText("expected", fmt(dmgFn(1), digits));
+  }
+
   function compute() {
     const mode = getCalcMode();
     const v = Object.fromEntries(fields.map(k => [k, getNum(k, defaults[k])]));
     const digits = Math.max(0, Math.min(6, v.digits));
 
-    const base = v.atk * pctToFrac(v.skillPct);
-    const critMul = 1 + pctToFrac(v.critDmgPct);
-    const expCritMul = 1 + pctToFrac(v.critRatePct) * pctToFrac(v.critDmgPct);
-
     const totalBonus = 1
-      + pctToFrac(v.attrBonusPct)
-      + pctToFrac(v.dmgBonusPct)
-      + pctToFrac(v.dmgBonusPtPct);
+      + percent.toFrac(v.attrBonusPct)
+      + percent.toFrac(v.dmgBonusPct)
+      + percent.toFrac(v.dmgBonusPtPct);
 
-    const breakBonusMul = breakToggle?.checked ? pctToMul(v.breakBonusPct) : 1.0;
-    const rangeWeakMul = pctToMul(v.rangeWeakPct - 100); // convert 100% baseline to 1.0
-    // Alternatively, if rangeWeakPct already represents multiplier (e.g., 100 -> 1.0), use:
-    // const rangeWeakMul = pctToFrac(v.rangeWeakPct);
+    const breakBonusMul = breakToggle?.checked ? percent.toMul(v.breakBonusPct) : 1.0;
+    const rangeWeakMul = percent.toMul(v.rangeWeakPct - 100);
 
-    const defEff = v.def * (1 + pctToFrac(v.defUpPct) - pctToFrac(v.defDownPct));
-    const defValid = defEff * (1 - pctToFrac(v.penRatioPct)) - v.pen;
+    const defEff = v.def * (1 + percent.toFrac(v.defUpPct) - percent.toFrac(v.defDownPct));
+    const defValid = defEff * (1 - percent.toFrac(v.penRatioPct)) - v.pen;
     const defMul = v.lvCoeff / Math.max(1e-9, (v.lvCoeff + Math.max(0, defValid)));
 
     const resistMul = 1
-      - pctToFrac(v.attrMatchPct)
-      + pctToFrac(v.attrResiDownPct)
-      + pctToFrac(v.attrResiIgnorePct);
+      - percent.toFrac(v.attrMatchPct)
+      + percent.toFrac(v.attrResiDownPct)
+      + percent.toFrac(v.attrResiIgnorePct);
 
-    let dmgFn;
     if (mode === "normal") {
-      dmgFn = (mul) => base * totalBonus * mul * breakBonusMul * rangeWeakMul * defMul * resistMul;
-
-      setText("base", fmt(base, digits));
-      setText("nonCritMul", fmt(1, digits + 2));
-      setText("critMul", fmt(critMul, digits + 2));
-      setText("expCritMul", fmt(expCritMul, digits + 2));
-      setText("nonCrit", fmt(dmgFn(1), digits));
-      setText("crit", fmt(dmgFn(critMul), digits));
-      setText("expected", fmt(dmgFn(expCritMul), digits));
+      computeNormal(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul);
     } else {
-      const anomaly = v.anomalyMastery / 100;
-      const lvCorrMul = pctToMul(v.lvCorrPct);
-      const anomalyMul = pctToMul(v.anomalyCorrPct);
-
-      dmgFn = (mul) => v.atk * totalBonus * mul * breakBonusMul * anomaly * lvCorrMul * anomalyMul * defMul * resistMul;
-
-      setText("base", fmt(v.atk, digits));
-      setText("nonCritMul", "-");
-      setText("critMul", "-");
-      setText("expCritMul", "-");
-      setText("expected", fmt(dmgFn(1), digits));
+      computeAnomaly(v, digits, totalBonus, breakBonusMul, defMul, resistMul);
     }
 
     setText("totalBonus", fmt(totalBonus, digits + 2));
@@ -259,7 +242,6 @@
         el.value = defaults[k];
       }
     });
-    // Derived defaults
     updateAnomalyCorr();
     updateRangeWeak();
     updateAttrMatchPct();
@@ -269,53 +251,6 @@
   function resetAll() {
     applyDefaults(true);
     compute();
-  }
-
-  // ---------------- Theme toggle ----------------
-  function toggleTheme() {
-    const body = document.body;
-    const isLight = body.classList.contains("theme-light");
-    body.classList.toggle("theme-light", !isLight);
-    body.classList.toggle("theme-dark", isLight);
-  }
-
-  // ---------------- Event binding ----------------
-  function bindEvents() {
-    // Mode change
-    qa('input[name="calcMode"]').forEach(el => {
-      el.addEventListener("change", () => {
-        updateVisibilityByMode();
-        compute();
-      });
-    });
-
-    // Inputs recompute
-    const recomputeHandlers = [
-      "input", "change"
-    ];
-    recomputeHandlers.forEach(type => {
-      fields.forEach(id => {
-        const el = $(id);
-        if (el) el.addEventListener(type, compute);
-      });
-    });
-
-    // Derived selectors
-    $("attrSelect")?.addEventListener("change", () => { updateAnomalyCorr(); compute(); });
-    $("rangeSelect")?.addEventListener("change", () => { updateRangeWeak(); compute(); });
-    $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
-
-    // Break toggle
-    breakToggle?.addEventListener("change", () => { updateBreakControls(); compute(); });
-
-    // Agent select
-    $("agentSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
-
-    // Reset
-    $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
-
-    // Theme
-    $("toggleTheme")?.addEventListener("click", (e) => { e.preventDefault(); toggleTheme(); });
   }
 
   // ---------------- Data loading ----------------
@@ -331,37 +266,12 @@
     }
   }
 
-  // Example loaders (paths to be adjusted as needed)
   async function loadAllData() {
     await Promise.all([
-      // loadJSON("./data/agents.json", agents, populateagentSelect),
-      // loadJSON("./data/enemies.json", enemies, populateEnemySelect),
-      // loadJSON("./data/lv_coeff.json", lvCoeffTable, () => {/* optional post-load */})
+      loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
+      loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
+      loadJSON("./json/lvCoeffTable.json", lvCoeffTable)
     ]);
-  }
-
-  function populateagentSelect() {
-    const sel = $("agentSelect");
-    if (!sel) return;
-    sel.innerHTML = `<option value=""></option>` +
-      Object.keys(agents).map(k => `<option value="${k}">${k}</option>`).join("");
-  }
-
-  function populateEnemySelect() {
-    const sel = $("enemSelect");
-    if (!sel) return;
-    sel.innerHTML = `<option value=""></option>` +
-      Object.keys(enemies).map(k => `<option value="${k}">${k}</option>`).join("");
-  }
-
-  // ---------------- Init ----------------
-  function init() {
-    applyDefaults();
-    updateAgentInfo();
-    updateVisibilityByMode();
-    bindEvents();
-    compute();
-    // loadAllData(); // Uncomment and implement data sources when available
   }
 
   // ---------------- Select population ----------------
@@ -373,35 +283,14 @@
     select.innerHTML = options.join("");
   }
 
-  // ---------------- Field update (icon-aware) ----------------
-  // Prefer updateFieldWithIcon from previous part for icon-capable fields.
-  function updateField(id, value, iconPath, iconMap) {
-    setText(id, value || "-");
-    const Element = $(id + "Icon");
-    if (!Element) return;
-    if (value && iconMap && iconMap[value]) {
-      Element.src = iconPath + iconMap[value];
-      Element.alt = value || "";
-    } else {
-      Element.src = "";
-      Element.alt = "";
-    }
-  }
-
-  // ---------------- Event binding (refactored) ----------------
+  // ---------------- Event binding ----------------
   function bindEvents() {
     // Recompute on input/change for numeric fields
-    const recomputeEvents = ["input", "change"];
-    fields.forEach(id => {
-      const el = $(id);
-      if (!el) return;
-      recomputeEvents.forEach(type => el.addEventListener(type, compute));
-    });
-
-    // Reset to defaults
-    $("resetBtn")?.addEventListener("click", (e) => {
-      e.preventDefault();
-      resetAll();
+    ["input", "change"].forEach(type => {
+      fields.forEach(id => {
+        const el = $(id);
+        if (el) el.addEventListener(type, compute);
+      });
     });
 
     // Derived field updates
@@ -409,127 +298,74 @@
     $("rangeSelect")?.addEventListener("change", () => { updateRangeWeak(); compute(); });
     $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
 
-    // Agent selection and dependent updates
-    $("agentSelect")?.addEventListener("change", () => {
-      const sel = $("agentSelect").value;
-      const agent = agents[sel] || null;
-
-      // Update agent info
-      updateFieldWithIcon("faction", agent?.faction || "", factionIconPath, factionIcons, "陣営");
-      updateFieldWithIcon("specialty", agent?.specialty || "", specialtyIconPath, specialtyIcons, "役割");
-      updateFieldWithIcon("attribute", agent?.attribute || "", attributeIconPath, attributeIcons, "属性");
-      updateFieldWithIcon("agentImage", agent?.image || "", agentIgamePath, agent.image, "画像");
-
-      const imgEl = $("agentImage");
-      if (imgEl) {
-        if (agent?.image) {
-          imgEl.src = agentIgamePath + agent?.image || "";
-          imgEl.alt = "画像:" + sel || "";
-        } else {
-          imgEl.src = "";
-          imgEl.alt = "";
-        }
-      }
-
-      // Sync anomaly attribute select from agent attribute
-      const attrValue = agent?.attribute ? attributeValueMap[agent.attribute] : "";
-      if (attrValue) {
-        setValue("attrSelect", attrValue);
-        updateAnomalyCorr();
-      }
-      compute();
-    });
+    // Agent selection
+    $("agentSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
 
     // Enemy selection
     $("enemSelect")?.addEventListener("change", () => {
-      const sel = $("enemSelect").value;
-      const enem = enemies[sel] || null;
-      updateField("attrWeak", enem?.attrWeak || "", null, null);
-      updateField("attrResist", enem?.attrResist || "", null, null);
+      const enem = enemies[$("enemSelect").value] || {};
+      updateFieldWithIcon("attrWeak", enem.attrWeak || "", null, null);
+      updateFieldWithIcon("attrResist", enem.attrResist || "", null, null);
       compute();
     });
 
-    // agent level: lvCorrPct and lvCoeff sync
+    // Agent level sync
     $("agentLevel")?.addEventListener("input", () => {
       const level = Number($("agentLevel")?.value ?? defaults.agentLevel);
       const corrMulPct = (1 + 0.016949 * (level - 1)) * 100;
-      const corr = fmt(corrMulPct, 2);
-      setValue("lvCorrPct", corr);
-
-      const coeff = lvCoeffTable[level];
-      setValue("lvCoeff", Number.isFinite(coeff) ? coeff : defaults.lvCoeff);
+      setValue("lvCorrPct", fmt(corrMulPct, 2));
+      setValue("lvCoeff", lvCoeffTable[level] ?? defaults.lvCoeff);
       compute();
     });
 
-    // Mode change updates visibility and recalculates
-    qa('input[name="calcMode"]').forEach(el => {
-      el.addEventListener("change", () => {
-        updateVisibilityByMode();
-        compute();
-      });
-    });
+    // Mode change
+    qa('input[name="calcMode"]').forEach(el =>
+      el.addEventListener("change", () => { updateVisibilityByMode(); compute(); })
+    );
 
     // Break toggle
-    $("breakToggle")?.addEventListener("change", () => {
-      updateBreakControls();
-      compute();
-    });
+    $("breakToggle")?.addEventListener("change", () => { updateBreakControls(); compute(); });
 
-    // Theme preference management
-    const KEY = "theme-preference"; // 'light' | 'dark'
-    const body = document.body;
-    const btn = $("toggleTheme");
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    // Reset
+    $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
 
-    const applyTheme = (pref) => {
-      body.classList.remove("theme-light", "theme-dark");
-      if (pref) body.classList.add(`theme-${pref}`);
-    };
-    const getPref = () => localStorage.getItem(KEY);
-    const setPref = (pref) => { localStorage.setItem(KEY, pref); applyTheme(pref); };
+    const toast = document.getElementById('toast');
 
-    // Initial theme
-    const saved = getPref();
-    applyTheme(saved || (media.matches ? "dark" : "light"));
-
-    // Follow OS changes when no saved preference
-    media.addEventListener("change", () => {
-      if (!getPref()) applyTheme(media.matches ? "dark" : "light");
-    });
-
-    // Button toggle
-    btn?.addEventListener("click", (e) => {
-      e.preventDefault();
-      const curr = getPref() || (media.matches ? "dark" : "light");
-      const next = curr === "light" ? "dark" : "light";
-      setPref(next);
-      btn.textContent = next === "light" ? "☀ ライト" : "🌙 ダーク";
-    });
-
-    // Initial button label
-    if (btn) {
-      const curr = saved || (media.matches ? "dark" : "light");
-      btn.textContent = curr === "light" ? "☀ ライト" : "🌙 ダーク";
+    function showToast() {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1500);
     }
+
+    document.querySelectorAll('.result__card').forEach(el => {
+      el.addEventListener('click', async () => {
+        const valueEl = el.querySelector('.result__value'); // 子要素を取得
+        if (!valueEl) return;
+
+        const value = valueEl.textContent.trim();
+        if (!value || value === '-') return;
+
+        try {
+          await navigator.clipboard.writeText(value);
+          showToast();
+        } catch (err) {
+          console.error('コピーに失敗しました:', err);
+        }
+      });
+    });
   }
 
-  // ---------------- Init (refactored) ----------------
+  // ---------------- Init ----------------
   async function init() {
-    // Load data then populate selects
-    await Promise.all([
-      loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
-      loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
-      loadJSON("./json/lvCoeffTable.json", lvCoeffTable)
-    ]);
-
-    applyDefaults();          // apply default values and derived ones
-    bindEvents();             // attach handlers
-    updateVisibilityByMode(); // set initial visibility per mode
-    updateAnomalyCorr();      // derive anomaly corr from current attrSelect
-    updateRangeWeak();        // derive rangeWeakPct from rangeSelect
-    updateAttrMatchPct();     // derive attrMatchPct from matchSelect
-    updateBreakControls();    // sync disabled state
-    compute();                // initial compute
+    await loadAllData();
+    applyDefaults();
+    updateAgentInfo();
+    updateVisibilityByMode();
+    updateAnomalyCorr();
+    updateRangeWeak();
+    updateAttrMatchPct();
+    updateBreakControls();
+    bindEvents();
+    compute();
   }
 
   document.addEventListener("DOMContentLoaded", init);
