@@ -1,5 +1,5 @@
 :root {
-  /* カラーパレット（ダーク基準） */
+  /* カラーパレット */
   --bg: #1f1f1f;
   --fg: #e7e9f5;
   --muted: #a6accd;
@@ -7,6 +7,7 @@
   --border: #464646;
   --ok: #7ee081;
   --warn: #ffd166;
+  --hover-bg: rgba(255, 255, 255, 0.03);
 
   /* 入力系 */
   --input-bg: #1b1b1b;
@@ -21,7 +22,6 @@
   /* リンク系 */
   --link-label: #1073ff;
   --link-hover: var(--accent);
-
 
   /* モード */
   --mode-bg: #000;
@@ -152,6 +152,11 @@ body {
   gap: .4rem;
 }
 
+/* ---------------- Select ---------------- */
+select:hover {
+  cursor: pointer;
+}
+
 /* ---------------- Form ---------------- */
 .form--grid {
   display: grid;
@@ -188,7 +193,6 @@ body {
 
 .form__input[readonly] {
   background: var(--input-readonly-bg);
-  color: var(--input-readonly-fg);
   cursor: default;
 }
 
@@ -273,6 +277,10 @@ body {
 .btn--rst {
   height: 2.25rem;
   background: var(--card);
+}
+
+.btn--rst:hover {
+  background: var(--hover-bg);
 }
 
 /* ---------------- Key-Value list ---------------- */
@@ -369,7 +377,8 @@ body {
   font-size: 1rem;
   opacity: 0;
   transition: opacity .2s ease;
-  pointer-events: none;     /* アイコン自体はクリックを拾わない */
+  pointer-events: none;
+  /* アイコン自体はクリックを拾わない */
 }
 
 /* ---------------- Result / Details / Footer 共通 ---------------- */
@@ -377,7 +386,6 @@ body {
 .details,
 .footer {
   width: 100%;
-  /* margin: 0 auto; */
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
@@ -408,8 +416,8 @@ body {
   transition: background .2s ease;
 }
 
-.result__card:hover{
-  background: rgba(255, 255, 255, 0.05);
+.result__card:hover {
+  background: var(--hover-bg);
 }
 
 .result__card:hover .copy-icon {
@@ -438,7 +446,7 @@ body {
   position: relative;
   display: inline-block;
   list-style: none;
-  padding-left: 1.2em;
+  padding-left: 1.3em;
 }
 
 .details__summary::-webkit-details-marker {
@@ -497,14 +505,6 @@ a:hover {
 .is-disabled {
   opacity: .5;
   pointer-events: none;
-}
-
-.u-text-muted {
-  color: var(--muted);
-}
-
-.u-text-accent {
-  color: var(--accent);
 }
 
 .u-mt-sm {
@@ -609,6 +609,7 @@ h3 {
   transition: opacity .3s ease;
   z-index: 2000;
 }
+
 .toast.show {
   opacity: 1;
 }
