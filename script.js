@@ -1,20 +1,36 @@
 (() => {
-  // 🔹 DOMユーティリティ
+  // ---------------- Utilities ----------------
   const $ = (id) => document.getElementById(id);
-  const getNum = (id, fallback = 0) => Number($(id)?.value) || fallback;
-  const setText = (id, value) => $(id).textContent = value;
-  const setValue = (id, value) => $(id).value = value;
+  const q = (sel, root = document) => root.querySelector(sel);
+  const qa = (sel, root = document) => Array.from(root.querySelectorAll(sel));
 
-  // 🔹 数値変換
-  const pctToMul = (p) => 1 + p / 100;
-  const pctToFrac = (p) => p / 100;
-  const fmt = (v, d) => isFinite(v) ? Number(v).toFixed(d) : "-";
+  const getNum = (id, fallback = 0) => {
+    const el = $(id);
+    const v = Number(el?.value);
+    return Number.isFinite(v) ? v : fallback;
+  };
 
-  // 🔹 データ定義
-  let characters = {}, enemies = {}, lvCoeffTable = {};
+  const setEl = (id, prop, value) => {
+    const el = $(id);
+    if (el) el[prop] = value;
+  };
+  const setText = (id, value) => setEl(id, "textContent", value);
+  const setValue = (id, value) => setEl(id, "value", value);
+
+  const percent = {
+    toMul: (p) => 1 + p / 100,
+    toFrac: (p) => p / 100
+  };
+
+  const fmt = (v, d) => Number.isFinite(v) ? Number(v).toFixed(d) : "-";
+
+  // ---------------- Data ----------------
+  const agents = {};
+  const enemies = {};
+  const lvCoeffTable = {};
 
   const fields = [
-    "playerLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
+    "agentLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
     "critRatePct", "critDmgPct",
     "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
     "skillPct", "anomalyCorrPct", "breakBonusPct", "rangeWeakPct",
@@ -24,126 +40,192 @@
   ];
 
   const defaults = {
-    playerLevel: 60, lvCorrPct: 200 , atk: 1500, anomalyMastery: 100, penRatioPct: 0, pen: 0,
+    agentLevel: 60, lvCorrPct: 200, atk: 1500, anomalyMastery: 100, penRatioPct: 0, pen: 0,
     critRatePct: 5, critDmgPct: 50,
     attrBonusPct: 0, dmgBonusPct: 0, dmgBonusPtPct: 0,
-    skillPct: 240, anomalyCorrPct: 713, breakBonusPct: 0, rangeWeakPct: 40,
-    enemLevel: 60, lvCoeff: 794, def: 571.7, defUpPct: 0, defDownPct: 0, 
-    attrMatchPct: 0, attrResiDownPct: 0, attrResiIgnorePct: 0,
+    skillPct: 240, anomalyCorrPct: 713, rangeWeakPct: 100,
+    enemLevel: 60, lvCoeff: 794, def: 571.7,
+    defUpPct: 0, defDownPct: 0, attrMatchPct: 0, attrResiDownPct: 0, attrResiIgnorePct: 0,
+    breakBonusPct: 100,
     digits: 0
   };
 
   const anomalyCorrTable = {
-    "physical": 713, "electric": 1250, "fire": 1000, "ice": 500, "ether": 1250, "frost": 500, "auric_ink": 1250
+    physical: 713, electric: 1250, fire: 1000, ice: 500, ether: 1250, frost: 500, auric_ink: 1250
   };
 
-  const rangeTable = {
-    "0-15": 100, "20": 75, "25": 50, "30-": 25
+  const rangeTable = { "0-15": 100, "16-20": 75, "21-25": 50, "26-": 25 };
+  const matchTable = { none: 0, weak: -20, resist: 20 };
+
+  const paths = {
+    base: "assets/",
+    faction: "assets/faction/",
+    specialty: "assets/specialty/",
+    attribute: "assets/stats/",
+    agent: "assets/agent/"
   };
 
   const factionIcons = {
-    "邪兎屋": "assets/faction/cunning_hares.webp",
-    "白祇重工": "assets/faction/belobog_heavy_industries.webp",
-    "ヴィクトリア家政": "assets/faction/victoria.webp",
-    "オボルス小隊": "assets/faction/obol_squad.webp",
-    "カリュドーンの子": "assets/faction/sons_of_calydon.webp",
-    "対ホロウ特別行動部第六課": "assets/faction/hsos6.webp",
-    "特務捜査班": "assets/faction/neps.webp",
-    "スターズ・オブ・リラ": "assets/faction/stars_of_lyra.webp",
-    "防衛軍・シルバー小隊": "assets/faction/silver_squad.webp",
-    "モッキンバード": "assets/faction/mockingbird.webp",
-    "雲嶽山": "assets/faction/yunkui_summit.webp",
-    "怪啖屋": "assets/faction/spook_shack.webp",
+    "邪兎屋": "cunning_hares.webp",
+    "白祇重工": "belobog_heavy_industries.webp",
+    "ヴィクトリア家政": "victoria.webp",
+    "オボルス小隊": "obol_squad.webp",
+    "カリュドーンの子": "sons_of_calydon.webp",
+    "対ホロウ特別行動部第六課": "hsos6.webp",
+    "特務捜査班": "neps.webp",
+    "スターズ・オブ・リラ": "stars_of_lyra.webp",
+    "防衛軍・シルバー小隊": "silver_squad.webp",
+    "モッキンバード": "mockingbird.webp",
+    "雲嶽山": "yunkui_summit.webp",
+    "怪啖屋": "spook_shack.webp"
   };
 
   const specialtyIcons = {
-    "強攻": "assets/specialty/attack.webp",
-    "撃破": "assets/specialty/stun.webp",
-    "支援": "assets/specialty/support.webp",
-    "異常": "assets/specialty/anomaly.webp",
-    "防護": "assets/specialty/defense.webp",
-    "命破": "assets/specialty/rupture.webp"
+    "強攻": "attack.webp",
+    "撃破": "stun.webp",
+    "支援": "support.webp",
+    "異常": "anomaly.webp",
+    "防護": "defense.webp",
+    "命破": "rupture.webp"
   };
 
   const attributeIcons = {
-    "物理": "assets/stats/physical.webp",
-    "電気": "assets/stats/electric.webp",
-    "炎": "assets/stats/fire.webp",
-    "氷": "assets/stats/ice.webp",
-    "エーテル": "assets/stats/ether.webp",
-    "霜烈": "assets/stats/frost.webp",
-    "玄墨": "assets/stats/auric_ink.webp"
+    "物理": "physical.webp",
+    "電気": "electric.webp",
+    "炎": "fire.webp",
+    "氷": "ice.webp",
+    "エーテル": "ether.webp",
+    "霜烈": "frost.webp",
+    "玄墨": "auric_ink.webp"
   };
 
   const attributeValueMap = {
-  "物理": "physical",
-  "電気": "electric",
-  "炎": "fire",
-  "氷": "ice",
-  "エーテル": "ether",
-  "霜烈": "frost",
-  "玄墨": "auric_ink"
+    "物理": "physical",
+    "電気": "electric",
+    "炎": "fire",
+    "氷": "ice",
+    "エーテル": "ether",
+    "霜烈": "frost",
+    "玄墨": "auric_ink"
   };
 
-  function getCalcMode() {
-    return document.querySelector('input[name="calcMode"]:checked')?.value || "normal";
-  }
+  // ---------------- Mode handling ----------------
+  const getCalcMode = () => q('input[name="calcMode"]:checked')?.value || "normal";
 
   function updateVisibilityByMode() {
     const mode = getCalcMode();
-    document.querySelectorAll(".hideable-normal").forEach(el => {
-      el.classList.toggle("hidden", mode === "normal");
-    });
-    document.querySelectorAll(".hideable-anomaly").forEach(el => {
-      el.classList.toggle("hidden", mode === "anomaly");
-    });
+    const toggle = (selector, activeMode) =>
+      qa(selector).forEach(el => el.classList.toggle("is-disabled", mode === activeMode));
+    toggle(".is-disabled-normal", "normal");
+    toggle(".is-disabled-anomaly", "anomaly");
   }
 
-  function updateAnomalyCorr() {
-    const selected = $("attrSelect").value;
-    const corr = anomalyCorrTable[selected] ?? "-";
-    setValue("anomalyCorrPct", corr);
+  // ---------------- Icon/text binding ----------------
+  function updateFieldWithIcon(id, value, iconPath, iconMap, altPrefix = "") {
+    setText(id, value || "-");
+    const el = $(id + "Icon");
+    if (!el) return;
+    if (value && iconMap[value]) {
+      el.src = iconPath + iconMap[value];
+      el.alt = altPrefix ? `${altPrefix}: ${value}` : value;
+    } else {
+      el.src = "";
+      el.alt = "";
+    }
   }
 
-   // 🔹 計算ロジック
+  function updateAgentInfo() {
+    const sel = $("agentSelect")?.value;
+    const agent = agents[sel] || {};
+
+    ["faction", "specialty", "attribute"].forEach(key => {
+      const el = $(key);
+      el.textContent = agent[key] || "-";
+      el.title = el.textContent;
+    });
+
+    updateFieldWithIcon("faction", agent.faction, paths.faction, factionIcons, "陣営");
+    updateFieldWithIcon("specialty", agent.specialty, paths.specialty, specialtyIcons, "役割");
+    updateFieldWithIcon("attribute", agent.attribute, paths.attribute, attributeIcons, "属性");
+
+    const agentEl = $("agentImage");
+    if (agentEl) {
+      agentEl.src = agent.image ? paths.agent + agent.image : "";
+      agentEl.alt = agent.image ? `画像:${sel}` : "";
+    }
+
+    const rankEl = $("rankImage");
+    if (rankEl) {
+      rankEl.src = agent.rank ? `${paths.base}rank_${agent.rank}.png` : "";
+      rankEl.alt = agent.rank ? `ランク${agent.rank}` : "";
+    }
+  }
+
+  // ---------------- Derived field updates ----------------
+  const updateAnomalyCorr = () => setValue("anomalyCorrPct", anomalyCorrTable[$("attrSelect")?.value] ?? 0);
+  const updateRangeWeak = () => setValue("rangeWeakPct", rangeTable[$("rangeSelect")?.value] ?? 100);
+  const updateAttrMatchPct = () => setValue("attrMatchPct", matchTable[$("matchSelect")?.value] ?? 0);
+
+  // ---------------- Break controls ----------------
+  const breakToggle = $("breakToggle");
+  const breakControls = $("breakControls");
+  const updateBreakControls = () => breakControls?.classList.toggle("is-disabled", !breakToggle?.checked);
+
+  // ---------------- Compute ----------------
+  function computeNormal(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul) {
+    const base = v.atk * percent.toFrac(v.skillPct);
+    const critMul = 1 + percent.toFrac(v.critDmgPct);
+    const expCritMul = 1 + percent.toFrac(v.critRatePct) * percent.toFrac(v.critDmgPct);
+    const dmgFn = (mul) => base * totalBonus * mul * breakBonusMul * rangeWeakMul * defMul * resistMul;
+
+    setText("base", fmt(base, digits));
+    setText("nonCritMul", fmt(1, digits + 2));
+    setText("critMul", fmt(critMul, digits + 2));
+    setText("expCritMul", fmt(expCritMul, digits + 2));
+    setText("nonCrit", fmt(dmgFn(1), digits));
+    setText("crit", fmt(dmgFn(critMul), digits));
+    setText("expected", fmt(dmgFn(expCritMul), digits));
+  }
+
+  function computeAnomaly(v, digits, totalBonus, breakBonusMul, defMul, resistMul) {
+    const anomaly = v.anomalyMastery / 100;
+    const lvCorrMul = percent.toMul(v.lvCorrPct);
+    const anomalyMul = percent.toMul(v.anomalyCorrPct);
+    const dmgFn = (mul) => v.atk * totalBonus * mul * breakBonusMul * anomaly * lvCorrMul * anomalyMul * defMul * resistMul;
+
+    setText("base", fmt(v.atk, digits));
+    setText("nonCritMul", "-");
+    setText("critMul", "-");
+    setText("expCritMul", "-");
+    setText("expected", fmt(dmgFn(1), digits));
+  }
+
   function compute() {
     const mode = getCalcMode();
     const v = Object.fromEntries(fields.map(k => [k, getNum(k, defaults[k])]));
     const digits = Math.max(0, Math.min(6, v.digits));
 
-    const base = v.atk * pctToFrac(v.skillPct);
-    const critMul = 1 + pctToFrac(v.critDmgPct);
-    const expCritMul = 1 + pctToFrac(v.critRatePct) * pctToFrac(v.critDmgPct);
-    const totalBonus = 1 + pctToFrac(v.attrBonusPct) + pctToFrac(v.dmgBonusPct) + pctToFrac(v.dmgBonusPtPct);
-    const breakBonus = pctToFrac(v.breakBonusPct);
-    const rangeWeak = pctToFrac(v.rangeWeakPct);
+    const totalBonus = 1
+      + percent.toFrac(v.attrBonusPct)
+      + percent.toFrac(v.dmgBonusPct)
+      + percent.toFrac(v.dmgBonusPtPct);
 
-    const defEff = v.def * (1 + pctToFrac(v.defUpPct) - pctToFrac(v.defDownPct));
-    const defValid = defEff * (1 - pctToFrac(v.penRatioPct)) - v.pen;
-    const defMul = v.lvCoeff / (v.lvCoeff + defValid);
+    const breakBonusMul = breakToggle?.checked ? percent.toMul(v.breakBonusPct) : 1.0;
+    const rangeWeakMul = percent.toMul(v.rangeWeakPct - 100);
 
-    const resistMul = 1 - pctToFrac(v.attrMatchPct) + pctToFrac(v.attrResiDownPct) + pctToFrac(v.attrResiIgnorePct);
+    const defEff = v.def * (1 + percent.toFrac(v.defUpPct) - percent.toFrac(v.defDownPct));
+    const defValid = defEff * (1 - percent.toFrac(v.penRatioPct)) - v.pen;
+    const defMul = v.lvCoeff / Math.max(1e-9, (v.lvCoeff + Math.max(0, defValid)));
 
-    let dmg;
+    const resistMul = 1
+      - percent.toFrac(v.attrMatchPct)
+      + percent.toFrac(v.attrResiDownPct)
+      + percent.toFrac(v.attrResiIgnorePct);
+
     if (mode === "normal") {
-      dmg = (mul) => base * totalBonus * mul * breakBonus * rangeWeak * defMul * resistMul;
-      setText("base", fmt(base, digits));  
-      setText("nonCritMul", fmt(1, digits + 2));
-      setText("critMul", fmt(critMul, digits + 2));
-      setText("expCritMul", fmt(expCritMul, digits + 2));
-      setText("nonCrit", fmt(dmg(1), digits));
-      setText("crit", fmt(dmg(critMul), digits));
-      setText("expected", fmt(dmg(expCritMul), digits));
+      computeNormal(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul);
     } else {
-      const anomaly = v.anomalyMastery / 100;
-      const lvCorr = pctToFrac(v.lvCorrPct);
-      const anomalyCorr = pctToFrac(v.anomalyCorrPct);
-      dmg = (mul) => v.atk * totalBonus * mul * breakBonus * anomaly * lvCorr * anomalyCorr * defMul * resistMul;
-      setText("base", fmt(v.atk, digits));
-      setText("nonCritMul", "-");
-      setText("critMul", "-");
-      setText("expCritMul", "-");
-      setText("expected", fmt(dmg(1), digits));
+      computeAnomaly(v, digits, totalBonus, breakBonusMul, defMul, resistMul);
     }
 
     setText("totalBonus", fmt(totalBonus, digits + 2));
@@ -151,124 +233,140 @@
     setText("resiMul", fmt(resistMul, digits + 2));
   }
 
-  // 🔹 初期値適用
-  function applyDefaults() {
+  // ---------------- Defaults & Reset ----------------
+  function applyDefaults(force = false) {
     fields.forEach(k => {
       const el = $(k);
-      if (el && !el.value) el.value = defaults[k];
+      if (!el) return;
+      if (force || el.value === "" || el.value == null) {
+        el.value = defaults[k];
+      }
     });
+    updateAnomalyCorr();
+    updateRangeWeak();
+    updateAttrMatchPct();
+    updateBreakControls();
   }
 
-  // 🔹 データロード汎用
+  function resetAll() {
+    applyDefaults(true);
+    compute();
+  }
+
+  // ---------------- Data loading ----------------
   async function loadJSON(path, target, callback) {
     try {
       const res = await fetch(path);
       if (!res.ok) throw new Error(`${path} 読み込み失敗`);
       const data = await res.json();
       Object.assign(target, data);
-      callback?.();
+      callback?.(data);
     } catch (err) {
       console.error(err);
     }
   }
 
-  // 🔹 セレクト構築
-  function populateSelect(id, data) {
-    const select = $(id);
-    select.innerHTML = `<option value="">-- 選択してください --</option>`;
-    Object.keys(data).forEach(name => {
-      const opt = document.createElement("option");
-      opt.value = name;
-      opt.textContent = name;
-      select.appendChild(opt);
-    });
+  async function loadAllData() {
+    await Promise.all([
+      loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
+      loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
+      loadJSON("./json/lvCoeffTable.json", lvCoeffTable)
+    ]);
   }
 
- function bindEvents() {
-    fields.forEach(k => $(k)?.addEventListener("input", compute));
+  // ---------------- Select population ----------------
+  function populateSelect(id, data) {
+    const select = $(id);
+    if (!select) return;
+    const options = [`<option value="">-- 選択してください --</option>`]
+      .concat(Object.keys(data).map(name => `<option value="${name}">${name}</option>`));
+    select.innerHTML = options.join("");
+  }
 
-    $("resetBtn")?.addEventListener("click", () => {
-      fields.forEach(k => setValue(k, defaults[k]));
-      compute();
+  // ---------------- Event binding ----------------
+  function bindEvents() {
+    // Recompute on input/change for numeric fields
+    ["input", "change"].forEach(type => {
+      fields.forEach(id => {
+        const el = $(id);
+        if (el) el.addEventListener(type, compute);
+      });
     });
 
-    $("attrSelect")?.addEventListener("change", () => {
-      updateAnomalyCorr();
-      compute();
-    });
+    // Derived field updates
+    $("attrSelect")?.addEventListener("change", () => { updateAnomalyCorr(); compute(); });
+    $("rangeSelect")?.addEventListener("change", () => { updateRangeWeak(); compute(); });
+    $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
 
-    $("rangeSelect")?.addEventListener("change", () => {
-      const selected = $("rangeSelect").value;
-      if (rangeTable[selected] !== undefined) {
-        setValue("rangeWeakPct", rangeTable[selected]);
-        compute();
-      }
-    });
+    // Agent selection
+    $("agentSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
 
-    $("charSelect")?.addEventListener("change", () => {
-      const char = characters[$("charSelect").value];
-      if (!char) return;
-
-      setText("faction", char.faction || "-");
-      setText("specialty", char.specialty || "-");
-      setText("attribute", char.attribute || "-");
-
-      const attrValue = attributeValueMap[char.attribute];
-      if (attrValue) {
-        setValue("attrSelect", attrValue);
-        updateAnomalyCorr();
-      }
-
-      $("factionIcon").src = factionIcons[char.faction] || "";
-      $("factionIcon").alt = char.faction || "";
-      $("specialtyIcon").src = specialtyIcons[char.specialty] || "";
-      $("specialtyIcon").alt = char.specialty || "";
-      $("attributeIcon").src = attributeIcons[char.attribute] || "";
-      $("attributeIcon").alt = char.attribute || "";
-
-      compute();
-    });
-
+    // Enemy selection
     $("enemSelect")?.addEventListener("change", () => {
-      const enem = enemies[$("enemSelect").value];
-      if (!enem) return;
-      setText("attrWeak", enem.attrWeak || "-");
-      setText("attrResist", enem.attrResist || "-");
+      const enem = enemies[$("enemSelect").value] || {};
+      updateFieldWithIcon("attrWeak", enem.attrWeak || "", null, null);
+      updateFieldWithIcon("attrResist", enem.attrResist || "", null, null);
       compute();
     });
 
-    $("playerLevel")?.addEventListener("input", () => {
-      const level = $("playerLevel").value;
-      const corrMul = (1 + 0.016949 * (level - 1)) * 100;
-      const corr = fmt(corrMul, 2) ?? "-";
-      $("lvCorrPct").value = corr;
-
-      const coeff = lvCoeffTable[level] ?? "-";
-      setValue("lvCoeff", coeff);
+    // Agent level sync
+    $("agentLevel")?.addEventListener("input", () => {
+      const level = Number($("agentLevel")?.value ?? defaults.agentLevel);
+      const corrMulPct = (1 + 0.016949 * (level - 1)) * 100;
+      setValue("lvCorrPct", fmt(corrMulPct, 2));
+      setValue("lvCoeff", lvCoeffTable[level] ?? defaults.lvCoeff);
       compute();
     });
 
-    document.querySelectorAll('input[name="calcMode"]').forEach(el => {
-      el.addEventListener("change", () => {
-        updateVisibilityByMode();
-        compute();
+    // Mode change
+    qa('input[name="calcMode"]').forEach(el =>
+      el.addEventListener("change", () => { updateVisibilityByMode(); compute(); })
+    );
+
+    // Break toggle
+    $("breakToggle")?.addEventListener("change", () => { updateBreakControls(); compute(); });
+
+    // Reset
+    $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
+
+    const toast = document.getElementById('toast');
+
+    function showToast() {
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 1500);
+    }
+
+    document.querySelectorAll('.result__card').forEach(el => {
+      el.addEventListener('click', async () => {
+        const valueEl = el.querySelector('.result__value'); // 子要素を取得
+        if (!valueEl) return;
+
+        const value = valueEl.textContent.trim();
+        if (!value || value === '-') return;
+
+        try {
+          await navigator.clipboard.writeText(value);
+          showToast();
+        } catch (err) {
+          console.error('コピーに失敗しました:', err);
+        }
       });
     });
   }
 
+  // ---------------- Init ----------------
   async function init() {
-    await Promise.all([
-      loadJSON("./json/characters.json", characters, () => populateSelect("charSelect", characters)),
-      loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
-      loadJSON("./json/lvCoeffTable.json", lvCoeffTable)
-    ]);
+    await loadAllData();
     applyDefaults();
-    bindEvents();
+    updateAgentInfo();
     updateVisibilityByMode();
     updateAnomalyCorr();
+    updateRangeWeak();
+    updateAttrMatchPct();
+    updateBreakControls();
+    bindEvents();
     compute();
   }
 
-  init();
-
+  document.addEventListener("DOMContentLoaded", init);
 })();
