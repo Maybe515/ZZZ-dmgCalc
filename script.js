@@ -118,6 +118,12 @@
       qa(selector).forEach(el => el.classList.toggle("is-disabled", mode === activeMode));
     toggle(".is-disabled-normal", "normal");
     toggle(".is-disabled-anomaly", "anomaly");
+
+    qa(".is-hidden-anomaly").forEach(el => {
+      el.style.display = (mode === "anomaly") ? "none" : "";
+    });
+
+    document.body.dataset.mode = mode;
   }
 
   // ---------------- Icon/text binding ----------------

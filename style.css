@@ -408,7 +408,8 @@ select:hover {
 .result__grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: flex-start;
   gap: .75rem;
   width: 100%;
 }
@@ -417,6 +418,9 @@ select:hover {
   position: relative;
   cursor: pointer;
   flex: 1 1 220px;
+  /* flex: 0 0 auto; */
+  /* min-width: 220px; */
+  /* max-width: 260px; */
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -442,6 +446,22 @@ select:hover {
   font-size: 1.6rem;
   margin-top: .4rem;
   color: var(--ok);
+}
+
+/* anomaly のときだけ非表示 */
+body[data-mode="anomaly"] .is-hidden-anomaly {
+  display: none !important;
+}
+
+/* anomaly のときだけ左寄せ */
+body[data-mode="anomaly"] .result__grid {
+  justify-content: flex-start;
+}
+
+body[data-mode="anomaly"] .result__card {
+  flex: 0 0 auto;
+  min-width: 220px;
+  max-width: 260px;
 }
 
 /* ---------------- Details ---------------- */
@@ -493,11 +513,15 @@ details[open] .details__summary::before {
 /* ---------------- Footer ---------------- */
 .footer {
   margin-top: 1.5rem;
-  color: var(--muted);
-  font-size: .85rem;
+}
+
+.footer__last-modified  {
+  font-size: 1rem;
 }
 
 .footer__text {
+  font-size: .85rem;
+  color: var(--muted);
   margin: 0;
 }
 
