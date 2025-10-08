@@ -148,6 +148,13 @@
     updateFieldWithIcon("specialty", agent.specialty, paths.specialty, specialtyIcons, "役割");
     updateFieldWithIcon("attribute", agent.attribute, paths.attribute, attributeIcons, "属性");
 
+
+    const attrSelect = $("attrSelect");
+    if (attrSelect) {
+      attrSelect.value = attributeValueMap[agent.attribute] ?? "";
+      updateAnomalyCorr();
+    }
+
     const agentEl = $("agentImage");
     if (agentEl) {
       agentEl.src = agent.image ? paths.agent + agent.image : "";
@@ -329,31 +336,70 @@
     // Reset
     $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
 
-    const toast = document.getElementById('toast');
+    // Observe Result
+    const resultSection = document.querySelector(".result");           // 通常表示
+    const resultFixed = document.querySelector(".result--fixed");      // 固定表示
 
+    function syncResultContent() {
+      resultFixed.innerHTML = resultSection.innerHTML;
+    }
+
+    const observer = new MutationObserver(syncResultContent);
+    observer.observe(resultSection, {
+      childList: true,       // 子要素の追加・削除
+      subtree: true,         // ネストした要素を監視
+      characterData: true    // テキスト変更も監視
+    });
+
+    syncResultContent();
+
+    function toggleResultFixed() {
+      if (window.innerWidth <= 1000) {
+        const rect = resultSection.getBoundingClientRect();
+        const triggerOffset = -20;
+        const isVisible = rect.top < window.innerHeight - triggerOffset && rect.bottom > 0;
+
+        if (isVisible) {
+          resultFixed.classList.remove("is-visible"); // 非表示
+        } else {
+          resultFixed.classList.add("is-visible");    // フェードイン表示
+        }
+      } else {
+        resultFixed.classList.remove("is-visible");   // PC表示では非表示
+      }
+    }
+
+    window.addEventListener("scroll", toggleResultFixed);
+    window.addEventListener("resize", toggleResultFixed);
+    toggleResultFixed();
+  }
+
+  function bindCopyEvents() {
+    document.addEventListener("click", async (e) => {
+      const card = e.target.closest(".result__card");
+      if (!card) return;
+
+      const valueEl = card.querySelector(".result__value");
+      if (!valueEl) return;
+
+      const value = valueEl.textContent.trim();
+      if (!value || value === "-") return;
+
+      try {
+        await navigator.clipboard.writeText(value);
+        showToast(); // 既存のトースト通知を利用
+      } catch (err) {
+        console.error("コピーに失敗しました:", err);
+        showToast("コピーに失敗しました");
+      }
+    });
+
+    const toast = document.getElementById('toast');
     function showToast() {
       toast.classList.add('show');
       setTimeout(() => toast.classList.remove('show'), 1500);
     }
-
-    document.querySelectorAll('.result__card').forEach(el => {
-      el.addEventListener('click', async () => {
-        const valueEl = el.querySelector('.result__value'); // 子要素を取得
-        if (!valueEl) return;
-
-        const value = valueEl.textContent.trim();
-        if (!value || value === '-') return;
-
-        try {
-          await navigator.clipboard.writeText(value);
-          showToast();
-        } catch (err) {
-          console.error('コピーに失敗しました:', err);
-        }
-      });
-    });
   }
-
   // ---------------- Init ----------------
   async function init() {
     await loadAllData();
@@ -365,6 +411,7 @@
     updateAttrMatchPct();
     updateBreakControls();
     bindEvents();
+    bindCopyEvents();
     compute();
   }
 

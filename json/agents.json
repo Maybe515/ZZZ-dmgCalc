@@ -2,7 +2,7 @@
     "アンビー・デマラ": { "faction": "邪兎屋", "specialty": "撃破", "attribute": "電気", "image": "anby.webp", "rank": "a" },
     "ビリー・キッド": { "faction": "邪兎屋", "specialty": "強攻", "attribute": "物理", "image": "billy.webp" ,"rank": "a" },
     "ニコ・デマラ": { "faction": "邪兎屋", "specialty": "支援", "attribute": "エーテル", "image": "nicole.webp", "rank": "a" },
-    "猫又": { "faction": "邪兎屋", "specialty": "強攻", "attribute": "物理", "image": "nekomata.webp", "rank": "s" },
+    "猫宮又奈": { "faction": "邪兎屋", "specialty": "強攻", "attribute": "物理", "image": "nekomata.webp", "rank": "s" },
     "アンドー・イワノフ": { "faction": "白祇重工", "specialty": "強攻", "attribute": "電気", "image": "anton.webp", "rank": "a" },
     "ベン・ビガー": { "faction": "白祇重工", "specialty": "防護", "attribute": "炎", "image": "ben.webp", "rank": "a" },
     "グレース・ハワード": { "faction": "白祇重工", "specialty": "異常", "attribute": "電気", "image": "grace.webp", "rank": "s" },
