@@ -16,7 +16,6 @@
             <div class="header__row">
                 <h1 class="header__title">ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc. -</h1>
                 <div class="header__meta">
-                    <span class="header__last-update" id="lastUpdate">Last Modified: 2025/10/6</span>
                 </div>
             </div>
         </header>
@@ -132,6 +131,7 @@
                         <label for="attrSelect" class="form__label is-disabled-normal">状態異常補正倍率 [%]</label>
                         <div class="form form--grid">
                             <select id="attrSelect" class="form__input is-disabled-normal">
+                                <option value="">-- 選択してください --</option>
                                 <option value="physical">物理</option>
                                 <option value="electric">電気</option>
                                 <option value="fire">炎</option>
@@ -247,12 +247,12 @@
         <section class="result">
             <h2 class="result__title">結果</h2>
             <div class="result__grid">
-                <div class="result__card is-disabled-anomaly" role="status">
+                <div class="result__card is-hidden-anomaly" role="status">
                     <div class="result__label">通常時</div>
                     <div class="result__value" id="nonCrit">-</div>
                     <span class="copy-icon">📋コピー</span>
                 </div>
-                <div class="result__card is-disabled-anomaly" role="status">
+                <div class="result__card is-hidden-anomaly" role="status">
                     <div class="result__label">会心時</div>
                     <div class="result__value" id="crit">-</div>
                     <span class="copy-icon">📋コピー</span>
@@ -263,36 +263,39 @@
                     <span class="copy-icon">📋コピー</span>
                 </div>
             </div>
-
-            <!-- トースト通知 -->
-            <div id="toast" class="toast">✅ コピーしました</div>
-
-            <details class="details">
-                <summary class="details__summary">中間倍率を見る</summary>
-                <ul class="kv-list">
-                    <li class="kv"><span class="kv__label">基礎ダメージ</span><span id="base" class="kv__value">-</span></li>
-                    <li class="kv"><span class="kv__label">属性ダメ・与ダメ補正</span><span id="totalBonus"
-                            class="kv__value">-</span></li>
-                    <li class="kv"><span class="kv__label">非会心倍率</span><span id="nonCritMul" class="kv__value">-</span>
-                    </li>
-                    <li class="kv"><span class="kv__label">会心倍率</span><span id="critMul" class="kv__value">-</span></li>
-                    <li class="kv"><span class="kv__label">期待値会心倍率</span><span id="expCritMul"
-                            class="kv__value">-</span></li>
-                    <li class="kv"><span class="kv__label">防御補正</span><span id="defMul" class="kv__value">-</span></li>
-                    <li class="kv"><span class="kv__label">相性補正</span><span id="resiMul" class="kv__value">-</span></li>
-                </ul>
-            </details>
         </section>
+
+        <section class="result result--fixed"></section>
+
+        <!-- トースト通知 -->
+        <div id="toast" class="toast">✅ コピーしました</div>
+
+        <details class="details">
+            <summary class="details__summary">中間倍率を見る</summary>
+            <ul class="kv-list">
+                <li class="kv"><span class="kv__label">基礎ダメージ</span><span id="base" class="kv__value">-</span></li>
+                <li class="kv"><span class="kv__label">属性ダメ・与ダメ補正</span><span id="totalBonus" class="kv__value">-</span>
+                </li>
+                <li class="kv"><span class="kv__label">非会心倍率</span><span id="nonCritMul" class="kv__value">-</span>
+                </li>
+                <li class="kv"><span class="kv__label">会心倍率</span><span id="critMul" class="kv__value">-</span></li>
+                <li class="kv"><span class="kv__label">期待値会心倍率</span><span id="expCritMul" class="kv__value">-</span>
+                </li>
+                <li class="kv"><span class="kv__label">防御補正</span><span id="defMul" class="kv__value">-</span></li>
+                <li class="kv"><span class="kv__label">相性補正</span><span id="resiMul" class="kv__value">-</span></li>
+            </ul>
+        </details>
 
         <!-- フッター -->
         <footer class="footer">
+            <span class="footer__last-modified" id="lastModified">Last Modified: 2025/10/8</span>
             <p class="footer__text">
                 本ツールは非公式の検証用です。ゲーム内の仕様変更により数値が異なる場合があります。<br>
                 Created by <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942"
                     target="_blank">Maybe515</a> ｜
                 Designed by <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942"
                     target="_blank">Maybe515</a> ｜
-                © Fan-made Calculator
+                © 2025 Fan-made Calculator
             </p>
         </footer>
     </main>

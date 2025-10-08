@@ -44,7 +44,7 @@ body {
   margin: 0;
   min-height: 100vh;
   max-width: 1600px;
-  padding: 1rem 0 0;
+  padding: 1.25rem 0 0;
   background: var(--bg);
   color: var(--fg);
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
@@ -56,12 +56,15 @@ body {
   top: 0;
   left: 0;
   width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px) saturate(150%);
   -webkit-backdrop-filter: blur(8px);
 
   border-bottom: 1px solid var(--border);
-  padding: 0 1rem;
+  padding: 0 .75rem;
   z-index: 1000;
 }
 
@@ -74,19 +77,19 @@ body {
 }
 
 .header__title {
-  font-size: 1.4rem;
+  font-size: clamp(1rem, 4vw, 1.4rem);
   font-weight: bold;
+  line-height: 1.2;
   margin: .5rem .2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header__meta {
   display: flex;
   gap: .8rem;
   font-size: .9rem;
-}
-
-.header__last-update {
-  align-content: center;
 }
 
 /* ---------------- Layout ---------------- */
@@ -97,11 +100,13 @@ body {
 
 .grid {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: center;
   gap: 1rem;
   padding-bottom: .5rem;
   width: 100%;
+  height: auto;
 }
 
 .grid>.card {
@@ -209,12 +214,13 @@ select:hover {
   display: flex;
   justify-content: space-between;
   align-items: end;
+  gap: .5rem;
   margin-bottom: .5rem;
 }
 
 .mode__toggle {
   display: flex;
-  gap: 1rem;
+  gap: .5rem 1rem;
   flex-wrap: wrap;
 }
 
@@ -312,6 +318,9 @@ select:hover {
   justify-content: flex-end;
   align-items: center;
   color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .kv__value img {
@@ -378,7 +387,6 @@ select:hover {
   opacity: 0;
   transition: opacity .2s ease;
   pointer-events: none;
-  /* アイコン自体はクリックを拾わない */
 }
 
 /* ---------------- Result / Details / Footer 共通 ---------------- */
@@ -393,13 +401,15 @@ select:hover {
 
 /* ---------------- Result ---------------- */
 .result {
+  position: static;
   margin-top: 1.25rem;
 }
 
 .result__grid {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  /* justify-content: center; */
+  justify-content: flex-start;
   gap: .75rem;
   width: 100%;
 }
@@ -408,6 +418,9 @@ select:hover {
   position: relative;
   cursor: pointer;
   flex: 1 1 220px;
+  /* flex: 0 0 auto; */
+  /* min-width: 220px; */
+  /* max-width: 260px; */
   background: var(--card);
   border: 1px solid var(--border);
   border-radius: 10px;
@@ -433,6 +446,22 @@ select:hover {
   font-size: 1.6rem;
   margin-top: .4rem;
   color: var(--ok);
+}
+
+/* anomaly のときだけ非表示 */
+body[data-mode="anomaly"] .is-hidden-anomaly {
+  display: none !important;
+}
+
+/* anomaly のときだけ左寄せ */
+body[data-mode="anomaly"] .result__grid {
+  justify-content: flex-start;
+}
+
+body[data-mode="anomaly"] .result__card {
+  flex: 0 0 auto;
+  min-width: 220px;
+  max-width: 260px;
 }
 
 /* ---------------- Details ---------------- */
@@ -484,11 +513,15 @@ details[open] .details__summary::before {
 /* ---------------- Footer ---------------- */
 .footer {
   margin-top: 1.5rem;
-  color: var(--muted);
-  font-size: .85rem;
+}
+
+.footer__last-modified  {
+  font-size: 1rem;
 }
 
 .footer__text {
+  font-size: .85rem;
+  color: var(--muted);
   margin: 0;
 }
 
@@ -520,7 +553,15 @@ a:hover {
 }
 
 /* ---------------- Responsive ---------------- */
-@media (max-width: 600px) {
+/* PC用表示 */
+@media (min-width: 1001px) {
+  .result--fixed {
+    display: none !important;
+  }
+}
+
+/* モバイル用表示 */
+@media (max-width: 1000px) {
   .grid {
     flex-direction: column;
     align-items: stretch;
@@ -532,8 +573,47 @@ a:hover {
     min-width: 0;
   }
 
-  .card--two-column,
-  .form--grid {
+  .result--fixed {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    background: rgba(20, 20, 20, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border, #444);
+    padding: .5rem 1rem;
+
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .result--fixed.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .result__title {
+    margin: 0 0 .3rem;
+  }
+
+  .result__grid {
+    display: flex;
+    justify-content: space-around;
+    gap: .5rem;
+  }
+
+  .result__card {
+    flex: 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .card--two-column {
     grid-template-columns: 1fr;
   }
 
@@ -608,6 +688,10 @@ h3 {
   pointer-events: none;
   transition: opacity .3s ease;
   z-index: 2000;
+}
+
+.result--fixed.result--fixed.is-visible~.toast {
+  bottom: 150px;
 }
 
 .toast.show {
