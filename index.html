@@ -4,192 +4,245 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>ZZZ Dmg Calc</title>
+
+    <!-- ページタイトル -->
+    <title>ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -</title>
+
+    <!-- ファビコン -->
     <link rel="icon" href="/assets/favicon-32x32.ico?v=1" type="image/x-icon">
-    <link rel="stylesheet" href="./style.css" />
+
+    <!-- ページ説明（SEO用） -->
+    <meta name="description"
+        content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。攻撃力や会心補正・バフ補正などを入力して、通常時ダメージ/会心時ダメージ/ダメージ期待値をシミュレーションできます。" />
+
+    <!-- OGPタグ（SNSシェア用） -->
+    <meta property="og:title" content="ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -" />
+    <meta property="og:description" content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://example.com/" />
+    <meta property="og:image" content="https://example.com/assets/ogp-image.png" />
+    <meta property="og:site_name" content="ZZZ Dmg Calc" />
+    <meta property="og:locale" content="ja_JP" />
+
+    <!-- Twitterカード -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@Maybe515" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="./css/style.css" />
 </head>
 
 <body class="theme">
     <main class="layout">
+
         <!-- ヘッダー -->
         <header class="header">
             <div class="header__row">
-                <h1 class="header__title">ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc. -</h1>
-                <div class="header__meta">
-                </div>
+                <h1 class="header__title">
+                    ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc. -
+                </h1>
+                <div class="header__meta"></div>
             </div>
         </header>
 
         <!-- モード切替 -->
         <section class="mode">
-            <h2 class="mode__title">計算モード</h2>
-            <div class="mode--grid">
-                <div class="mode__toggle mode__toggle--md">
+            <div class="mode__grid">
+                <fieldset class="mode__toggle mode__toggle--md">
+                    <legend class="visually-hidden">計算モード選択</legend>
                     <input type="radio" name="calcMode" value="normal" id="modeNormal" checked />
                     <label for="modeNormal" class="mode__label">通常ダメージ</label>
 
                     <input type="radio" name="calcMode" value="anomaly" id="modeAnomaly" />
                     <label for="modeAnomaly" class="mode__label">状態異常ダメージ</label>
-                </div>
-                <button id="resetBtn" class="btn btn--ghost btn--rst">初期値に戻す</button>
+                </fieldset>
+                <button id="resetBtn" class="btn btn--rst">初期値に戻す</button>
             </div>
         </section>
 
-        <!-- 入力項目 -->
-        <section class="grid">
-            <!-- エージェント -->
-            <div class="card card--two-column">
-                <!-- エージェント＋パラメータ -->
-                <div class="card__col card__col--left">
-                    <div class="card card--agent">
-                        <h3 class="card__title">エージェント</h3>
-                        <div class="agent-select-wrapper">
-                            <div class="agent-select-wrapper__left">
-                                <img id="agentImage" class="agent-select-wrapper__image" alt="キャラクター画像" />
-                                <img id="rankImage" class="agent-rank-icon" alt="ランク画像" />
-                            </div>
-                            <div class="agent-select-wrapper__right">
-                                <select id="agentSelect" class="form__input"></select>
-                                <div class="kv-list">
-                                    <div class="kv"><span class="kv__label">陣営</span><span id="factionWrapper"
-                                            class="kv__value"><img id="factionIcon" class="icon icon--sm" alt="" /><span
-                                                id="faction">-</span></span></div>
-                                    <div class="kv"><span class="kv__label">役割</span><span id="specialtyWrapper"
-                                            class="kv__value"><img id="specialtyIcon" class="icon icon--sm"
-                                                alt="" /><span id="specialty">-</span></span></div>
-                                    <div class="kv"><span class="kv__label">属性</span><span id="attributeWrapper"
-                                            class="kv__value"><img id="attributeIcon" class="icon icon--sm"
-                                                alt="" /><span id="attribute">-</span></span></div>
+        <div class="content-section">
+            <!-- 入力項目 -->
+            <section class="grid">
+
+                <!-- エージェント -->
+                <div class="card card--two-column">
+                    <div class="card__col card__col--left">
+
+                        <!-- エージェント選択 -->
+                        <article class="card card--agent">
+                            <h3 class="card__title">エージェント</h3>
+                            <div class="agent-select">
+                                <div class="agent-select__left">
+                                    <img id="agentImage" class="agent-select__image" alt="キャラクター画像" />
+                                    <img id="rankImage" class="agent-rank-icon" alt="ランク画像" />
+                                </div>
+                                <div class="agent-select__right">
+                                    <label for="agentSelect" class="visually-hidden">エージェント選択</label>
+                                    <select id="agentSelect" class="form__input"></select>
+                                    <dl class="kv-list">
+                                        <div class="kv">
+                                            <dt class="kv__label">陣営</dt>
+                                            <dd id="factionWrapper" class="kv__value">
+                                                <img id="factionIcon" class="icon icon--sm" alt="" />
+                                                <span id="faction">-</span>
+                                            </dd>
+                                        </div>
+                                        <div class="kv">
+                                            <dt class="kv__label">役割</dt>
+                                            <dd id="specialtyWrapper" class="kv__value">
+                                                <img id="specialtyIcon" class="icon icon--sm" alt="" />
+                                                <span id="specialty">-</span>
+                                            </dd>
+                                        </div>
+                                        <div class="kv">
+                                            <dt class="kv__label">属性</dt>
+                                            <dd id="attributeWrapper" class="kv__value">
+                                                <img id="attributeIcon" class="icon icon--sm" alt="" />
+                                                <span id="attribute">-</span>
+                                            </dd>
+                                        </div>
+                                    </dl>
                                 </div>
                             </div>
-                        </div>
+                        </article>
+
+                        <!-- パラメータ -->
+                        <article class="card card--param">
+                            <h3 class="card__title">パラメータ</h3>
+                            <div class="form form--grid">
+                                <label for="agentLevel" class="form__label">キャラクターレベル [N]</label>
+                                <input type="number" id="agentLevel" class="form__input" value="60" min="1" max="60" />
+
+                                <label for="lvCorrPct" class="form__label is-disabled-normal">キャラレベル補正 [%]</label>
+                                <input type="number" id="lvCorrPct" class="form__input is-disabled-normal" value="200"
+                                    max="200" readonly />
+
+                                <label for="atk" class="form__label">最終攻撃力 [N]</label>
+                                <input type="number" id="atk" class="form__input" value="1500" min="0" />
+
+                                <label for="anomalyMastery" class="form__label is-disabled-normal">異常マスタリー [N]</label>
+                                <input type="number" id="anomalyMastery" class="form__input is-disabled-normal"
+                                    value="100" min="0" />
+
+                                <label for="penRetioPct" class="form__label">貫通率 [%]</label>
+                                <input type="number" id="penRetioPct" class="form__input" value="0" min="0" max="100"
+                                    step="0.1" />
+
+                                <label for="pen" class="form__label">貫通値 [N]</label>
+                                <input type="number" id="pen" class="form__input" value="0" min="0" />
+                            </div>
+                        </article>
                     </div>
 
-                    <div class="card card--param">
-                        <h3 class="card__title">パラメータ</h3>
-                        <div class="form form--grid">
-                            <label for="agentLevel" class="form__label">キャラクターレベル [N]</label>
-                            <input type="number" id="agentLevel" class="form__input" value="60" min="1" max="60" />
+                    <!-- 右カラム -->
+                    <div class="card__col card__col--right">
 
-                            <label for="lvCorrPct" class="form__label is-disabled-normal">キャラレベル補正 [%]</label>
-                            <input type="number" id="lvCorrPct" class="form__input is-disabled-normal" value="200"
-                                max="200" readonly />
+                        <!-- 会心補正 -->
+                        <article class="card card--crit is-disabled-anomaly">
+                            <h3 class="card__title">会心補正</h3>
+                            <div class="form form--grid">
+                                <label for="critRatePct" class="form__label">会心率 [%]</label>
+                                <input type="number" id="critRatePct" class="form__input" value="5" min="0" max="100"
+                                    step="0.1" />
 
-                            <label for="atk" class="form__label">最終攻撃力 [N]</label>
-                            <input type="number" id="atk" class="form__input" value="1500" min="0" />
+                                <label for="critDmgPct" class="form__label">会心ダメージ [%]</label>
+                                <input type="number" id="critDmgPct" class="form__input" value="50" min="0"
+                                    step="0.1" />
+                            </div>
+                        </article>
 
-                            <label for="anomalyMastery" class="form__label is-disabled-normal">異常マスタリー [N]</label>
-                            <input type="number" id="anomalyMastery" class="form__input is-disabled-normal" value="100"
-                                min="0" />
+                        <!-- 属性・与ダメ補正 -->
+                        <article class="card card--dmgBonus">
+                            <h3 class="card__title">属性・与ダメ補正</h3>
+                            <div class="form form--grid">
+                                <label for="attrBonusPct" class="form__label">属性ダメージUP [%]</label>
+                                <input type="number" id="attrBonusPct" class="form__input" value="0" min="0" />
 
-                            <label for="penRetioPct" class="form__label">貫通率 [%]</label>
-                            <input type="number" id="penRetioPct" class="form__input" value="0" min="0" max="100"
-                                step="0.1" />
+                                <label for="dmgBonusPct" class="form__label">与ダメージUP [%]</label>
+                                <input type="number" id="dmgBonusPct" class="form__input" value="0" min="0" />
 
-                            <label for="pen" class="form__label">貫通値 [N]</label>
-                            <input type="number" id="pen" class="form__input" value="0" min="0" />
-                        </div>
+                                <label for="dmgBonusPtPct" class="form__label">与ダメージUP (全員) [%]</label>
+                                <input type="number" id="dmgBonusPtPct" class="form__input" value="0" min="0" />
+                            </div>
+                        </article>
+
+                        <!-- その他 -->
+                        <article class="card card--other">
+                            <h3 class="card__title">その他</h3>
+                            <div class="form form--grid">
+                                <label for="skillPct" class="form__label is-disabled-anomaly">スキルダメージ倍率 [%]</label>
+                                <input type="number" id="skillPct" class="form__input is-disabled-anomaly" value="240"
+                                    min="0" step="0.1" />
+                            </div>
+
+                            <label for="attrSelect" class="form__label is-disabled-normal">状態異常補正倍率 [%]</label>
+                            <div class="form form--grid">
+                                <select id="attrSelect" class="form__input is-disabled-normal">
+                                    <option value="">-- 選択してください --</option>
+                                    <option value="physical">物理</option>
+                                    <option value="electric">電気</option>
+                                    <option value="fire">炎</option>
+                                    <option value="ice">氷</option>
+                                    <option value="ether">エーテル</option>
+                                    <option value="frost">霜烈</option>
+                                    <option value="auric_ink">玄墨</option>
+                                </select>
+                                <input type="number" id="anomalyCorrPct" class="form__input is-disabled-normal"
+                                    value="713" readonly />
+                            </div>
+
+                            <label for="rangeSelect" class="form__label is-disabled-anomaly">距離減衰補正 [%]</label>
+                            <div class="form form--grid">
+                                <select id="rangeSelect" class="form__input is-disabled-anomaly">
+                                    <option value="0-15">0~15m</option>
+                                    <option value="16-20">16~20m</option>
+                                    <option value="21-25">21~25m</option>
+                                    <option value="26-">26m~</option>
+                                </select>
+                                <input type="number" id="rangeWeakPct" class="form__input is-disabled-anomaly"
+                                    value="100" readonly />
+                            </div>
+                        </article>
                     </div>
                 </div>
-
-                <!-- 会心補正＋属性・与ダメ補正＋その他 -->
-                <div class="card__col card__col--right">
-                    <div class="card card--crit is-disabled-anomaly">
-                        <h3 class="card__title">会心補正</h3>
-                        <div class="form form--grid">
-                            <label for="critRatePct" class="form__label">会心率 [%]</label>
-                            <input type="number" id="critRatePct" class="form__input" value="5" min="0" max="100"
-                                step="0.1" />
-
-                            <label for="critDmgPct" class="form__label">会心ダメージ [%]</label>
-                            <input type="number" id="critDmgPct" class="form__input" value="50" min="0" step="0.1" />
-                        </div>
-                    </div>
-
-                    <div class="card card--dmgBonus">
-                        <h3 class="card__title">属性・与ダメ補正</h3>
-                        <div class="form form--grid">
-                            <label for="attrBonusPct" class="form__label">属性ダメージUP [%]</label>
-                            <input type="number" id="attrBonusPct" class="form__input" value="0" min="0" />
-
-                            <label for="dmgBonusPct" class="form__label">与ダメージUP [%]</label>
-                            <input type="number" id="dmgBonusPct" class="form__input" value="0" min="0" />
-
-                            <label for="dmgBonusPtPct" class="form__label">与ダメージUP (全員) [%]</label>
-                            <input type="number" id="dmgBonusPtPct" class="form__input" value="0" min="0" />
-                        </div>
-                    </div>
-
-                    <div class="card card--other">
-                        <h3 class="card__title">その他</h3>
-                        <div class="form form--grid">
-                            <label for="skillPct" class="form__label is-disabled-anomaly">スキルダメージ倍率 [%]</label>
-                            <input type="number" id="skillPct" class="form__input is-disabled-anomaly" value="240"
-                                min="0" step="0.1" />
-                        </div>
-
-                        <label for="attrSelect" class="form__label is-disabled-normal">状態異常補正倍率 [%]</label>
-                        <div class="form form--grid">
-                            <select id="attrSelect" class="form__input is-disabled-normal">
-                                <option value="">-- 選択してください --</option>
-                                <option value="physical">物理</option>
-                                <option value="electric">電気</option>
-                                <option value="fire">炎</option>
-                                <option value="ice">氷</option>
-                                <option value="ether">エーテル</option>
-                                <option value="frost">霜烈</option>
-                                <option value="auric_ink">玄墨</option>
-                            </select>
-                            <input type="number" id="anomalyCorrPct" class="form__input is-disabled-normal" value="713"
-                                readonly />
-                        </div>
-
-                        <label for="rangeSelect" class="form__label is-disabled-anomaly">距離減衰補正 [%]</label>
-                        <div class="form form--grid">
-                            <select id="rangeSelect" class="form__input is-disabled-anomaly">
-                                <option value="0-15">0~15m</option>
-                                <option value="16-20">16~20m</option>
-                                <option value="21-25">21~25m</option>
-                                <option value="26-">26m~</option>
-                            </select>
-                            <input type="number" id="rangeWeakPct" class="form__input is-disabled-anomaly" value="100"
-                                readonly />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </section>
 
             <!-- エネミー -->
-            <div class="card card--two-column">
-                <!-- エネミー＋パラメータ -->
+            <section class="card card--two-column">
                 <div class="card__col card__col--left">
-                    <div class="card card--enemy">
+                    <article class="card card--enemy">
                         <h3 class="card__title">エネミー</h3>
+                        <label for="enemSelect" class="visually-hidden">エネミー選択</label>
                         <select id="enemSelect" class="form__input"></select>
-                        <div class="kv-list">
-                            <div class="kv"><span class="kv__label">弱点属性</span><span id="attrWeak"
-                                    class="kv__value">-</span></div>
-                            <div class="kv"><span class="kv__label">耐性属性</span><span id="attrResist"
-                                    class="kv__value">-</span></div>
-                        </div>
-                    </div>
+                        <dl class="kv-list">
+                            <div class="kv">
+                                <dt class="kv__label">弱点属性</dt>
+                                <dd id="attrWeak" class="kv__value">-</dd>
+                            </div>
+                            <div class="kv">
+                                <dt class="kv__label">耐性属性</dt>
+                                <dd id="attrResist" class="kv__value">-</dd>
+                            </div>
+                        </dl>
+                    </article>
 
-                    <div class="card card--param">
+                    <article class="card card--param">
                         <h3 class="card__title">パラメータ</h3>
                         <div class="form form--grid">
                             <label for="enemLevel" class="form__label">エネミーレベル</label>
                             <input type="number" id="enemLevel" class="form__input" value="60" min="1" max="70" />
+
                             <label for="lvCoeff" class="form__label">レベル係数</label>
                             <input type="number" id="lvCoeff" class="form__input" value="794" min="0" step="0.1" />
+
                             <label for="def" class="form__label">基礎防御力 [R]</label>
                             <input type="number" id="def" class="form__input" value="571.7" min="0" step="0.1" />
                         </div>
-                    </div>
+                    </article>
                 </div>
 
-                <!-- バフ補正＋その他 -->
                 <div class="card__col card__col--right">
-                    <div class="card card--buff">
+                    <article class="card card--buff">
                         <h3 class="card__title">バフ補正</h3>
                         <div class="form form--grid">
                             <label for="defUpPct" class="form__label">防御力UP [%]</label>
@@ -216,91 +269,119 @@
                             </select>
                             <input type="number" id="attrMatchPct" class="form__input" value="0" step="0.1" readonly />
                         </div>
-                    </div>
+                    </article>
 
-                    <div class="card card--other">
+                    <article class="card card--other">
                         <h3 class="card__title">その他</h3>
                         <div class="form form--row">
                             <input type="checkbox" id="breakToggle" class="form__checkbox" />
-                            <label for="breakToggle" class="form__label">敵をブレイク状態にする</label>
+                            <label for="breakToggle" class="form__label break__label">敵をブレイク状態にする</label>
                         </div>
                         <div id="breakControls" class="form form--row">
                             <label for="breakBonusPct" class="form__label">ブレイク倍率 [%]</label>
                             <input type="number" id="breakBonusPct" class="form__input" value="100" min="0" />
                         </div>
-                    </div>
+                    </article>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
 
         <!-- オプション -->
         <details class="details">
             <summary class="details__summary">オプション</summary>
-            <div class="card card--option">
+            <article class="card card--option">
                 <h3 class="card__title">オプション</h3>
                 <label for="digits" class="form__label">小数点桁数</label>
                 <input type="number" id="digits" class="form__input" value="0" min="0" max="6" />
-            </div>
+            </article>
         </details>
 
         <!-- 結果 -->
         <section class="result">
             <h2 class="result__title">結果</h2>
             <div class="result__grid">
-                <div class="result__card is-hidden-anomaly" role="status">
-                    <div class="result__label">通常時</div>
+                <article class="result__card is-hidden-anomaly" role="status">
+                    <h3 class="result__label">通常時</h3>
                     <div class="result__value" id="nonCrit">-</div>
-                    <span class="copy-icon">📋コピー</span>
-                </div>
-                <div class="result__card is-hidden-anomaly" role="status">
-                    <div class="result__label">会心時</div>
+                    <button type="button" class="copy-icon" aria-label="通常時の値をコピー">📋コピー</button>
+                </article>
+                <article class="result__card is-hidden-anomaly" role="status">
+                    <h3 class="result__label">会心時</h3>
                     <div class="result__value" id="crit">-</div>
-                    <span class="copy-icon">📋コピー</span>
-                </div>
-                <div class="result__card" role="status">
-                    <div class="result__label">期待値</div>
+                    <button type="button" class="copy-icon" aria-label="会心時の値をコピー">📋コピー</button>
+                </article>
+                <article class="result__card" role="status">
+                    <h3 class="result__label">期待値</h3>
                     <div class="result__value" id="expected">-</div>
-                    <span class="copy-icon">📋コピー</span>
-                </div>
+                    <button type="button" class="copy-icon" aria-label="期待値をコピー">📋コピー</button>
+                </article>
             </div>
         </section>
 
         <section class="result result--fixed"></section>
 
         <!-- トースト通知 -->
-        <div id="toast" class="toast">✅ コピーしました</div>
+        <div id="toast" class="toast" role="alert" aria-live="assertive">
+            ✅ コピーしました
+        </div>
 
+        <!-- 中間倍率 -->
         <details class="details">
             <summary class="details__summary">中間倍率を見る</summary>
-            <ul class="kv-list">
-                <li class="kv"><span class="kv__label">基礎ダメージ</span><span id="base" class="kv__value">-</span></li>
-                <li class="kv"><span class="kv__label">属性ダメ・与ダメ補正</span><span id="totalBonus" class="kv__value">-</span>
-                </li>
-                <li class="kv"><span class="kv__label">非会心倍率</span><span id="nonCritMul" class="kv__value">-</span>
-                </li>
-                <li class="kv"><span class="kv__label">会心倍率</span><span id="critMul" class="kv__value">-</span></li>
-                <li class="kv"><span class="kv__label">期待値会心倍率</span><span id="expCritMul" class="kv__value">-</span>
-                </li>
-                <li class="kv"><span class="kv__label">防御補正</span><span id="defMul" class="kv__value">-</span></li>
-                <li class="kv"><span class="kv__label">相性補正</span><span id="resiMul" class="kv__value">-</span></li>
-            </ul>
+            <dl class="kv-list">
+                <div class="kv">
+                    <dt class="kv__label">基礎ダメージ</dt>
+                    <dd id="base" class="kv__value">-</dd>
+                </div>
+                <div class="kv">
+                    <dt class="kv__label">属性ダメ・与ダメ補正</dt>
+                    <dd id="totalBonus" class="kv__value">-</dd>
+                </div>
+                <div class="kv">
+                    <dt class="kv__label">非会心倍率</dt>
+                    <dd id="nonCritMul" class="kv__value">-</dd>
+                </div>
+                <div class="kv">
+                    <dt class="kv__label">会心倍率</dt>
+                    <dd id="critMul" class="kv__value">-</dd>
+                </div>
+                <div class="kv">
+                    <dt class="kv__label">期待値会心倍率</dt>
+                    <dd id="expCritMul" class="kv__value">-</dd>
+                </div>
+                <div class="kv">
+                    <dt class="kv__label">防御補正</dt>
+                    <dd id="defMul" class="kv__value">-</dd>
+                </div>
+                <div class="kv">
+                    <dt class="kv__label">相性補正</dt>
+                    <dd id="resiMul" class="kv__value">-</dd>
+                </div>
+            </dl>
         </details>
 
         <!-- フッター -->
         <footer class="footer">
-            <span class="footer__last-modified" id="lastModified">Last Modified: 2025/10/8</span>
+            <span class="footer__last-modified" id="lastModified">
+                Last Modified: 2025/10/9
+            </span>
             <p class="footer__text">
                 本ツールは非公式の検証用です。ゲーム内の仕様変更により数値が異なる場合があります。<br>
-                Created by <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942"
-                    target="_blank">Maybe515</a> ｜
-                Designed by <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942"
-                    target="_blank">Maybe515</a> ｜
+                Created by
+                <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
+                    rel="noopener noreferrer">
+                    Maybe515</a> ｜
+                Designed by
+                <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
+                    rel="noopener noreferrer">
+                    Maybe515</a> ｜
                 © 2025 Fan-made Calculator
             </p>
         </footer>
     </main>
-    <script src="./script.js"></script>
-</body>
 
+    <!-- スクリプト -->
+    <script type="module" src="./js/main.js"></script>
+</body>
 
 </html>
