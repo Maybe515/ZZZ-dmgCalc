@@ -208,81 +208,84 @@
             </section>
 
             <!-- エネミー -->
-            <section class="card card--two-column">
-                <div class="card__col card__col--left">
-                    <article class="card card--enemy">
-                        <h3 class="card__title">エネミー</h3>
-                        <label for="enemSelect" class="visually-hidden">エネミー選択</label>
-                        <select id="enemSelect" class="form__input"></select>
-                        <dl class="kv-list">
-                            <div class="kv">
-                                <dt class="kv__label">弱点属性</dt>
-                                <dd id="attrWeak" class="kv__value">-</dd>
+            <section class="grid">
+                <section class="card card--two-column">
+                    <div class="card__col card__col--left">
+                        <article class="card card--enemy">
+                            <h3 class="card__title">エネミー</h3>
+                            <label for="enemSelect" class="visually-hidden">エネミー選択</label>
+                            <select id="enemSelect" class="form__input"></select>
+                            <dl class="kv-list">
+                                <div class="kv">
+                                    <dt class="kv__label">弱点属性</dt>
+                                    <dd id="attrWeak" class="kv__value">-</dd>
+                                </div>
+                                <div class="kv">
+                                    <dt class="kv__label">耐性属性</dt>
+                                    <dd id="attrResist" class="kv__value">-</dd>
+                                </div>
+                            </dl>
+                        </article>
+
+                        <article class="card card--param">
+                            <h3 class="card__title">パラメータ</h3>
+                            <div class="form form--grid">
+                                <label for="enemLevel" class="form__label">エネミーレベル</label>
+                                <input type="number" id="enemLevel" class="form__input" value="60" min="1" max="70" />
+
+                                <label for="lvCoeff" class="form__label">レベル係数</label>
+                                <input type="number" id="lvCoeff" class="form__input" value="794" min="0" step="0.1" />
+
+                                <label for="def" class="form__label">基礎防御力 [R]</label>
+                                <input type="number" id="def" class="form__input" value="571.7" min="0" step="0.1" />
                             </div>
-                            <div class="kv">
-                                <dt class="kv__label">耐性属性</dt>
-                                <dd id="attrResist" class="kv__value">-</dd>
+                        </article>
+                    </div>
+
+                    <div class="card__col card__col--right">
+                        <article class="card card--buff">
+                            <h3 class="card__title">バフ補正</h3>
+                            <div class="form form--grid">
+                                <label for="defUpPct" class="form__label">防御力UP [%]</label>
+                                <input type="number" id="defUpPct" class="form__input" value="0" min="0" step="0.1" />
+
+                                <label for="defDownPct" class="form__label">防御力DOWN [%]</label>
+                                <input type="number" id="defDownPct" class="form__input" value="0" min="0" step="0.1" />
+
+                                <label for="attrResiDownPct" class="form__label">属性耐性DOWN [%]</label>
+                                <input type="number" id="attrResiDownPct" class="form__input" value="0" min="0"
+                                    step="0.1" />
+
+                                <label for="attrResiIgnorePct" class="form__label">属性耐性無視 [%]</label>
+                                <input type="number" id="attrResiIgnorePct" class="form__input" value="0" min="0"
+                                    max="100" step="0.1" />
                             </div>
-                        </dl>
-                    </article>
 
-                    <article class="card card--param">
-                        <h3 class="card__title">パラメータ</h3>
-                        <div class="form form--grid">
-                            <label for="enemLevel" class="form__label">エネミーレベル</label>
-                            <input type="number" id="enemLevel" class="form__input" value="60" min="1" max="70" />
+                            <label for="matchSelect" class="form__label">属性相性補正 [%]</label>
+                            <div class="form form--grid">
+                                <select id="matchSelect" class="form__input">
+                                    <option value="none">補正なし</option>
+                                    <option value="weak">弱点属性</option>
+                                    <option value="resist">耐性属性</option>
+                                </select>
+                                <input type="number" id="attrMatchPct" class="form__input" value="0" step="0.1"
+                                    readonly />
+                            </div>
+                        </article>
 
-                            <label for="lvCoeff" class="form__label">レベル係数</label>
-                            <input type="number" id="lvCoeff" class="form__input" value="794" min="0" step="0.1" />
-
-                            <label for="def" class="form__label">基礎防御力 [R]</label>
-                            <input type="number" id="def" class="form__input" value="571.7" min="0" step="0.1" />
-                        </div>
-                    </article>
-                </div>
-
-                <div class="card__col card__col--right">
-                    <article class="card card--buff">
-                        <h3 class="card__title">バフ補正</h3>
-                        <div class="form form--grid">
-                            <label for="defUpPct" class="form__label">防御力UP [%]</label>
-                            <input type="number" id="defUpPct" class="form__input" value="0" min="0" step="0.1" />
-
-                            <label for="defDownPct" class="form__label">防御力DOWN [%]</label>
-                            <input type="number" id="defDownPct" class="form__input" value="0" min="0" step="0.1" />
-
-                            <label for="attrResiDownPct" class="form__label">属性耐性DOWN [%]</label>
-                            <input type="number" id="attrResiDownPct" class="form__input" value="0" min="0"
-                                step="0.1" />
-
-                            <label for="attrResiIgnorePct" class="form__label">属性耐性無視 [%]</label>
-                            <input type="number" id="attrResiIgnorePct" class="form__input" value="0" min="0" max="100"
-                                step="0.1" />
-                        </div>
-
-                        <label for="matchSelect" class="form__label">属性相性補正 [%]</label>
-                        <div class="form form--grid">
-                            <select id="matchSelect" class="form__input">
-                                <option value="none">補正なし</option>
-                                <option value="weak">弱点属性</option>
-                                <option value="resist">耐性属性</option>
-                            </select>
-                            <input type="number" id="attrMatchPct" class="form__input" value="0" step="0.1" readonly />
-                        </div>
-                    </article>
-
-                    <article class="card card--other">
-                        <h3 class="card__title">その他</h3>
-                        <div class="form form--row">
-                            <input type="checkbox" id="breakToggle" class="form__checkbox" />
-                            <label for="breakToggle" class="form__label break__label">敵をブレイク状態にする</label>
-                        </div>
-                        <div id="breakControls" class="form form--row">
-                            <label for="breakBonusPct" class="form__label">ブレイク倍率 [%]</label>
-                            <input type="number" id="breakBonusPct" class="form__input" value="100" min="0" />
-                        </div>
-                    </article>
-                </div>
+                        <article class="card card--other">
+                            <h3 class="card__title">その他</h3>
+                            <div class="form form--row">
+                                <input type="checkbox" id="breakToggle" class="form__checkbox" />
+                                <label for="breakToggle" class="form__label break__label">敵をブレイク状態にする</label>
+                            </div>
+                            <div id="breakControls" class="form form--row">
+                                <label for="breakBonusPct" class="form__label">ブレイク倍率 [%]</label>
+                                <input type="number" id="breakBonusPct" class="form__input" value="100" min="0" />
+                            </div>
+                        </article>
+                    </div>
+                </section>
             </section>
         </div>
 
