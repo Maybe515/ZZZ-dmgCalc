@@ -42,7 +42,7 @@ body {
   margin: 0;
   width: 100%;
   min-height: 100vh;
-  min-width: 500px;
+  min-width: 565px;
   padding: 1.25rem 0 0;
   background: var(--bg);
   color: var(--fg);
@@ -66,13 +66,39 @@ body {
   z-index: 1000;
 }
 
+.header__row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.header__logo-link {
+  display: flex;          /* アイコンを中央揃え */
+  align-items: center;
+}
+
+.header__logo {
+  width: 30px;  
+  height: auto;
+  cursor: pointer;
+}
+
 .header__title {
-  font-size: clamp(1rem, 4vw, 1.4rem);
+  font-size: clamp(1rem, 3.65vw, 1.4rem);
   font-weight: bold;
   margin: .5rem .2rem;
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+}
+
+.header__meta {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--muted, #666);
+}
+
+.header__last-modified {
+  white-space: nowrap;
 }
 
 /* ---------------- Layout ---------------- */
@@ -347,7 +373,7 @@ body {
   position: absolute;
   top: 8px;
   right: 10px;
-  height: 40px;
+  height: 30px;
   font-size: 1rem;
   border: none;
   border-radius: 10px;
@@ -473,14 +499,14 @@ details[open] .details__summary::before {
   margin-top: 1.5rem;
 }
 
+.footer__disclaimer,
+.footer__copyright,
+.footer__credit,
 .footer__last-modified {
-  font-size: 1rem;
-}
-
-.footer__text {
+  display: block;
+  margin-top: .5rem;
   font-size: .85rem;
   color: var(--muted);
-  margin: 0;
 }
 
 /* ---------------- Links ---------------- */

@@ -19,8 +19,8 @@
     <meta property="og:title" content="ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -" />
     <meta property="og:description" content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://example.com/" />
-    <meta property="og:image" content="https://example.com/assets/ogp-image.png" />
+    <meta property="og:url" content="https://maybe515.github.io/ZZZ-dmgCalc/" />
+    <meta property="og:image" content="https://github.com/Maybe515/ZZZ-dmgCalc/blob/main/assets/logo.png" />
     <meta property="og:site_name" content="ZZZ Dmg Calc" />
     <meta property="og:locale" content="ja_JP" />
 
@@ -38,10 +38,15 @@
         <!-- ヘッダー -->
         <header class="header">
             <div class="header__row">
+                <a href="https://wiki.hoyolab.com/pc/zzz/home?utm_campaign=wiki&utm_id=8&utm_medium=tools&utm_source=hoyolab&lang=ja-jp&bbs_theme=dark&bbs_theme_device=1" target="_blank" class="header__logo-link">
+                    <img src="./assets/logo.png" alt="Site Logo" class="header__logo">
+                </a>
                 <h1 class="header__title">
                     ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc. -
                 </h1>
-                <div class="header__meta"></div>
+                <div class="header__meta">
+                    <span class="header__last-modified" id="lastModified"></span>
+                </div>
             </div>
         </header>
 
@@ -365,20 +370,37 @@
 
         <!-- フッター -->
         <footer class="footer">
-            <span class="footer__last-modified" id="lastModified">
-                Last Modified: 2025/10/9
-            </span>
-            <p class="footer__text">
-                本ツールは非公式の検証用です。ゲーム内の仕様変更により数値が異なる場合があります。<br>
+            <!-- <div class="footer__lang--ja">
+                <p class="footer__disclaimer">
+                    免責事項: 本ツールは非公式の検証用ツールであり、HoYoverse とは一切関係がありません。<br>
+                    ゲーム内の仕様変更により数値が異なる場合があります。
+                </p>
+                <p class="footer__copyright">
+                    「HoYoverse」および「ゼンレスゾーンゼロ」は、HoYoverse の商標または登録商標です。<br>
+                    ゲーム内のコンテンツおよびリソースの著作権はすべて HoYoverse に帰属します。
+                </p>
+            </div> -->
+
+            <div class="footer__lang--en">
+                <p class="footer__disclaimer">
+                    Disclaimer: This is an unofficial fan-made tool for testing purposes and is not affiliated with or
+                    endorsed by HoYoverse.<br>
+                    Due to possible game updates, actual values may differ.
+                </p>
+                <p class="footer__copyright">
+                    © HoYoverse. All rights reserved.<br>
+                    "HoYoverse" and "Zenless Zone Zero" are trademarks or registered trademarks of HoYoverse.
+                </p>
+            </div>
+
+            <p class="footer__credit">
                 Created by
                 <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
-                    rel="noopener noreferrer">
-                    Maybe515</a> ｜
+                    rel="noopener noreferrer">Maybe515</a> ｜
                 Designed by
                 <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
-                    rel="noopener noreferrer">
-                    Maybe515</a> ｜
-                © 2025 Fan-made Calculator
+                    rel="noopener noreferrer">Maybe515</a> ｜
+                © 2025 Maybe515. All rights reserved.
             </p>
         </footer>
     </main>

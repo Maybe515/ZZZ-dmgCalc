@@ -258,10 +258,24 @@ function bindEvents() {
   });
 }
 
+function loadLastModified() {
+  // HTMLファイルの最終更新日時を取得
+  const lastModified = new Date(document.lastModified);
+
+  // YYYY/MM/DD 形式に整形
+  const formatted = lastModified.getFullYear() + "/" +
+    String(lastModified.getMonth() + 1).padStart(2, "0") + "/" +
+    String(lastModified.getDate()).padStart(2, "0");
+
+  // フッターに反映
+  document.getElementById("lastModified").textContent = "Last Modified: " + formatted;
+}
+
 // ---------------- Init ----------------
 async function init() {
   // データロード
   await loadAllData();
+  loadLastModified();
 
   // デフォルト適用
   applyDefaults();
