@@ -14,7 +14,7 @@ export const defaults = {
   dmgBonusPct: 0,
   dmgBonusPtPct: 0,
   skillPct: 240,
-  anomalyCorrPct: 713,
+  anomalyCorrPct: 0,
   rangeWeakPct: 100,
   enemLevel: 60,
   lvCoeff: 794,
@@ -41,9 +41,9 @@ export const anomalyCorrTable = {
 
 export const rangeTable = {
   "0-15": 100,
-  "16-20": 75,
-  "21-25": 50,
-  "26-": 25
+  "15-20": 75,
+  "20-25": 50,
+  "25-": 25
 };
 
 export const matchTable = {
@@ -60,6 +60,10 @@ export const paths = {
   attribute: "assets/stats/",
   agent: "assets/agent/",
   rank: "assets/rank/"
+};
+
+export const urls = {
+  hoyowiki: "https://wiki.hoyolab.com/pc/zzz/entry/"
 };
 
 // ---------------- Icons ----------------

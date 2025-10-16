@@ -31,6 +31,14 @@
   --mode-active-bg: #ffff00;
   --mode-active-fg: #000;
   --mode-active-border: #ffff00;
+
+  --field-bg: rgba(255, 255, 255, 0.06);
+  --field-border: #444;
+  --field-fg: #ddd;
+  --field-hover-bg: rgba(255, 255, 255, 0.10);
+  --field-hover-border: #666;
+  --field-focus-ring: #88c0d0;
+  --field-shadow: rgba(0, 0, 0, 0.35);
 }
 
 /* ---------------- Base ---------------- */
@@ -69,17 +77,17 @@ body {
 .header__row {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: .5rem;
   width: 100%;
 }
 
 .header__logo-link {
-  display: flex;          /* アイコンを中央揃え */
+  display: flex;
   align-items: center;
 }
 
 .header__logo {
-  width: 30px;  
+  width: 30px;
   height: auto;
   cursor: pointer;
 }
@@ -93,6 +101,9 @@ body {
 
 .header__meta {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: .25rem;
   font-size: 0.85rem;
   color: var(--muted, #666);
 }
@@ -100,6 +111,22 @@ body {
 .header__last-modified {
   white-space: nowrap;
 }
+
+.lang-switcher__button {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background: #222;
+  color: #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.lang-switcher__button:hover {
+  background: #333;
+}
+
 
 /* ---------------- Layout ---------------- */
 .layout {
@@ -182,10 +209,11 @@ body {
 .form__label {
   font-size: .95rem;
   min-width: 80px;
-  margin: .5rem 0 .25rem;
+  margin: .25rem 0;
 }
 
 .form__input {
+  flex: 1;
   width: 100%;
   min-width: 80px;
   background: var(--input-bg);
@@ -259,6 +287,72 @@ body {
   cursor: pointer;
 }
 
+.break__label:hover {
+  text-decoration: underline;
+}
+
+/* ---------------- Select ---------------- */
+select {
+  background: var(--field-bg, #222);
+  background-color: #222;
+  color: #eee;
+  border: 1px solid var(--field-border, #444);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  padding-right: 1.8rem;
+  font-size: 0.95rem;
+  transition: background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+select option {
+  background-color: #222;
+  color: #eee;
+}
+
+/* 無効化された項目 */
+select option:disabled {
+  color: #777;
+  background-color: #222;
+}
+
+select:focus {
+  background-color: #222;
+  background: var(--field-bg, #222);
+  color: #eee;
+  outline: none;
+}
+
+/* ---------------- input & Select ---------------- */
+input:hover,
+select:hover {
+  background: var(--field-hover-bg);
+  border-color: var(--field-hover-border);
+  box-shadow: 0 4px 12px var(--field-shadow);
+}
+
+/* キーボード操作時の視認性（フォーカスリング） */
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--field-focus-ring);
+  outline-offset: 2px;
+  box-shadow: 0 6px 16px var(--field-shadow);
+}
+
+/* 無効状態はホバー強調を抑制 */
+input[disabled],
+select[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+input[disabled]:hover,
+select[disabled]:hover {
+  background: var(--field-bg);
+  border-color: var(--field-border);
+  box-shadow: none;
+  transform: none;
+}
+
 /* ---------------- Button ---------------- */
 .btn {
   cursor: pointer;
@@ -281,6 +375,49 @@ body {
 
 .btn--rst:hover {
   background: var(--hover-bg);
+}
+
+/* ---------------- Tooltip ---------------- */
+.info-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 .25rem;
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  background-color: #444;
+  color: #fff;
+  font-size: 0.8em;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip__content {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 105%;
+  left: 20%;
+  transform: translate(0);
+  background: #333;
+  color: #fff;
+  padding: 0.5rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+  z-index: 1001;
+}
+
+.tooltip:hover .tooltip__content,
+.tooltip:focus .tooltip__content {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* ---------------- Key-Value list ---------------- */
@@ -345,6 +482,10 @@ body {
   min-width: 0;
 }
 
+.agent-select__right select {
+  margin-top: .25rem;
+}
+
 .agent-select__image {
   display: block;
   width: 100px;
@@ -360,6 +501,10 @@ body {
   left: 1px;
   width: 25px;
   height: 25px;
+}
+
+.card--enemy select {
+  margin-top: .25rem;
 }
 
 /* ---------------- Icon ---------------- */
@@ -684,4 +829,93 @@ h3 {
 
 .toast.show {
   opacity: 1;
+}
+
+/* ---------------- Popup ---------------- */
+/* ポップアップ全体 */
+.popup {
+  position: fixed;
+  inset: 0;
+  display: none; /* 初期は非表示 */
+  z-index: 2000; /* 最前面に */
+}
+
+/* 開くとき */
+.popup.is-open {
+  display: block;
+  animation: fadeIn 0.25s ease-out;
+}
+
+/* 閉じるとき */
+.popup.is-closing {
+  animation: fadeOut 0.25s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: scale(1); }
+  to   { opacity: 0; transform: scale(0.95); }
+}
+
+/* 背景の半透明 */
+.popup__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  opacity: 0;
+  animation: backdropFade 0.25s ease-out forwards;
+}
+
+@keyframes backdropFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* コンテンツ本体 */
+.popup__content {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  max-width: 500px;
+  width: calc(100% - 2rem);
+  background: #fff;
+  color: #333;
+  padding: 1rem;
+  border-radius: 8px;
+  z-index: 2001;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.popup__content p {
+  flex: 1;
+}
+
+/* 閉じるボタン */
+.popup__close {
+  align-self: flex-end;
+  margin-top: 1rem;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid #aaa;
+  border-radius: 4px;
+  background: #eee;
+  cursor: pointer;
+}
+.popup__close:hover {
+  background: #ddd;
+}
+
+.popup--highlight {
+  background: yellow;
+  padding: 0 0.2rem;
+}
+
+.popup--red {
+  color: red;
 }
