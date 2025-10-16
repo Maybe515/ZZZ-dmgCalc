@@ -79,7 +79,8 @@ export const factionIcons = {
   "防衛軍・シルバー小隊": "silver_squad.webp",
   "モッキンバード": "mockingbird.webp",
   "雲嶽山": "yunkui_summit.webp",
-  "怪啖屋": "spook_shack.webp"
+  "怪啖屋": "spook_shack.webp",
+  "クランプスの黒枝": "krampus.webp"
 };
 
 export const specialtyIcons = {

@@ -42,6 +42,6 @@
     "リュシア・エロウィン": { "faction": "怪啖屋", "specialty": "支援", "attribute": "エーテル", "image": "lucia.webp", "rank": "s", "link": "907" },
     "狛野真斗": { "faction": "怪啖屋", "specialty": "命破", "attribute": "炎", "image": "manato.webp", "rank": "a", "link": "908" },
     "イドリー・マーフィー": { "faction": "怪啖屋", "specialty": "命破", "attribute": "氷", "image": "yidhari.webp", "rank": "s", "link": "909" },
-    "ダイアリン": { "faction": "黒枝", "specialty": "撃破", "attribute": "物理", "image": "dialyn.webp", "rank": "s", "link": "932" },
-    "盤岳": { "faction": "怪啖屋", "specialty": "命破", "attribute": "炎", "image": "banyue.webp", "rank": "s", "link": "934" }
+    "ダイアリン": { "faction": "クランプスの黒枝", "specialty": "撃破", "attribute": "物理", "image": "dialyn.webp", "rank": "s", "link": "932" },
+    "盤岳": { "faction": "クランプスの黒枝", "specialty": "命破", "attribute": "炎", "image": "banyue.webp", "rank": "s", "link": "934" }
   }
