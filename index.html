@@ -5,17 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <!-- ページタイトル -->
     <title>ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -</title>
-
-    <!-- ファビコン -->
     <link rel="icon" href="/assets/favicon-32x32.ico?v=1" type="image/x-icon">
 
-    <!-- ページ説明（SEO用） -->
     <meta name="description"
         content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。攻撃力や会心補正・バフ補正などを入力して、通常時ダメージ/会心時ダメージ/ダメージ期待値をシミュレーションできます。" />
 
-    <!-- OGPタグ（SNSシェア用） -->
     <meta property="og:title" content="ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -" />
     <meta property="og:description" content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。" />
     <meta property="og:type" content="website" />
@@ -24,15 +19,13 @@
     <meta property="og:site_name" content="ZZZ Dmg Calc" />
     <meta property="og:locale" content="ja_JP" />
 
-    <!-- Twitterカード -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@Maybe515" />
 
-    <!-- CSS -->
     <link rel="stylesheet" href="./css/style.css" />
 </head>
 
-<body class="theme">
+<body class="theme--zzz">
     <main class="layout">
 
         <!-- ヘッダー -->
@@ -40,18 +33,10 @@
             <div class="header__row">
                 <a href="https://wiki.hoyolab.com/pc/zzz/" target="_blank" class="header__logo-link tooltip">
                     <img src="./assets/logo.png" alt="Site Logo" class="header__logo">
-                    <span class="tooltip__content">
-                        HoYoWiki に飛びます
-                    </span>
+                    <span class="tooltip__content">HoYoWiki に飛びます</span>
                 </a>
-                <h1 class="header__title">
-                    <!-- <h1 data-i18n="title"> -->
-                    ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -
-                </h1>
+                <h1 class="header__title">ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -</h1>
                 <div class="header__meta">
-                    <!-- <div class="lang-switcher">
-                        <button id="langToggle" class="lang-switcher__button">ja</button>
-                    </div> -->
                     <span class="header__last-modified" id="lastModified"></span>
                     <span class="info-circle tooltip" tabindex="0">？
                         <span class="tooltip__content">ここに補足説明を表示します</span>
@@ -65,10 +50,10 @@
             <div class="mode__grid">
                 <fieldset class="mode__toggle mode__toggle--md">
                     <legend class="visually-hidden">計算モード選択</legend>
-                    <input type="radio" name="calcMode" value="normal" id="modeNormal" checked />
+                    <input type="radio" name="calcMode" value="mode--normal" id="modeNormal" checked />
                     <label for="modeNormal" class="mode__label">通常ダメージ</label>
 
-                    <input type="radio" name="calcMode" value="anomaly" id="modeAnomaly" />
+                    <input type="radio" name="calcMode" value="mode--anomaly" id="modeAnomaly" />
                     <label for="modeAnomaly" class="mode__label">状態異常ダメージ</label>
                 </fieldset>
                 <button id="resetBtn" class="btn btn--rst">初期値に戻す</button>
@@ -88,41 +73,39 @@
                             <h3 class="card__title">エージェント</h3>
                             <div class="agent-select">
                                 <div class="agent-select__left">
-                                    <a class="agent-link tooltip" id="agentLink" href="#" target="_blank"
-                                        rel="noopener noreferrer">
+                                    <a id="agentLink" href="#" target="_blank" rel="noopener noreferrer"
+                                        class="tooltip">
                                         <img id="agentImage" class="agent-select__image" alt="キャラクター画像" />
-                                        <span class="tooltip__content">
-                                            HoYoWiki の キャラクターページに飛びます
-                                        </span>
+                                        <span class="tooltip__content">HoYoWiki の キャラクターページに飛びます</span>
                                     </a>
                                     <img id="rankImage" class="agent-rank-icon" alt="ランク画像" />
                                 </div>
                                 <div class="agent-select__right">
                                     <label for="agentSelect" class="visually-hidden">エージェント選択</label>
                                     <select id="agentSelect" class="form__input"></select>
-                                    <dl class="kv-list">
+                                    <div class="kv-list">
                                         <div class="kv">
-                                            <dt class="kv__label">陣営</dt>
-                                            <dd id="factionWrapper" class="kv__value">
+                                            <span class="kv__label">陣営</span>
+                                            <span id="factionWrapper" class="kv__value">
                                                 <img id="factionIcon" class="icon icon--sm" alt="" />
-                                                <span id="faction">-</span>
-                                            </dd>
+                                                <span class="text-ellipsis" id="faction">-</span>
+                                            </span>
                                         </div>
                                         <div class="kv">
-                                            <dt class="kv__label">役割</dt>
-                                            <dd id="specialtyWrapper" class="kv__value">
+                                            <span class="kv__label">役割</span>
+                                            <span id="specialtyWrapper" class="kv__value">
                                                 <img id="specialtyIcon" class="icon icon--sm" alt="" />
                                                 <span id="specialty">-</span>
-                                            </dd>
+                                            </span>
                                         </div>
                                         <div class="kv">
-                                            <dt class="kv__label">属性</dt>
-                                            <dd id="attributeWrapper" class="kv__value">
+                                            <span class="kv__label">属性</span>
+                                            <span id="attributeWrapper" class="kv__value">
                                                 <img id="attributeIcon" class="icon icon--sm" alt="" />
                                                 <span id="attribute">-</span>
-                                            </dd>
+                                            </span>
                                         </div>
-                                    </dl>
+                                    </div>
                                 </div>
                             </div>
                         </article>
@@ -192,7 +175,7 @@
                         </article>
 
                         <!-- その他 -->
-                        <article class="card card--other">
+                        <article class="card card--other-agent">
                             <h3 class="card__title">その他</h3>
                             <div class="form form--grid">
                                 <label for="skillPct" class="form__label is-disabled-anomaly">スキルダメージ倍率 [%]</label>
@@ -244,16 +227,16 @@
                             <h3 class="card__title">エネミー</h3>
                             <label for="enemSelect" class="visually-hidden">エネミー選択</label>
                             <select id="enemSelect" class="form__input"></select>
-                            <dl class="kv-list">
+                            <div class="kv-list">
                                 <div class="kv">
-                                    <dt class="kv__label">弱点属性</dt>
-                                    <dd id="attrWeak" class="kv__value">-</dd>
+                                    <span class="kv__label">弱点属性</span>
+                                    <span id="attrWeak" class="kv__value">-</span>
                                 </div>
                                 <div class="kv">
-                                    <dt class="kv__label">耐性属性</dt>
-                                    <dd id="attrResist" class="kv__value">-</dd>
+                                    <span class="kv__label">耐性属性</span>
+                                    <span id="attrResist" class="kv__value">-</span>
                                 </div>
-                            </dl>
+                            </div>
                         </article>
 
                         <article class="card card--param">
@@ -306,11 +289,11 @@
                             </div>
                         </article>
 
-                        <article class="card card--other">
+                        <article class="card card--other-enemy">
                             <h3 class="card__title">その他</h3>
                             <div class="form form--row">
                                 <input type="checkbox" id="breakToggle" class="form__checkbox" />
-                                <label for="breakToggle" class="form__label break__label">敵をブレイク状態にする</label>
+                                <label for="breakToggle" class="form__label form__label--break">敵をブレイク状態にする</label>
                             </div>
                             <div id="breakControls" class="form form--row">
                                 <label for="breakBonusPct" class="form__label">ブレイク倍率 [%]</label>
@@ -326,7 +309,6 @@
         <details class="details">
             <summary class="details__summary">オプション</summary>
             <article class="card card--option">
-                <h3 class="card__title">オプション</h3>
                 <label for="digits" class="form__label">小数点桁数</label>
                 <input type="number" id="digits" class="form__input" value="0" min="0" max="6" />
             </article>
@@ -339,17 +321,17 @@
                 <article class="result__card is-hidden-anomaly" role="status">
                     <h3 class="result__label">通常時</h3>
                     <div class="result__value" id="nonCrit">-</div>
-                    <button type="button" class="copy-icon" aria-label="通常時の値をコピー">📋コピー</button>
+                    <button type="button" class="copy-icon u-fade-hover" aria-label="通常時の値をコピー">📋コピー</button>
                 </article>
                 <article class="result__card is-hidden-anomaly" role="status">
                     <h3 class="result__label">会心時</h3>
                     <div class="result__value" id="crit">-</div>
-                    <button type="button" class="copy-icon" aria-label="会心時の値をコピー">📋コピー</button>
+                    <button type="button" class="copy-icon u-fade-hover" aria-label="会心時の値をコピー">📋コピー</button>
                 </article>
                 <article class="result__card" role="status">
                     <h3 class="result__label">期待値</h3>
                     <div class="result__value" id="expected">-</div>
-                    <button type="button" class="copy-icon" aria-label="期待値をコピー">📋コピー</button>
+                    <button type="button" class="copy-icon u-fade-hover" aria-label="期待値をコピー">📋コピー</button>
                 </article>
             </div>
         </section>
@@ -373,64 +355,51 @@
         <!-- 中間倍率 -->
         <details class="details">
             <summary class="details__summary">中間倍率を見る</summary>
-            <dl class="kv-list">
+            <div class="kv-list">
                 <div class="kv">
-                    <dt class="kv__label">基礎ダメージ</dt>
-                    <dd id="base" class="kv__value">-</dd>
+                    <span class="kv__label">基礎ダメージ</span>
+                    <span id="base" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <dt class="kv__label">属性ダメ・与ダメ補正</dt>
-                    <dd id="totalBonus" class="kv__value">-</dd>
+                    <span class="kv__label">属性ダメ・与ダメ補正</span>
+                    <span id="totalBonus" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <dt class="kv__label">非会心倍率</dt>
-                    <dd id="nonCritMul" class="kv__value">-</dd>
+                    <span class="kv__label">非会心倍率</span>
+                    <span id="nonCritMul" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <dt class="kv__label">会心倍率</dt>
-                    <dd id="critMul" class="kv__value">-</dd>
+                    <span class="kv__label">会心倍率</span>
+                    <span id="critMul" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <dt class="kv__label">期待値会心倍率</dt>
-                    <dd id="expCritMul" class="kv__value">-</dd>
+                    <span class="kv__label">期待値会心倍率</span>
+                    <span id="expCritMul" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <dt class="kv__label">防御補正</dt>
-                    <dd id="defMul" class="kv__value">-</dd>
+                    <span class="kv__label">防御補正</span>
+                    <span id="defMul" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <dt class="kv__label">相性補正</dt>
-                    <dd id="resiMul" class="kv__value">-</dd>
+                    <span class="kv__label">相性補正</span>
+                    <span id="resiMul" class="kv__value">-</span>
                 </div>
-            </dl>
+            </div>
+
         </details>
 
         <!-- フッター -->
         <footer class="footer">
-            <!-- <div class="footer__lang--ja">
-                <p class="footer__disclaimer">
-                    免責事項: 本ツールは非公式の検証用ツールであり、HoYoverse とは一切関係がありません。<br>
-                    ゲーム内の仕様変更により数値が異なる場合があります。
-                </p>
-                <p class="footer__copyright">
-                    「HoYoverse」および「ゼンレスゾーンゼロ」は、HoYoverse の商標または登録商標です。<br>
-                    ゲーム内のコンテンツおよびリソースの著作権はすべて HoYoverse に帰属します。
-                </p>
-            </div> -->
-
-            <div class="footer__lang--en">
-                <p class="footer__disclaimer">
-                    Disclaimer: This is an unofficial fan-made tool for testing purposes and is not affiliated with or
-                    endorsed by HoYoverse.<br>
-                    Due to possible game updates, actual values may differ.
-                </p>
-                <p class="footer__copyright">
-                    © HoYoverse. All rights reserved.<br>
-                    "HoYoverse" and "Zenless Zone Zero" are trademarks or registered trademarks of HoYoverse.
-                </p>
-            </div>
-
-            <p class="footer__credit">
+            <p class="footer__text">
+                Disclaimer: This is an unofficial fan-made tool for testing purposes and is not affiliated with or
+                endorsed by HoYoverse.<br>
+                Due to possible game updates, actual values may differ.
+            </p>
+            <p class="footer__text">
+                © HoYoverse. All rights reserved.<br>
+                "HoYoverse" and "Zenless Zone Zero" are trademarks or registered trademarks of HoYoverse.
+            </p>
+            <p class="footer__text">
                 Created by
                 <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
                     rel="noopener noreferrer">Maybe515</a> ｜

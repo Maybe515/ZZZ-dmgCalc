@@ -84,18 +84,18 @@ function updateAgentInfo() {
 }
 
 // ---------------- Mode handling ----------------
-const getCalcMode = () => q('input[name="calcMode"]:checked')?.value || "normal";
+const getCalcMode = () => q('input[name="calcMode"]:checked')?.value || "mode--normal";
 
 function updateVisibilityByMode() {
   const mode = getCalcMode();
   const toggleClasses = [
-    { selector: ".is-disabled-normal", condition: mode === "normal" },
-    { selector: ".is-disabled-anomaly", condition: mode === "anomaly" }
+    { selector: ".is-disabled-normal", condition: mode === "mode--normal" },
+    { selector: ".is-disabled-anomaly", condition: mode === "mode--anomaly" }
   ];
   toggleClasses.forEach(({ selector, condition }) =>
     qa(selector).forEach(el => el.classList.toggle("is-disabled", condition))
   );
-  qa(".is-hidden-anomaly").forEach(el => { el.style.display = (mode === "anomaly") ? "none" : ""; });
+  qa(".is-hidden-anomaly").forEach(el => { el.style.display = (mode === "mode--anomaly") ? "none" : ""; });
   document.body.dataset.mode = mode;
 }
 
@@ -136,8 +136,8 @@ function compute() {
     + percent.toFrac(v.attrResiDownPct)
     + percent.toFrac(v.attrResiIgnorePct);
 
-  const computeFn = (mode === "normal") ? computeNormal : computeAnomaly;
-  if (mode === "normal") {
+  const computeFn = (mode === "mode--normal") ? computeNormal : computeAnomaly;
+  if (mode === "mode--normal") {
     computeFn(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul, setText);
   }
   else {

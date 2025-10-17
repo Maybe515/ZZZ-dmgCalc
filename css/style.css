@@ -1,44 +1,54 @@
 :root {
-  /* カラーパレット */
-  --bg: #1f1f1f;
-  --fg: #e7e9f5;
-  --muted: #a6accd;
-  --border: #464646;
-  --border-outside: #606060;
-  --ok: #7ee081;
-  --warn: #ffd166;
-  --hover-bg: rgba(255, 255, 255, 0.1);
+  /* Colors */
+  --color-bg: #1f1f1f;
+  --color-fg: #e7e9f5;
+  --color-muted: #a6accd;
 
-  /* 入力系 */
-  --input-bg: #1b1b1b;
-  --input-fg: var(--fg);
-  --input-readonly-bg: var(--input-bg);
-  --input-readonly-fg: var(--muted);
+  /* Borders */
+  --color-border-default: #464646;
+  --color-border-strong: #606060;
 
-  /* カード系 */
-  --card: #101010;
-  --card-heading: #e0e000;
+  /* States */
+  --color-ok: #7ee081;
+  --color-warn: #ffd166;
+  --color-hover-bg: rgba(255, 255, 255, 0.1);
 
-  /* リンク系 */
-  --link-label: #1073ff;
-  --link-hover: #6aa8ff;
+  /* Surfaces */
+  --color-card: #101010;
+  --color-card-heading: #e0e000;
+  --color-input-bg: #1b1b1b;
 
-  /* モード */
-  --mode-bg: #000;
-  --mode-fg: #aaa;
-  --mode-border: #000;
-  --mode-label-hover: #fff;
-  --mode-active-bg: #ffff00;
-  --mode-active-fg: #000;
-  --mode-active-border: #ffff00;
+  /* Links */
+  --color-link: #1073ff;
+  --color-link-hover: #6aa8ff;
 
-  --field-bg: rgba(255, 255, 255, 0.06);
-  --field-border: #444;
-  --field-fg: #ddd;
-  --field-hover-bg: rgba(255, 255, 255, 0.10);
-  --field-hover-border: #666;
-  --field-focus-ring: #88c0d0;
-  --field-shadow: rgba(0, 0, 0, 0.35);
+  /* Mode toggle */
+  --color-mode-bg: #000;
+  --color-mode-fg: #aaa;
+  --color-mode-active-bg: #ffff00;
+  --color-mode-active-fg: #000;
+
+  /* Fields */
+  --color-field-bg: rgba(255, 255, 255, 0.06);
+  --color-field-border: #444;
+  --color-field-hover-bg: rgba(255, 255, 255, 0.10);
+  --color-field-hover-border: #666;
+  --color-field-focus-ring: #88c0d0;
+
+  /* Spacing */
+  --space-xs: .25rem;
+  --space-sm: .5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+
+  /* Shadows */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.3);
 }
 
 /* ---------------- Base ---------------- */
@@ -48,13 +58,73 @@
 
 body {
   margin: 0;
-  width: 100%;
   min-height: 100vh;
   min-width: 565px;
-  padding: 1.25rem 0 0;
-  background: var(--bg);
-  color: var(--fg);
+  padding-top: 1.25rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+/* ---------------- Utility ---------------- */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+.text-ellipsis {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.is-disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+.u-mt-sm {
+  margin-top: .5rem;
+}
+
+.u-mt-md {
+  margin-top: 1rem;
+}
+
+.u-mt-lg {
+  margin-top: 1.5rem;
+}
+
+.u-text-red {
+  color: red;
+}
+
+.u-text-blue {
+  color: blue;
+}
+
+.u-text-green {
+  color: green;
+}
+
+.u-bg-highlight {
+  background: #baeeff;
+  padding: 0 0.2rem;
+}
+
+.u-fade-hover {
+  opacity: 0;
+  transition: all .2s ease;
+}
+
+.u-fade-hover:hover,
+.u-fade-hover:focus-visible {
+  opacity: 1;
+  background: var(--color-hover-bg);
 }
 
 /* ---------------- Header ---------------- */
@@ -69,7 +139,7 @@ body {
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px) saturate(150%);
   -webkit-backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--color-border-default);
   padding: 0 .75rem;
   z-index: 1000;
 }
@@ -105,18 +175,14 @@ body {
   align-items: center;
   gap: .25rem;
   font-size: 0.85rem;
-  color: var(--muted, #666);
-}
-
-.header__last-modified {
-  white-space: nowrap;
+  color: var(--color-muted);
 }
 
 .lang-switcher__button {
   padding: 0.3rem 0.6rem;
   font-size: 0.85rem;
   border: 1px solid #444;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: #222;
   color: #eee;
   cursor: pointer;
@@ -126,7 +192,6 @@ body {
 .lang-switcher__button:hover {
   background: #333;
 }
-
 
 /* ---------------- Layout ---------------- */
 .layout {
@@ -163,24 +228,24 @@ body {
 .card {
   display: flex;
   flex-direction: column;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
   padding: .75rem;
 }
 
 .card__title {
   font-size: 1rem;
   margin: 0 0 .5rem;
-  color: var(--card-heading);
+  color: var(--color-card-heading);
 }
 
 .card--two-column {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: .5rem;
-  background: var(--bg);
-  border: thick double var(--border-outside);
+  background: var(--color-bg);
+  border: thick double var(--color-border-strong);
 }
 
 .card__col {
@@ -216,21 +281,26 @@ body {
   flex: 1;
   width: 100%;
   min-width: 80px;
-  background: var(--input-bg);
-  color: var(--input-fg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  background: var(--color-input-bg);
+  color: var(--color-fg);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
   padding: .5rem;
   font-size: .95rem;
 }
 
 .form__input[readonly] {
-  background: var(--input-readonly-bg);
-  color: var(--input-readonly-fg);
+  background: var(--color-input-bg);
+  color: var(--color-muted);
 }
 
 .form__checkbox {
   transform: scale(1.1);
+  cursor: pointer;
+}
+
+.form__label--break:hover {
+  text-decoration: underline;
   cursor: pointer;
 }
 
@@ -250,8 +320,8 @@ body {
 .mode__toggle {
   display: flex;
   flex-wrap: wrap;
-  border: 3px solid var(--border-outside);
-  border-radius: 6px;
+  border: 3px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
   gap: .5rem 1rem;
 }
 
@@ -260,20 +330,20 @@ body {
 }
 
 .mode__toggle input[type="radio"]:checked+.mode__label {
-  background: var(--mode-active-bg);
-  color: var(--mode-active-fg);
-  border-color: var(--mode-active-border);
+  background: var(--color-mode-active-bg);
+  color: var(--color-mode-active-fg);
+  border-color: var(--color-mode-active-bg);
 }
 
 .mode__toggle input[type="radio"]:not(:checked)+.mode__label:hover {
-  color: var(--mode-label-hover);
+  color: #fff;
 }
 
 .mode__label {
-  border: 2px solid var(--mode-border);
+  border: 2px solid var(--color-mode-bg);
   border-radius: 30px;
-  background: var(--mode-bg);
-  color: var(--mode-fg);
+  background: var(--color-mode-bg);
+  color: var(--color-mode-fg);
   cursor: pointer;
   font-weight: 600;
   min-width: 100px;
@@ -282,22 +352,12 @@ body {
   transition: all .2s ease;
 }
 
-/* ---------------- Break toggle ---------------- */
-.break__label {
-  cursor: pointer;
-}
-
-.break__label:hover {
-  text-decoration: underline;
-}
-
 /* ---------------- Select ---------------- */
 select {
-  background: var(--field-bg, #222);
-  background-color: #222;
+  background: var(--color-field-bg);
   color: #eee;
-  border: 1px solid var(--field-border, #444);
-  border-radius: 6px;
+  border: 1px solid var(--color-field-border);
+  border-radius: var(--radius-md);
   padding: 0.4rem 0.6rem;
   padding-right: 1.8rem;
   font-size: 0.95rem;
@@ -316,29 +376,26 @@ select option:disabled {
 }
 
 select:focus {
-  background-color: #222;
-  background: var(--field-bg, #222);
+  background: var(--color-field-bg);
   color: #eee;
   outline: none;
 }
 
-/* ---------------- input & Select ---------------- */
+/* ---------------- input & Select 共通 ---------------- */
 input:hover,
 select:hover {
-  background: var(--field-hover-bg);
-  border-color: var(--field-hover-border);
-  box-shadow: 0 4px 12px var(--field-shadow);
+  background: var(--color-field-hover-bg);
+  border-color: var(--color-field-hover-border);
+  box-shadow: var(--shadow-sm);
 }
 
-/* キーボード操作時の視認性（フォーカスリング） */
 input:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--field-focus-ring);
+  outline: 2px solid var(--color-field-focus-ring);
   outline-offset: 2px;
-  box-shadow: 0 6px 16px var(--field-shadow);
+  box-shadow: var(--shadow-sm);
 }
 
-/* 無効状態はホバー強調を抑制 */
 input[disabled],
 select[disabled] {
   opacity: 0.6;
@@ -347,8 +404,8 @@ select[disabled] {
 
 input[disabled]:hover,
 select[disabled]:hover {
-  background: var(--field-bg);
-  border-color: var(--field-border);
+  background: var(--color-field-bg);
+  border-color: var(--color-field-border);
   box-shadow: none;
   transform: none;
 }
@@ -356,8 +413,8 @@ select[disabled]:hover {
 /* ---------------- Button ---------------- */
 .btn {
   cursor: pointer;
-  border: 1px solid var(--border);
-  border-radius: 8px;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
   padding: .6rem .8rem;
   line-height: 1;
   white-space: nowrap;
@@ -368,13 +425,13 @@ select[disabled]:hover {
   font-size: .9rem;
   font-weight: 600;
   padding: 0 .75rem;
-  color: var(--fg);
-  background: var(--card);
+  color: var(--color-fg);
+  background: var(--color-card);
   transition: background .2s ease;
 }
 
 .btn--rst:hover {
-  background: var(--hover-bg);
+  background: var(--color-hover-bg);
 }
 
 /* ---------------- Tooltip ---------------- */
@@ -389,7 +446,6 @@ select[disabled]:hover {
   background-color: #444;
   color: #fff;
   font-size: 0.8em;
-  line-height: 1;
   cursor: pointer;
 }
 
@@ -403,11 +459,10 @@ select[disabled]:hover {
   position: absolute;
   top: 105%;
   left: 20%;
-  transform: translate(0);
   background: #333;
   color: #fff;
-  padding: 0.5rem 0.5rem;
-  border-radius: 4px;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
   font-size: 0.75rem;
   white-space: nowrap;
   transition: opacity 0.2s;
@@ -428,11 +483,12 @@ select[disabled]:hover {
 
 .kv {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  border-top: 1px dashed var(--border);
-  padding: .5rem 0;
-  color: var(--muted);
   gap: .3rem;
+  padding: .5rem 0;
+  color: var(--color-muted);
+  border-top: 1px dashed var(--color-border-default);
 }
 
 .kv__label {
@@ -446,10 +502,8 @@ select[disabled]:hover {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  color: var(--fg);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  gap: .25rem;
+  color: var(--color-fg);
 }
 
 .kv__value img {
@@ -459,9 +513,6 @@ select[disabled]:hover {
 .kv__value span {
   flex: 0 1 auto;
   min-width: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* ---------------- Agent-Select ---------------- */
@@ -482,7 +533,8 @@ select[disabled]:hover {
   min-width: 0;
 }
 
-.agent-select__right select {
+.agent-select__right select,
+.card--enemy select {
   margin-top: .25rem;
 }
 
@@ -491,8 +543,8 @@ select[disabled]:hover {
   width: 100px;
   height: 100%;
   object-fit: cover;
-  border-radius: 6px;
-  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-default);
 }
 
 .agent-rank-icon {
@@ -501,10 +553,6 @@ select[disabled]:hover {
   left: 1px;
   width: 25px;
   height: 25px;
-}
-
-.card--enemy select {
-  margin-top: .25rem;
 }
 
 /* ---------------- Icon ---------------- */
@@ -519,33 +567,16 @@ select[disabled]:hover {
   top: 8px;
   right: 10px;
   height: 30px;
-  font-size: 1rem;
   border: none;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   background: transparent;
-  color: var(--fg);
+  color: var(--color-fg);
   cursor: pointer;
-  opacity: 0;
-  transition: all .2s ease;
-}
-
-.copy-icon:hover {
-  background: var(--hover-bg);
 }
 
 .result__card:hover .copy-icon,
 .copy-icon:focus-visible {
   opacity: 1;
-}
-
-/* ---------------- Result / Details / Footer 共通 ---------------- */
-.result,
-.details,
-.footer {
-  width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
 }
 
 /* ---------------- Result ---------------- */
@@ -556,42 +587,34 @@ select[disabled]:hover {
 .result__grid {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: .75rem;
+}
+
+[data-mode="mode--anomaly"] .result__grid {
+  justify-content: flex-start;
 }
 
 .result__card {
   position: relative;
   flex: 1 1 220px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
   padding: .9rem;
+  width: 100%;
+  max-width: 40%;
 }
 
 .result__label {
-  color: var(--muted);
+  color: var(--color-muted);
   font-size: .9rem;
 }
 
 .result__value {
   font-size: 1.6rem;
   margin-top: .4rem;
-  color: var(--ok);
-}
-
-/* anomaly のときだけ非表示・左寄せ */
-body[data-mode="anomaly"] .is-hidden-anomaly {
-  display: none !important;
-}
-
-body[data-mode="anomaly"] .result__grid {
-  justify-content: flex-start;
-}
-
-body[data-mode="anomaly"] .result__card {
-  flex: 0 0 auto;
-  min-width: 220px;
-  max-width: 260px;
+  color: var(--color-ok);
 }
 
 /* ---------------- Details ---------------- */
@@ -625,10 +648,10 @@ details[open] .details__summary::before {
 .details__summary::after {
   position: absolute;
   left: 0;
+  bottom: -2px;
   content: "";
   width: 100%;
   height: 1.5px;
-  bottom: -2px;
   background-color: currentColor;
   transform: scaleX(0);
   transform-origin: left center;
@@ -644,53 +667,29 @@ details[open] .details__summary::before {
   margin-top: 1.5rem;
 }
 
-.footer__disclaimer,
-.footer__copyright,
-.footer__credit,
-.footer__last-modified {
+.footer__text {
   display: block;
   margin-top: .5rem;
   font-size: .85rem;
-  color: var(--muted);
+  color: var(--color-muted);
 }
 
 /* ---------------- Links ---------------- */
 a {
-  color: var(--link-label);
+  color: var(--color-link);
 }
 
 a:hover {
-  color: var(--link-hover);
-}
-
-/* ---------------- Utility ---------------- */
-.is-disabled {
-  opacity: .5;
-  pointer-events: none;
-}
-
-.u-mt-sm {
-  margin-top: .5rem;
-}
-
-.u-mt-md {
-  margin-top: 1rem;
-}
-
-.u-mt-lg {
-  margin-top: 1.5rem;
+  color: var(--color-link-hover);
 }
 
 /* ---------------- Responsive ---------------- */
-
-/* PC表示（1001px以上） */
 @media (min-width: 1001px) {
   .result--fixed {
     display: none !important;
   }
 }
 
-/* モバイル表示（1000px以下） */
 @media (max-width: 1000px) {
   .grid {
     flex-direction: column;
@@ -700,7 +699,6 @@ a:hover {
   .grid>.card {
     flex: none;
     width: 100%;
-    min-width: 0;
   }
 
   .content-section {
@@ -715,10 +713,8 @@ a:hover {
     z-index: 999;
     background: rgba(20, 20, 20, 0.6);
     backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border-top: 1px solid var(--border, #444);
+    border-top: 1px solid var(--color-border-default);
     padding: .5rem 1rem;
-
     opacity: 0;
     transform: translateY(20px);
     pointer-events: none;
@@ -731,21 +727,19 @@ a:hover {
     pointer-events: auto;
   }
 
-  .result__title {
-    margin: 0 0 .3rem;
-  }
-
-  .result__grid {
-    justify-content: space-around;
+  .result--fixed .result__grid {
+    display: flex;
+    flex-wrap: nowrap;
     gap: .5rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
-  .result__card {
-    flex: 1;
+  .result--fixed .result__card {
+    min-width: 150px;
   }
 }
 
-/* 小画面表示（600px以下） */
 @media (max-width: 600px) {
   .card--two-column {
     grid-template-columns: 1fr;
@@ -783,27 +777,8 @@ h3 {
 /* ---------------- Section Divider ---------------- */
 .section-divider {
   border: none;
-  border-top: 1px solid var(--muted);
+  border-top: 1px solid var(--color-muted);
   margin: 1rem 0 .5rem;
-}
-
-/* ---------------- Mode toggle size modifiers ---------------- */
-.mode__toggle--sm .mode__label {
-  font-size: .75rem;
-  padding: .3em .6em;
-  width: 150px;
-}
-
-.mode__toggle--md .mode__label {
-  font-size: 1rem;
-  padding: .5em 1em;
-  width: 160px;
-}
-
-.mode__toggle--lg .mode__label {
-  font-size: 1.25rem;
-  padding: .75em 1.25em;
-  width: 250px;
 }
 
 /* ---------------- Toast ---------------- */
@@ -815,7 +790,7 @@ h3 {
   background: #333;
   color: #fff;
   padding: .6rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   font-size: .9rem;
   opacity: 0;
   pointer-events: none;
@@ -832,12 +807,13 @@ h3 {
 }
 
 /* ---------------- Popup ---------------- */
-/* ポップアップ全体 */
 .popup {
   position: fixed;
   inset: 0;
-  display: none; /* 初期は非表示 */
-  z-index: 2000; /* 最前面に */
+  display: none;
+  /* 初期は非表示 */
+  z-index: 2000;
+  /* 最前面に */
 }
 
 /* 開くとき */
@@ -852,27 +828,46 @@ h3 {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to   { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @keyframes fadeOut {
-  from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(0.95); }
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
 }
 
 /* 背景の半透明 */
 .popup__backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   opacity: 0;
   animation: backdropFade 0.25s ease-out forwards;
 }
 
 @keyframes backdropFade {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 /* コンテンツ本体 */
@@ -882,15 +877,15 @@ h3 {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   max-width: 500px;
   width: calc(100% - 2rem);
   background: #fff;
   color: #333;
   padding: 1rem;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   z-index: 2001;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  box-shadow: var(--shadow-md);
 }
 
 .popup__content p {
@@ -903,19 +898,29 @@ h3 {
   margin-top: 1rem;
   padding: 0.4rem 0.8rem;
   border: 1px solid #aaa;
-  border-radius: 4px;
+  border-radius: var(--radius-sm);
   background: #eee;
   cursor: pointer;
 }
+
 .popup__close:hover {
   background: #ddd;
 }
 
-.popup--highlight {
-  background: yellow;
-  padding: 0 0.2rem;
+/* テキスト装飾ユーティリティ */
+.u-text-red {
+  color: red;
 }
 
-.popup--red {
-  color: red;
+.u-text-blue {
+  color: blue;
+}
+
+.u-text-green {
+  color: green;
+}
+
+.u-bg-highlight {
+  background: #baeeff;
+  padding: 0 0.2rem;
 }
