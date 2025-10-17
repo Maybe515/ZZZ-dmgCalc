@@ -38,9 +38,7 @@
                 <h1 class="header__title">ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -</h1>
                 <div class="header__meta">
                     <span class="header__last-modified" id="lastModified"></span>
-                    <span class="info-circle tooltip" tabindex="0">？
-                        <span class="tooltip__content">ここに補足説明を表示します</span>
-                    </span>
+                    <span class="info-circle info-btn" data-key="changeLog">？</span>
                 </div>
             </div>
         </header>
@@ -49,7 +47,9 @@
         <section class="mode">
             <div class="mode__grid">
                 <fieldset class="mode__toggle mode__toggle--md">
-                    <legend class="visually-hidden">計算モード選択</legend>
+                    <legend class="visually-hidden">計算モード選択
+                        <span class="info-circle info-btn" data-key="modeCalc">？</span>
+                    </legend>
                     <input type="radio" name="calcMode" value="mode--normal" id="modeNormal" checked />
                     <label for="modeNormal" class="mode__label">通常ダメージ</label>
 

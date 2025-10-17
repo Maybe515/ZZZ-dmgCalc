@@ -5,6 +5,12 @@
             ""
         ]
     },
+    "modeCalc": {
+        "text": [
+            "<span class='u-text-header'>計算モード</span>",
+            ""
+        ]
+    },
     "lvCorr": {
         "text": [
             "エージェントの【レベル】に応じて変動する値。",
