@@ -908,6 +908,11 @@ h3 {
 }
 
 /* テキスト装飾ユーティリティ */
+.u-bg-highlight {
+  background: lemonchiffon;
+  padding: 0 0.2rem;
+}
+
 .u-text-red {
   color: red;
 }
@@ -920,7 +925,30 @@ h3 {
   color: green;
 }
 
-.u-bg-highlight {
-  background: #baeeff;
-  padding: 0 0.2rem;
+.u-text-physical {
+  color: darkorange;
+}
+
+.u-text-ice {
+  color: deepskyblue;
+}
+
+.u-text-electronic {
+  color: #1073ff;
+}
+
+.u-text-fire {
+  color: red;
+}
+
+.u-text-ether {
+  color: deeppink;
+}
+
+.u-text-bold, .u-text-header {
+  font-weight: bold;
+}
+
+.u-text-header {
+  font-size: large;
 }

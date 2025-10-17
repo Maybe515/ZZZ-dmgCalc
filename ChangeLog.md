@@ -59,15 +59,16 @@ Author：Maybe515
 Author：Maybe515
 
 ### Added
-- OGPタグを追加
+- SEO用に ページ説明 を追加
+- SNSシェア用に `OGPタグ`、`Twitterカード` を追加
 
 ### Refactored
 - アクセシビリティ強化
-- JavaScriptを以下のようにESM対応
-    - calc.js：計算ロジック
-    - ui.js：DOM操作・イベントハンドラ・トースト通知など
-    - main.js：初期化処理
-    - data.js：データロード（JSON）
+- JavaScriptをESM対応。以下のようにファイル分けを実施。
+    - `calc.js`：計算ロジック
+    - `ui.js`：DOM操作、イベントハンドラ、トースト通知など
+    - `main.js`：初期化処理
+    - `data.js`：データロード（配列データ）
 
 - ディレクトリ整理
     - `css`, `js` フォルダを作成し、該当ファイルを移行
@@ -130,5 +131,5 @@ Author：Maybe515
 <br>
 
 # 実装予定
-- 英語表記
+- 言語切替ボタン
 - シェアボタン
