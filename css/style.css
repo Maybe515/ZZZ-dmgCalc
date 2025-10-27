@@ -442,6 +442,8 @@ select[disabled]:hover {
   margin: 0 .25rem;
   width: 1.4em;
   height: 1.4em;
+  min-width: 1.4em;
+  min-height: 1.4em;
   border-radius: 50%;
   background-color: #444;
   color: #fff;
@@ -603,6 +605,9 @@ select[disabled]:hover {
   border-radius: var(--radius-lg);
   padding: .9rem;
   width: 100%;
+}
+
+[data-mode="mode--anomaly"] .result__card {
   max-width: 40%;
 }
 
@@ -738,6 +743,10 @@ a:hover {
   .result--fixed .result__card {
     min-width: 150px;
   }
+
+  [data-mode="mode--anomaly"] .result__card {
+    max-width: 50%;
+  }
 }
 
 @media (max-width: 600px) {
@@ -747,6 +756,10 @@ a:hover {
 
   .result__grid {
     width: 100%;
+    max-width: 100%;
+  }
+
+  [data-mode="mode--anomaly"] .result__card {
     max-width: 100%;
   }
 }
@@ -945,7 +958,8 @@ h3 {
   color: deeppink;
 }
 
-.u-text-bold, .u-text-header {
+.u-text-bold,
+.u-text-header {
   font-weight: bold;
 }
 

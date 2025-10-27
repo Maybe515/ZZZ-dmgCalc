@@ -123,9 +123,7 @@
                                 <input type="number" id="lvCorrPct" class="form__input is-disabled-normal" value="200"
                                     max="200" readonly />
 
-                                <label for="atk" class="form__label">最終攻撃力 [N]
-                                    <span class="info-circle info-btn" data-key="atk">？</span>
-                                </label>
+                                <label for="atk" class="form__label">最終攻撃力 [N] </label>
                                 <input type="number" id="atk" class="form__input" value="1500" min="0" />
 
                                 <label for="anomalyMastery" class="form__label is-disabled-normal">異常マスタリー [N]</label>
@@ -316,7 +314,9 @@
 
         <!-- 結果 -->
         <section class="result">
-            <h2 class="result__title">結果</h2>
+            <h2 class="result__title">結果
+                <span class="info-circle info-btn" data-key="result">？</span>
+            </h2>
             <div class="result__grid">
                 <article class="result__card is-hidden-anomaly" role="status">
                     <h3 class="result__label">通常時</h3>
@@ -358,10 +358,11 @@
             <div class="kv-list">
                 <div class="kv">
                     <span class="kv__label">基礎ダメージ</span>
+                    <span class="info-circle info-btn" data-key="baseAtk">？</span>
                     <span id="base" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <span class="kv__label">属性ダメ・与ダメ補正</span>
+                    <span class="kv__label">属性ダメージ・与ダメージ補正</span>
                     <span id="totalBonus" class="kv__value">-</span>
                 </div>
                 <div class="kv">
@@ -374,14 +375,17 @@
                 </div>
                 <div class="kv">
                     <span class="kv__label">期待値会心倍率</span>
+                    <span class="info-circle info-btn" data-key="expCrit">？</span>
                     <span id="expCritMul" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <span class="kv__label">防御補正</span>
+                    <span class="kv__label">防御補正率</span>
+                    <span class="info-circle info-btn" data-key="defMul">？</span>
                     <span id="defMul" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <span class="kv__label">相性補正</span>
+                    <span class="kv__label">属性相性補正率</span>
+                    <span class="info-circle info-btn" data-key="resistMul">？</span>
                     <span id="resiMul" class="kv__value">-</span>
                 </div>
             </div>

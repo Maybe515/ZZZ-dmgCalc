@@ -8,7 +8,9 @@
     "modeCalc": {
         "text": [
             "<span class='u-text-header'>計算モード</span>",
-            ""
+            "通常ダメージと状態異常ダメージを切り替えれます。",
+            "通常ダメージでは、会心が発生しない【通常時】と会心が発生した【会心時】に加え、会心ダメージによる期待値から算出した【期待値】を表示します。",
+            "状態異常ダメージでは、会心が発生しないため【通常時】【会心時】は表示されず、【期待値】のみ表示されます。"
         ]
     },
     "lvCorr": {
@@ -22,18 +24,10 @@
             "※この計算によって求められる値はあくまで近似値であり、実際の数値と異なる場合がございます。"
         ]
     },
-    "atk": {
-        "text": [
-            "攻撃のベースとなる値。",
-            "",
-            "当数値は以下の計算式に基づき、算出しています。",
-            "<span class='u-bg-highlight u-text-bold'>= (<span class='u-text-blue'>【基礎攻撃力 [N]】</span>×<span class='u-text-green'>【攻撃力補正 [%]】+【攻撃力補正 [N]】</span>) ×<span class='u-text-red'>【戦闘時の攻撃力補正 [%]】+【戦闘時の攻撃力補正 [N]】</span></span>"
-        ]
-    },
     "anomalyCorr": {
         "text": [
             "敵が状態異常になった時に発生するダメージ倍率。",
-            "属性ごとのダメージ発生の仕様が異なるため、自動補完される値を【合計ダメージ倍率】としています。",
+            "属性ごとのダメージ発生の仕様が異なるため、本ツールでは自動補完される値を【合計ダメージ倍率】としています。",
             "",
             "合計ダメージ倍率は、状態異常時に一度しかダメージが発生しない<span class='u-text-physical'>【強撃】</span><span class='u-text-ice'>【破氷】</span>は特殊な計算式がないため等倍で設定し、",
             "一定時間継続してダメージが発生する<span class='u-text-fire'>【熱傷】</span><span class='u-text-electronic'>【感電】</span><span class='u-text-ether'>【侵蝕】</span>は以下の計算式で算出しています。",
@@ -49,7 +43,7 @@
     },
     "rangeWeak": {
         "text": [
-            "敵との距離によって補正値が変動します。",
+            "敵との距離によって変動する値。主に遠距離攻撃に対して補正される。",
             "15mまでは減衰はせず、15m以降は5m離れるごとに <span class='u-text-bold'>25%</span> ずつ減少します。",
             "",
             "※一部のキャラクターでは、15mで 30% 減衰するといった特殊な補正があったりしますが、本ツールでは考慮しておりません。"
@@ -57,13 +51,61 @@
     },
     "lvCoeff": {
         "text": [
-            "ここに補足説明を表示します"
+            "エージェントの【レベル】に応じて変動する値。"
         ]
     },
     "attrMatch": {
         "text": [
             "敵の属性による相性（<span class='u-text-blue'>弱点</span>・<span class='u-text-red'>耐性</span>）によって変動する値。",
             "<span class='u-text-blue'>弱点属性</span>は敵のダメージ耐性が <span class='u-text-bold'>-20%</span> され、<span class='u-text-red'>耐性属性</span>は敵のダメージ耐性が <span class='u-text-bold'>+20%</span> されます。"
+        ]
+    },
+    "baseAtk": {
+        "text": [
+            "通常ダメージのベースとなる値。",
+            "",
+            "当数値は以下の計算式に基づき、算出しています。",
+            "<span class='u-bg-highlight u-text-bold'>= 【攻撃力[N]】 × ( 【スキルダメージ倍率[%]】 / 100 )</span>"
+        ]
+    },
+    "expCrit": {
+        "text": [
+            "会心ダメージによる期待値。",
+            "",
+            "当数値は以下の計算式に基づき、算出しています。",
+            "<span class='u-bg-highlight u-text-bold'>= 【ダメージ[N]】 × ( 1 + 【会心率[%]】 × 【会心ダメージ[%]】 )</span>"
+        ]
+    },
+    "defMul": {
+        "text": [
+            "エージェントのレベルによって変動する【レベル係数】やエネミーに設定されている【基礎防御力】、その他バフ補正により決定される値。",
+            "",
+            "当数値は以下の計算式に基づき、算出しています。",
+            "<span class='u-text-bold'>【防御補正率[R]】</span>",
+            "<span class='u-bg-highlight u-text-bold'>= 【レベル係数[N]】 × ( 【レベル係数[N]】 + <span class='u-text-green'>【実行防御力[N]】</span> )</span>",
+            "",
+            "<span class='u-text-green u-text-bold'>【実行防御力[R]】</span>",
+            "<span class='u-bg-highlight u-text-bold'>= <span class='u-text-blue'>【実防御力[R]】</span> × ( 1 - 【貫通率[%]】 + 【貫通値[N]】 )</span></span>",
+            "",
+            "<span class='u-text-blue u-text-bold'>【実防御力[R]】</span>",
+            "<span class='u-bg-highlight u-text-bold'>= 【基礎防御力[R]】 × ( 1 + 【防御力UP[%]】 + 【防御力DOWN[%]】 ) + 【防御実数[N]】</span></span>",
+            "",
+            "※【防御実数】に関してはゲーム上での具体的なバフが確認できないため、本ツールでは考慮していません。"
+        ]
+    },
+    "resistMul": {
+        "text": [
+            "エージェントとエネミーの属性の相性に補正される値。",
+            "ここでは便宜上【属性相性補正率】と称しています。",
+            "",
+            "当数値は以下の計算式に基づき、算出しています。",
+            "<span class='u-bg-highlight u-text-bold'>= 【レベル係数[N]】 × ( 【レベル係数[N]】 + <span class='u-text-green'>【実行防御力[N]】</span> )</span>"
+        ]
+    },
+    "result": {
+        "text": [
+            "計算結果が表示されます。",
+            ""
         ]
     }
 }
