@@ -926,7 +926,7 @@ h3 {
   padding: 0 0.2rem;
 }
 
-.u-text-red {
+.u-text-red, .u-text-fire {
   color: red;
 }
 
@@ -950,10 +950,6 @@ h3 {
   color: #1073ff;
 }
 
-.u-text-fire {
-  color: red;
-}
-
 .u-text-ether {
   color: deeppink;
 }
@@ -965,4 +961,8 @@ h3 {
 
 .u-text-header {
   font-size: large;
+}
+
+.u-text-underline {
+  text-decoration: underline;
 }
