@@ -938,6 +938,14 @@ h3 {
   color: green;
 }
 
+.u-text-purple {
+  color: purple;
+}
+
+.u-text-crimson {
+  color: crimson;
+}
+
 .u-text-physical {
   color: darkorange;
 }
@@ -955,7 +963,13 @@ h3 {
 }
 
 .u-text-bold,
-.u-text-header {
+.u-text-header,
+.u-bg-highlight,
+.u-text-fire,
+.u-text-physical,
+.u-text-ice,
+.u-text-electronic,
+.u-text-ether {
   font-weight: bold;
 }
 
