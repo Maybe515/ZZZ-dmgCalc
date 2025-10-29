@@ -5,7 +5,7 @@
 <br>
 
 ## 🚀 Features
-### For Users
+### - For Users -
 - **通常ダメージ** / **状態異常ダメージ** に計算モードを切替
 - 計算結果に **通常時**、**会心時**、**期待値** を表示（状態異常ダメージは **期待値** のみ）
 - **エージェント** / **エネミー** 選択時にアイコンや情報を表示
@@ -16,7 +16,7 @@
 - オプションによる小数点表示
 - ヘルプテキストによる補足表示
 
-### For Developers
+### - For Developers -
 - JSON駆動のデータ構造でエージェント・エネミー情報やヘルプテキストの新規追加に柔軟に対応。
 
 - **UI/UX 設計**  
@@ -130,13 +130,14 @@ Due to possible game updates, actual values may differ.
 <br>
 
 ## 📜 License
-本プロジェクトは個人およびファンによる使用のみを目的としています。  
+本プロジェクトは主に個人利用を目的としています。  
 再配布または商用利用は禁止されています。
 
 © 2025 [Maybe515](https://www.hoyolab.com/accountCenter/postList?id=144180942). All rights reserved.  
 This project is for **personal/fan use only**. Redistribution or commercial use is prohibited.
 
 <br>
+
 
 
 
