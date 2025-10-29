@@ -120,6 +120,8 @@
 This is an unofficial fan-made tool for testing purposes and is not affiliated with or endorsed by HoYoverse.  
 Due to possible game updates, actual values may differ.
 
+---
+
 「HoYoverse」および「ゼンレスゾーンゼロ」は HoYoverse の商標または登録商標です。  
 ゲーム内のコンテンツおよびリソースの著作権はすべて HoYoverse に帰属します。
 
@@ -136,5 +138,6 @@ Due to possible game updates, actual values may differ.
 This project is for **personal/fan use only**. Redistribution or commercial use is prohibited.
 
 <br>
+
 
 
