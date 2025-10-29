@@ -2,6 +2,7 @@
 
 本ツールは、ゲーム内の数値をもとに検証を目的としたツールです。  
 ゲーム内の仕様変更により、実際の数値と異なる場合がございます。
+
 <br>
 
 ## 🚀 Features
@@ -138,6 +139,7 @@ Due to possible game updates, actual values may differ.
 This project is for **personal/fan use only**. Redistribution or commercial use is prohibited.
 
 <br>
+
 
 
 
