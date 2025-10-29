@@ -2,7 +2,6 @@
 
 本ツールは、ゲーム内の数値をもとに検証を目的としたツールです。  
 ゲーム内の仕様変更により、実際の数値と異なる場合がございます。
-
 <br>
 
 ## 🚀 Features
@@ -91,10 +90,11 @@
 <br>
 
 ## 🔮 Roadmap / ToDo
-- [　] エネミーの追加
-- [　] エネミーアイコンを表示
-- [　] 多言語対応（日本語 / 英語）
-- [　] サイトシェア実装
+- [ ] エネミー情報を追加する
+- [ ] エネミーアイコンをエージェントのように表示する
+- [ ] 更新履歴をサイト上から閲覧できるようにする
+- [ ] 多言語対応（日本語 / 英語）
+- [ ] サイトシェア機能の実装
 
 <br>
 
@@ -121,8 +121,6 @@
 This is an unofficial fan-made tool for testing purposes and is not affiliated with or endorsed by HoYoverse.  
 Due to possible game updates, actual values may differ.
 
----
-
 「HoYoverse」および「ゼンレスゾーンゼロ」は HoYoverse の商標または登録商標です。  
 ゲーム内のコンテンツおよびリソースの著作権はすべて HoYoverse に帰属します。
 
@@ -139,7 +137,5 @@ Due to possible game updates, actual values may differ.
 This project is for **personal/fan use only**. Redistribution or commercial use is prohibited.
 
 <br>
-
-
 
 
