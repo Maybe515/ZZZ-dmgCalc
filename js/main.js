@@ -1,12 +1,14 @@
 // main.js
 import { computeNormal, computeAnomaly, fmt, percent } from "./calc.js";
 import { $, q, qa, setText, setValue, bindCopyButtons } from "./ui.js";
-import { defaults, anomalyCorrTable, rangeTable, matchTable, paths, factionIcons, specialtyIcons, attributeIcons, attributeValueMap } from "./data.js";
+import { defaults, anomalyCorrTable, rangeTable, matchTable, paths, urls, factionIcons, specialtyIcons, attributeIcons, attributeValueMap } from "./data.js";
+import { loadLanguage, bindLanguageToggle } from "./lang.js";
 
 // ---------------- Data ----------------
 const agents = {};
 const enemies = {};
 const lvCoeffTable = {};
+const helpTexts = {};
 
 const fields = [
   "agentLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
@@ -18,39 +20,53 @@ const fields = [
   "digits"
 ];
 
+// ---------------- DOM Helpers ----------------
+function updateText(id, value) {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = value ?? "-";
+  el.title = el.textContent;
+}
+
+function updateIcon(id, value, iconPath, iconMap, altPrefix = "") {
+  updateText(id, value);
+  const el = $(id + "Icon");
+  if (!el) return;
+  if (value && iconMap[value]) {
+    el.src = iconPath + iconMap[value];
+    el.alt = altPrefix ? `${altPrefix}: ${value}` : value;
+  } else {
+    el.src = "";
+    el.alt = "";
+  }
+}
+
+function updateImage(id, src, alt) {
+  const el = $(id);
+  if (!el) return;
+  el.src = src || "";
+  el.alt = alt || "";
+}
+
+function updateLink(id, link) {
+  const el = $(id);
+  if (!el) return;
+  el.href = link || "#";
+  el.style.pointerEvents = link ? "auto" : "none";  // リンクが無い場合は無効化
+}
+
 // ---------------- Agent Info ----------------
 function updateAgentInfo() {
   const sel = $("agentSelect")?.value;
   const agent = agents[sel] || {};
 
-  ["faction", "specialty", "attribute"].forEach(key => {
-    const el = $(key);
-    if (!el) return;
-    el.textContent = agent[key] || "-";
-    el.title = el.textContent;
-  });
+  updateText("faction", agent.faction);
+  updateText("specialty", agent.specialty);
+  updateText("attribute", agent.attribute);
 
-  // アイコン更新
-  const updateFieldWithIcon = (id, value, iconPath, iconMap, altPrefix = "") => {
-    const valueEl = $(id);
-    if (valueEl) {
-      valueEl.textContent = (value ?? "-");
-      valueEl.title = valueEl.textContent;
-    }
-    const iconEl = $(id + "Icon");
-    if (!iconEl || !iconPath || !iconMap) return;
-    if (value && iconMap[value]) {
-      iconEl.src = iconPath + iconMap[value];
-      iconEl.alt = altPrefix ? `${altPrefix}: ${value}` : value;
-    } else {
-      iconEl.src = "";
-      iconEl.alt = "";
-    }
-  };
-
-  updateFieldWithIcon("faction", agent.faction, paths.faction, factionIcons, "陣営");
-  updateFieldWithIcon("specialty", agent.specialty, paths.specialty, specialtyIcons, "役割");
-  updateFieldWithIcon("attribute", agent.attribute, paths.attribute, attributeIcons, "属性");
+  updateIcon("faction", agent.faction, paths.faction, factionIcons, "陣営");
+  updateIcon("specialty", agent.specialty, paths.specialty, specialtyIcons, "役割");
+  updateIcon("attribute", agent.attribute, paths.attribute, attributeIcons, "属性");
 
   // 属性選択反映
   const attrSelect = $("attrSelect");
@@ -59,26 +75,27 @@ function updateAgentInfo() {
     updateAnomalyCorr();
   }
 
-  // 画像・ランク
-  const agentEl = $("agentImage");
-  if (agentEl) {
-    agentEl.src = agent.image ? paths.agent + agent.image : "";
-    agentEl.alt = agent.image ? `画像:${sel}` : "";
-  }
-  const rankEl = $("rankImage");
-  if (rankEl) {
-    rankEl.src = agent.rank ? `${paths.rank}rank_${agent.rank}.png` : "";
-    rankEl.alt = agent.rank ? `ランク${agent.rank}` : "";
-  }
+  // 画像とランク
+  updateImage("agentImage", agent.image ? paths.agent + agent.image : "", agent.image ? `画像:${sel}` : "");
+  updateImage("rankImage", agent.rank ? `${paths.rank}rank_${agent.rank}.png` : "", agent.rank ? `ランク${agent.rank}` : "");
+
+  // リンク
+  updateLink("agentLink", agent.link ? urls.hoyowiki + agent.link : "");
 }
 
 // ---------------- Mode handling ----------------
-const getCalcMode = () => q('input[name="calcMode"]:checked')?.value || "normal";
+const getCalcMode = () => q('input[name="calcMode"]:checked')?.value || "mode--normal";
+
 function updateVisibilityByMode() {
   const mode = getCalcMode();
-  qa(".is-disabled-normal").forEach(el => el.classList.toggle("is-disabled", mode === "normal"));
-  qa(".is-disabled-anomaly").forEach(el => el.classList.toggle("is-disabled", mode === "anomaly"));
-  qa(".is-hidden-anomaly").forEach(el => { el.style.display = (mode === "anomaly") ? "none" : ""; });
+  const toggleClasses = [
+    { selector: ".is-disabled-normal", condition: mode === "mode--normal" },
+    { selector: ".is-disabled-anomaly", condition: mode === "mode--anomaly" }
+  ];
+  toggleClasses.forEach(({ selector, condition }) =>
+    qa(selector).forEach(el => el.classList.toggle("is-disabled", condition))
+  );
+  qa(".is-hidden-anomaly").forEach(el => { el.style.display = (mode === "mode--anomaly") ? "none" : ""; });
   document.body.dataset.mode = mode;
 }
 
@@ -93,9 +110,13 @@ const breakControls = $("breakControls");
 const updateBreakControls = () => breakControls?.classList.toggle("is-disabled", !breakToggle?.checked);
 
 // ---------------- Compute ----------------
+function collectValues() {
+  return Object.fromEntries(fields.map(k => [k, Number($(k)?.value) || defaults[k]]));
+}
+
 function compute() {
   const mode = getCalcMode();
-  const v = Object.fromEntries(fields.map(k => [k, Number($(k)?.value) || defaults[k]]));
+  const v = collectValues();
   const digits = Math.max(0, Math.min(6, v.digits));
 
   const totalBonus = 1
@@ -115,10 +136,12 @@ function compute() {
     + percent.toFrac(v.attrResiDownPct)
     + percent.toFrac(v.attrResiIgnorePct);
 
-  if (mode === "normal") {
-    computeNormal(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul, setText);
-  } else {
-    computeAnomaly(v, digits, totalBonus, breakBonusMul, defMul, resistMul, setText);
+  const computeFn = (mode === "mode--normal") ? computeNormal : computeAnomaly;
+  if (mode === "mode--normal") {
+    computeFn(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul, setText);
+  }
+  else {
+    computeFn(v, digits, totalBonus, breakBonusMul, defMul, resistMul, setText);
   }
 
   setText("totalBonus", fmt(totalBonus, digits + 2));
@@ -140,6 +163,7 @@ function applyDefaults(force = false) {
   updateAttrMatchPct();
   updateBreakControls();
 }
+
 function resetAll() {
   applyDefaults(true);
   compute();
@@ -151,19 +175,31 @@ async function loadJSON(path, target, callback) {
     const res = await fetch(path);
     if (!res.ok) throw new Error(`${path} 読み込み失敗`);
     const data = await res.json();
-    Object.assign(target, data);
+
+    if (Array.isArray(target) && Array.isArray(data)) {
+      // 配列なら中身を置き換える
+      target.splice(0, target.length, ...data);
+    } else if (typeof target === "object") {
+      // オブジェクトならマージ
+      Object.assign(target, data);
+    }
+
     callback?.(data);
+    return data; // Promise.allで結果を受け取れるように
   } catch (err) {
     console.error(err);
   }
 }
+
 async function loadAllData() {
-  await Promise.all([
+  return Promise.all([
     loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
     loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
-    loadJSON("./json/lvCoeffTable.json", lvCoeffTable)
+    loadJSON("./json/lvCoeffTable.json", lvCoeffTable),
+    loadJSON("./json/helpTexts.json", helpTexts)
   ]);
 }
+
 function populateSelect(id, data) {
   const select = $(id);
   if (!select) return;
@@ -176,8 +212,9 @@ function populateSelect(id, data) {
 function syncResultFixedContent() {
   const resultSection = q(".result");
   const fixed = q(".result.result--fixed");
-  if (!resultSection || !fixed) return;
-  fixed.innerHTML = resultSection.innerHTML;
+  if (resultSection && fixed) {
+    fixed.innerHTML = resultSection.innerHTML;
+  }
 }
 
 function initResultFixedObserver() {
@@ -191,13 +228,10 @@ function initResultFixedObserver() {
 
   if ("IntersectionObserver" in window) {
     const io = new IntersectionObserver(
-      (entries) => {
-        const e = entries[0];
-        if (!e) return;
-        if (e.isIntersecting === false) fixed.classList.add("is-visible");
-        else fixed.classList.remove("is-visible");
+      ([entry]) => {
+        fixed.classList.toggle("is-visible", entry && !entry.isIntersecting);
       },
-      { threshold: 0.01, root: null, rootMargin: "0px 0px 30px 0px" }
+      { threshold: 0.01, rootMargin: "0px 0px 30px 0px" }
     );
     io.observe(normal);
   } else {
@@ -216,19 +250,27 @@ function initResultFixedObserver() {
   }
 }
 
+// ---------------- Misc ----------------
+function loadLastModified() {
+  const el = $("lastModified");
+  if (!el) return;
+  const d = new Date(document.lastModified);
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  el.textContent = `Last Modified: ${y}/${m}/${day}`;
+}
+
 // ---------------- Event binding ----------------
 function bindEvents() {
+  // 入力フィールド
   ["input", "change"].forEach(type => {
-    fields.forEach(id => {
-      const el = $(id);
-      if (el) el.addEventListener(type, compute);
-    });
+    fields.forEach(id => $(id)?.addEventListener(type, compute));
   });
 
   $("attrSelect")?.addEventListener("change", () => { updateAnomalyCorr(); compute(); });
   $("rangeSelect")?.addEventListener("change", () => { updateRangeWeak(); compute(); });
   $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
-
   $("agentSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
 
   $("enemSelect")?.addEventListener("change", () => {
@@ -251,22 +293,55 @@ function bindEvents() {
   );
 
   $("breakToggle")?.addEventListener("change", () => { updateBreakControls(); compute(); });
+  $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
 
-  $("resetBtn")?.addEventListener("click", (e) => {
-    e.preventDefault();
-    resetAll();
+  bindLanguageToggle();
+
+  // 共通ポップアップ制御
+  const popup = document.getElementById("infoPopup");
+  const popupText = document.getElementById("popupText");
+
+  function openPopup() {
+    popup.style.display = "block"; // 再表示
+    popup.classList.add("is-open");
+    popup.classList.remove("is-closing");
+    popup.setAttribute("aria-hidden", "false");
+  }
+
+  function closePopup() {
+    popup.classList.add("is-closing");
+    popup.classList.remove("is-open");
+    popup.setAttribute("aria-hidden", "true");
+
+    popup.addEventListener("animationend", () => {
+      popup.classList.remove("is-closing");
+      popup.style.display = "none";
+    }, { once: true });
+  }
+
+  document.querySelectorAll(".info-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.key;
+      if (helpTexts[key]) {
+        popupText.innerHTML = helpTexts[key].text.join("<br>");  // JSONから差し込み
+        openPopup();
+      }
+    });
+  });
+
+  // 閉じる処理
+  popup.querySelectorAll("[data-close]").forEach(el => {
+    el.addEventListener("click", closePopup);
   });
 }
 
 // ---------------- Init ----------------
 async function init() {
-  // データロード
   await loadAllData();
+  loadLastModified();
+  loadLanguage();
 
-  // デフォルト適用
   applyDefaults();
-
-  // 初期表示と依存項目反映
   updateAgentInfo();
   updateVisibilityByMode();
   updateAnomalyCorr();
@@ -274,17 +349,14 @@ async function init() {
   updateAttrMatchPct();
   updateBreakControls();
 
-  // イベントバインド
   bindEvents();
+  bindLanguageToggle();
   bindCopyButtons();
   initResultFixedObserver();
 
-  // 初回計算
   compute();
 }
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init);
-} else {
-  init();
-}
+document.readyState === "loading"
+  ? document.addEventListener("DOMContentLoaded", init)
+  : init();

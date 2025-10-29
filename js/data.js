@@ -14,7 +14,7 @@ export const defaults = {
   dmgBonusPct: 0,
   dmgBonusPtPct: 0,
   skillPct: 240,
-  anomalyCorrPct: 713,
+  anomalyCorrPct: 0,
   rangeWeakPct: 100,
   enemLevel: 60,
   lvCoeff: 794,
@@ -41,9 +41,9 @@ export const anomalyCorrTable = {
 
 export const rangeTable = {
   "0-15": 100,
-  "16-20": 75,
-  "21-25": 50,
-  "26-": 25
+  "15-20": 75,
+  "20-25": 50,
+  "25-": 25
 };
 
 export const matchTable = {
@@ -62,6 +62,10 @@ export const paths = {
   rank: "assets/rank/"
 };
 
+export const urls = {
+  hoyowiki: "https://wiki.hoyolab.com/pc/zzz/entry/"
+};
+
 // ---------------- Icons ----------------
 export const factionIcons = {
   "邪兎屋": "cunning_hares.webp",
@@ -75,7 +79,8 @@ export const factionIcons = {
   "防衛軍・シルバー小隊": "silver_squad.webp",
   "モッキンバード": "mockingbird.webp",
   "雲嶽山": "yunkui_summit.webp",
-  "怪啖屋": "spook_shack.webp"
+  "怪啖屋": "spook_shack.webp",
+  "クランプスの黒枝": "krampus.webp"
 };
 
 export const specialtyIcons = {
