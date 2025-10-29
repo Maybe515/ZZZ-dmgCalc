@@ -92,7 +92,7 @@
 ## 🔮 Roadmap / ToDo
 - [ ] エネミー情報を追加する
 - [ ] エネミーアイコンをエージェントのように表示する
-- [ ] 更新履歴をサイト上から閲覧できるようにする
+- [ ] 更新履歴をサイト上から表示できるようにする
 - [ ] 多言語対応（日本語 / 英語）
 - [ ] サイトシェア機能の実装
 
@@ -137,5 +137,6 @@ Due to possible game updates, actual values may differ.
 This project is for **personal/fan use only**. Redistribution or commercial use is prohibited.
 
 <br>
+
 
 
