@@ -134,9 +134,10 @@ Due to possible game updates, actual values may differ.
 再配布または商用利用は禁止されています。
 
 © 2025 [Maybe515](https://www.hoyolab.com/accountCenter/postList?id=144180942). All rights reserved.  
-This project is for **personal/fan use only**. Redistribution or commercial use is prohibited.
+This project is for <ins>**personal/fan use only**</ins>. Redistribution or commercial use is prohibited.
 
 <br>
+
 
 
 
