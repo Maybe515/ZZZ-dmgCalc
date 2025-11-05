@@ -118,11 +118,11 @@
 本ツールは非公式のファンメイドツールであり、HoYoverse とは一切関係がありません。  
 ゲーム内の仕様変更により、実際の数値とは異なる場合があります。
 
-This is an unofficial fan-made tool for testing purposes and is not affiliated with or endorsed by HoYoverse.  
-Due to possible game updates, actual values may differ.
-
 「HoYoverse」および「ゼンレスゾーンゼロ」は HoYoverse の商標または登録商標です。  
 ゲーム内のコンテンツおよびリソースの著作権はすべて HoYoverse に帰属します。
+
+This is an unofficial fan-made tool for testing purposes and is not affiliated with or endorsed by HoYoverse.  
+Due to possible game updates, actual values may differ.
 
 © HoYoverse. All rights reserved.  
 "HoYoverse" and "Zenless Zone Zero" are trademarks or registered trademarks of HoYoverse.
@@ -137,6 +137,7 @@ Due to possible game updates, actual values may differ.
 This project is for <ins>**personal/fan use only**</ins>. Redistribution or commercial use is prohibited.
 
 <br>
+
 
 
 
