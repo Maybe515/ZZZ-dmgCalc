@@ -1,7 +1,7 @@
 // main.js
 import { computeNormal, computeAnomaly, fmt, percent } from "./calc.js";
 import { $, q, qa, setText, setValue, bindCopyButtons } from "./ui.js";
-import { defaults, anomalyCorrTable, rangeTable, matchTable, paths, urls, factionIcons, specialtyIcons, attributeIcons, attributeValueMap } from "./data.js";
+import { defaults, selectDefaults, anomalyCorrTable, rangeTable, matchTable, paths, urls, factionIcons, specialtyIcons, attributeIcons, attributeValueMap } from "./data.js";
 import { loadLanguage, bindLanguageToggle } from "./lang.js";
 
 // ---------------- Data ----------------
@@ -14,11 +14,23 @@ const fields = [
   "agentLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
   "critRatePct", "critDmgPct",
   "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
-  "skillPct", "anomalyCorrPct", "breakBonusPct", "rangeWeakPct",
-  "enemLevel", "lvCoeff", "def", "defUpPct", "defDownPct",
-  "attrMatchPct", "attrResiDownPct", "attrResiIgnorePct",
+  "skillPct", "anomalyCorrPct", "rangeWeakPct",
+  "enemyLevel", "lvCoeff", "def",
+  "defUpPct", "defDownPct", "attrResiDownPct", "attrResiIgnorePct", "attrMatchPct",
+  "breakBonusPct",
   "digits"
 ];
+
+// select系・checkbox系の初期値マッピング表
+const selectMapping = {
+  modeNormal: "modeNormal",
+  agentSelect: "agentSelect",
+  attrSelect: "attrSelect",
+  rangeSelect: "rangeSelect",
+  enemySelect: "enemySelect",
+  matchSelect: "matchSelect",
+  breakToggle: "breakToggle"
+};
 
 // ---------------- DOM Helpers ----------------
 function updateText(id, value) {
@@ -147,17 +159,32 @@ function compute() {
   setText("totalBonus", fmt(totalBonus, digits + 2));
   setText("defMul", fmt(defMul, digits + 2));
   setText("resiMul", fmt(resistMul, digits + 2));
+
+  saveToLocalStorage();
 }
 
 // ---------------- Defaults & Reset ----------------
+// 共通: 要素に値を適用する関数
+function setElementValue(el, value) {
+  if (!el) return;
+  if (el.type === "checkbox" || el.type === "radio") {
+    el.checked = !!value;
+  } else {
+    el.value = value;
+  }
+}
+
 function applyDefaults(force = false) {
   fields.forEach(k => {
     const el = $(k);
     if (!el) return;
     if (force || el.value === "" || el.value == null) {
-      el.value = defaults[k];
+      setElementValue(el, defaults[k]);
     }
   });
+
+  updateAgentInfo();
+  updateVisibilityByMode();
   updateAnomalyCorr();
   updateRangeWeak();
   updateAttrMatchPct();
@@ -165,6 +192,10 @@ function applyDefaults(force = false) {
 }
 
 function resetAll() {
+  Object.entries(selectMapping).forEach(([key, id]) => {
+    setElementValue($(id), selectDefaults[key]);
+  });
+
   applyDefaults(true);
   compute();
 }
@@ -194,7 +225,7 @@ async function loadJSON(path, target, callback) {
 async function loadAllData() {
   return Promise.all([
     loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
-    loadJSON("./json/enemies.json", enemies, () => populateSelect("enemSelect", enemies)),
+    loadJSON("./json/enemies.json", enemies, () => populateSelect("enemySelect", enemies)),
     loadJSON("./json/lvCoeffTable.json", lvCoeffTable),
     loadJSON("./json/helpTexts.json", helpTexts)
   ]);
@@ -206,6 +237,67 @@ function populateSelect(id, data) {
   const options = [`<option value="">-- 選択してください --</option>`]
     .concat(Object.keys(data).map(name => `<option value="${name}">${name}</option>`));
   select.innerHTML = options.join("");
+}
+
+// ---------------- Local Storage ----------------
+function saveToLocalStorage() {
+  const params = {
+    mode: getCalcMode(),
+    agent: $("agentSelect")?.value,
+    attribute: $("attrSelect")?.value,
+    range: $("rangeSelect")?.value,
+    enemy: $("enemySelect")?.value,
+    attrMatch: $("matchSelect")?.value,
+    breakToggle: $("breakToggle")?.checked,
+    ...collectValues()
+  };
+
+  // マッピング表に従って保存
+  Object.entries(selectMapping).forEach(([key, id]) => {
+    const el = $(id);
+    if (!el) return;
+    params[key] = el.value;
+  });
+
+  localStorage.setItem("lastParams", JSON.stringify(params));
+}
+
+function loadFromLocalStorage() {
+  const saved = localStorage.getItem("lastParams");
+  if (!saved) return;
+
+  const params = JSON.parse(saved);
+  params.mode === "mode--normal" ? $("modeNormal").checked = true : $("modeAnomaly").checked = true;
+
+  // マッピング表に従って復元
+  Object.entries(selectMapping).forEach(([key, id]) => {
+    if (params[key] !== undefined) {
+      const el = $(id);
+      if (!el) return;
+
+      if (el.type === "checkbox") {
+        el.checked = params[key];
+      } else {
+        el.value = params[key];
+      }
+    }
+  });
+
+  // collectValues() で扱う数値系の復元
+  const numericKeys = [
+    "agentLevel", "atk", "anomalyMastery", "penRatioPct", "pen",
+    "critRatePct", "critDmgPct", "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
+    "skillPct", "anomalyCorrPct", "enemyLevel", "lvCoeff", "def",
+    "defUpPct", "defDownPct", "attrResiDownPct", "attrResiIgnorePct",
+    "breakBonusPct", "digits"
+  ];
+
+  numericKeys.forEach(key => {
+    if (params[key] !== undefined) {
+      const el = $(key);
+      if (el) el.value = params[key];
+    }
+  });
 }
 
 // ---------------- Result fixed (mobile) ----------------
@@ -273,8 +365,8 @@ function bindEvents() {
   $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
   $("agentSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
 
-  $("enemSelect")?.addEventListener("change", () => {
-    const enem = enemies[$("enemSelect")?.value] || {};
+  $("enemySelect")?.addEventListener("change", () => {
+    const enem = enemies[$("enemySelect")?.value] || {};
     setText("attrWeak", enem.attrWeak ?? "-");
     setText("attrResist", enem.attrResist ?? "-");
     compute();
@@ -340,6 +432,8 @@ async function init() {
   await loadAllData();
   loadLastModified();
   loadLanguage();
+
+  loadFromLocalStorage();
 
   applyDefaults();
   updateAgentInfo();

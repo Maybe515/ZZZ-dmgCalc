@@ -16,7 +16,7 @@ export const defaults = {
   skillPct: 240,
   anomalyCorrPct: 0,
   rangeWeakPct: 100,
-  enemLevel: 60,
+  enemyLevel: 60,
   lvCoeff: 794,
   def: 571.7,
   defUpPct: 0,
@@ -26,6 +26,16 @@ export const defaults = {
   attrResiIgnorePct: 0,
   breakBonusPct: 100,
   digits: 0
+};
+
+export const selectDefaults = {
+  modeNormal: true,
+  agentSelect: "",
+  attrSelect: "",
+  rangeSelect: "0-15",
+  enemySelect: "",
+  matchSelect: "none",
+  breakToggle: false
 };
 
 // ---------------- Tables ----------------
