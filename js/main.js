@@ -32,6 +32,15 @@ const selectMapping = {
   breakToggle: "breakToggle"
 };
 
+// collectValues() で扱う数値系の復元
+const numericKeys = [
+  "agentLevel", "atk", "anomalyMastery", "penRatioPct", "pen",
+  "critRatePct", "critDmgPct", "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
+  "skillPct", "anomalyCorrPct", "enemyLevel", "lvCoeff", "def",
+  "defUpPct", "defDownPct", "attrResiDownPct", "attrResiIgnorePct",
+  "breakBonusPct", "digits"
+]; 
+
 // ---------------- DOM Helpers ----------------
 function updateText(id, value) {
   const el = $(id);
@@ -164,16 +173,6 @@ function compute() {
 }
 
 // ---------------- Defaults & Reset ----------------
-// 共通: 要素に値を適用する関数
-function setElementValue(el, value) {
-  if (!el) return;
-  if (el.type === "checkbox" || el.type === "radio") {
-    el.checked = !!value;
-  } else {
-    el.value = value;
-  }
-}
-
 function applyDefaults(force = false) {
   fields.forEach(k => {
     const el = $(k);
@@ -239,6 +238,25 @@ function populateSelect(id, data) {
   select.innerHTML = options.join("");
 }
 
+// 共通: 値を要素にセット
+function setElementValue(el, value) {
+  if (!el) return;
+  if (el.type === "checkbox" || el.type === "radio") {
+    el.checked = !!value;
+  } else {
+    el.value = value;
+  }
+}
+
+// 共通: 要素から値を取得
+function getElementValue(el) {
+  if (!el) return undefined;
+  if (el.type === "checkbox" || el.type === "radio") {
+    return el.checked;
+  }
+  return el.value;
+}
+
 // ---------------- Local Storage ----------------
 function saveToLocalStorage() {
   const params = {
@@ -256,7 +274,7 @@ function saveToLocalStorage() {
   Object.entries(selectMapping).forEach(([key, id]) => {
     const el = $(id);
     if (!el) return;
-    params[key] = el.value;
+    params[key] = getElementValue(el);;
   });
 
   localStorage.setItem("lastParams", JSON.stringify(params));
@@ -272,32 +290,20 @@ function loadFromLocalStorage() {
   // マッピング表に従って復元
   Object.entries(selectMapping).forEach(([key, id]) => {
     if (params[key] !== undefined) {
-      const el = $(id);
-      if (!el) return;
-
-      if (el.type === "checkbox") {
-        el.checked = params[key];
-      } else {
-        el.value = params[key];
-      }
+      setElementValue($(id), params[key]);
     }
   });
-
-  // collectValues() で扱う数値系の復元
-  const numericKeys = [
-    "agentLevel", "atk", "anomalyMastery", "penRatioPct", "pen",
-    "critRatePct", "critDmgPct", "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
-    "skillPct", "anomalyCorrPct", "enemyLevel", "lvCoeff", "def",
-    "defUpPct", "defDownPct", "attrResiDownPct", "attrResiIgnorePct",
-    "breakBonusPct", "digits"
-  ];
 
   numericKeys.forEach(key => {
     if (params[key] !== undefined) {
-      const el = $(key);
-      if (el) el.value = params[key];
+      setElementValue($(key), params[key]);
     }
   });
+}
+
+function clearSavedParams() {
+  localStorage.removeItem("lastParams");
+  console.log("保存データを削除しました");
 }
 
 // ---------------- Result fixed (mobile) ----------------
@@ -431,7 +437,7 @@ function bindEvents() {
 async function init() {
   await loadAllData();
   loadLastModified();
-  loadLanguage();
+  // loadLanguage();
 
   loadFromLocalStorage();
 
