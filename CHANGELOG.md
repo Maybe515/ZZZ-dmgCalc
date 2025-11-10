@@ -135,12 +135,19 @@ Author：Maybe515
 Author：Maybe515
 
 ### Added
-- 現在の計算モードやエージェント選択含む、各パラメータを保存＆呼び出しする機能を実装
+- 現在の計算モードやエージェント選択含む、各パラメータを保存＆呼び出し、削除する機能を実装
   - `saveToLocalStorage`：該当情報を `LocalStorage` へ保存。計算処理された後に実行される。
   - `loadFromLocalStorage`：初期化が完了した段階で `LocalStorage` に保存された情報を各フォームへ反映。入力後にUIを更新する。
+  - `clearSaveParams()`：`LocalStorage` に保存されているデータをキーごと削除する。
 - LocalStorageに関するデータのやりとりを関数化
   - `setElementValue()`：値を要素にセット
   - `getElementValue()`：要素から値を取得
 
 ### Changed
 - 【初期値に戻す】ボタンを押下した時に `<Select>`, `<checkbox>` 要素もリセットするように変更
+
+## [2025/11/10] - Ver.1.8.0
+Author：Maybe515
+
+### Added
+- 言語切り替え機能を実装 (JP / EN) 

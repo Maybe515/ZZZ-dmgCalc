@@ -173,7 +173,7 @@ body {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: .25rem;
+  gap: .5rem;
   font-size: 0.85rem;
   color: var(--color-muted);
 }
@@ -292,6 +292,11 @@ body {
 .form__input[readonly] {
   background: var(--color-input-bg);
   color: var(--color-muted);
+}
+
+.header__meta .form__input {
+  min-width: 60px;
+  text-align: center;
 }
 
 .form__checkbox {

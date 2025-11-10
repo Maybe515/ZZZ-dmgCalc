@@ -2,13 +2,14 @@
 import { computeNormal, computeAnomaly, fmt, percent } from "./calc.js";
 import { $, q, qa, setText, setValue, bindCopyButtons } from "./ui.js";
 import { defaults, selectDefaults, anomalyCorrTable, rangeTable, matchTable, paths, urls, factionIcons, specialtyIcons, attributeIcons, attributeValueMap } from "./data.js";
-import { loadLanguage, bindLanguageToggle } from "./lang.js";
+import { applyLanguage } from "./lang.js";
 
 // ---------------- Data ----------------
 const agents = {};
 const enemies = {};
 const lvCoeffTable = {};
 const helpTexts = {};
+const i18nDict = {};
 
 const fields = [
   "agentLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
@@ -39,7 +40,7 @@ const numericKeys = [
   "skillPct", "anomalyCorrPct", "enemyLevel", "lvCoeff", "def",
   "defUpPct", "defDownPct", "attrResiDownPct", "attrResiIgnorePct",
   "breakBonusPct", "digits"
-]; 
+];
 
 // ---------------- DOM Helpers ----------------
 function updateText(id, value) {
@@ -222,19 +223,32 @@ async function loadJSON(path, target, callback) {
 }
 
 async function loadAllData() {
+  const lang = localStorage.getItem("lang") || $("langSelect")?.value || "jp";
   return Promise.all([
     loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
     loadJSON("./json/enemies.json", enemies, () => populateSelect("enemySelect", enemies)),
     loadJSON("./json/lvCoeffTable.json", lvCoeffTable),
-    loadJSON("./json/helpTexts.json", helpTexts)
+    loadJSON("./json/helpTexts.json", helpTexts),
+    loadJSON(`./json/lang/${lang}.json`, i18nDict, dict => applyLanguage(dict))
   ]);
 }
 
 function populateSelect(id, data) {
   const select = $(id);
   if (!select) return;
-  const options = [`<option value="">-- 選択してください --</option>`]
-    .concat(Object.keys(data).map(name => `<option value="${name}">${name}</option>`));
+
+  const lang = $("langSelect")?.value || "jp";
+  const labels = {
+    jp: "-- 選択してください --",
+    en: "-- Select Agent --"
+  }
+
+  const label = labels[lang] || labels.jp;
+  
+  const options = [
+    `<option value="">${label}</option>`,
+    ...Object.keys(data).map(name => `<option value="${name}">${name}</option>`)
+  ];
   select.innerHTML = options.join("");
 }
 
@@ -260,6 +274,7 @@ function getElementValue(el) {
 // ---------------- Local Storage ----------------
 function saveToLocalStorage() {
   const params = {
+    lang: $("langSelect")?.value,
     mode: getCalcMode(),
     agent: $("agentSelect")?.value,
     attribute: $("attrSelect")?.value,
@@ -366,6 +381,12 @@ function bindEvents() {
     fields.forEach(id => $(id)?.addEventListener(type, compute));
   });
 
+  $("langSelect").addEventListener("change", async e => {
+    const lang = $("langSelect")?.value || "jp";
+    await loadJSON(`./json/lang/${lang}.json`, i18nDict, dict => applyLanguage(dict));
+    localStorage.setItem("lang", lang);
+  });
+
   $("attrSelect")?.addEventListener("change", () => { updateAnomalyCorr(); compute(); });
   $("rangeSelect")?.addEventListener("change", () => { updateRangeWeak(); compute(); });
   $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
@@ -392,8 +413,6 @@ function bindEvents() {
 
   $("breakToggle")?.addEventListener("change", () => { updateBreakControls(); compute(); });
   $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
-
-  bindLanguageToggle();
 
   // 共通ポップアップ制御
   const popup = document.getElementById("infoPopup");
@@ -437,8 +456,6 @@ function bindEvents() {
 async function init() {
   await loadAllData();
   loadLastModified();
-  // loadLanguage();
-
   loadFromLocalStorage();
 
   applyDefaults();
@@ -450,7 +467,6 @@ async function init() {
   updateBreakControls();
 
   bindEvents();
-  bindLanguageToggle();
   bindCopyButtons();
   initResultFixedObserver();
 
