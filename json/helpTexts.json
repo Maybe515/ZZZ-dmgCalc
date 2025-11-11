@@ -42,7 +42,7 @@
             "※<span class='u-text-ice'>【霜烈】</span>は<span class='u-text-ice'>【氷】</span>、<span class='u-text-ether'>【玄墨】</span>は<span class='u-text-ether'>【エーテル】</span>と同様の数値としてます。"
         ]
     },
-    "rangeWeak": {
+    "weakRange": {
         "text": [
             "敵との距離によって変動する値。遠距離攻撃にのみ補正されます。",
             "15mまでは減衰はせず、15m以降は <span class='u-text-red'>5m離れるごとに25%ずつ減少</span> します。",

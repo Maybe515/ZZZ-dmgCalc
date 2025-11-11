@@ -1,5 +1,4 @@
 // data.js
-
 // ---------------- Defaults ----------------
 export const defaults = {
   agentLevel: 60,
@@ -15,7 +14,7 @@ export const defaults = {
   dmgBonusPtPct: 0,
   skillPct: 240,
   anomalyCorrPct: 0,
-  rangeWeakPct: 100,
+  weakRangePct: 100,
   enemyLevel: 60,
   lvCoeff: 794,
   def: 571.7,
@@ -78,46 +77,38 @@ export const urls = {
 
 // ---------------- Icons ----------------
 export const factionIcons = {
-  "邪兎屋": "cunning_hares.webp",
-  "白祇重工": "belobog_heavy_industries.webp",
-  "ヴィクトリア家政": "victoria.webp",
-  "オボルス小隊": "obol_squad.webp",
-  "カリュドーンの子": "sons_of_calydon.webp",
-  "対ホロウ特別行動部第六課": "hsos6.webp",
-  "特務捜査班": "neps.webp",
-  "スターズ・オブ・リラ": "stars_of_lyra.webp",
-  "防衛軍・シルバー小隊": "silver_squad.webp",
-  "モッキンバード": "mockingbird.webp",
-  "雲嶽山": "yunkui_summit.webp",
-  "怪啖屋": "spook_shack.webp",
-  "クランプスの黒枝": "krampus.webp"
+  "cunning_hares": "cunning_hares.webp",
+  "belobog_heavy_industries": "belobog_heavy_industries.webp",
+  "victoria": "victoria.webp",
+  "obol_squad": "obol_squad.webp",
+  "sons_of_calydon": "sons_of_calydon.webp",
+  "hsos6": "hsos6.webp",
+  "neps": "neps.webp",
+  "stars_of_lyra": "stars_of_lyra.webp",
+  "silver_squad": "silver_squad.webp",
+  "mockingbird": "mockingbird.webp",
+  "yunkui_summit": "yunkui_summit.webp",
+  "spook_shack": "spook_shack.webp",
+  "krampus": "krampus.webp"
 };
 
 export const specialtyIcons = {
-  "強攻": "attack.webp",
-  "撃破": "stun.webp",
-  "支援": "support.webp",
-  "異常": "anomaly.webp",
-  "防護": "defense.webp",
-  "命破": "rupture.webp"
+  "attack": "attack.webp",
+  "stun": "stun.webp",
+  "support": "support.webp",
+  "anomaly": "anomaly.webp",
+  "defense": "defense.webp",
+  "rupture": "rupture.webp"
 };
 
 export const attributeIcons = {
-  "物理": "physical.webp",
-  "電気": "electric.webp",
-  "炎": "fire.webp",
-  "氷": "ice.webp",
-  "エーテル": "ether.webp",
-  "霜烈": "frost.webp",
-  "玄墨": "auric_ink.webp"
+  "physical": "physical.webp",
+  "electric": "electric.webp",
+  "fire": "fire.webp",
+  "ice": "ice.webp",
+  "ether": "ether.webp",
+  "frost": "frost.webp",
+  "auric_ink": "auric_ink.webp"
 };
 
-export const attributeValueMap = {
-  "物理": "physical",
-  "電気": "electric",
-  "炎": "fire",
-  "氷": "ice",
-  "エーテル": "ether",
-  "霜烈": "frost",
-  "玄墨": "auric_ink"
-};
+export const attributeValueMap = Object.fromEntries(Object.keys(attributeIcons).map(k => [k, k]));

@@ -151,3 +151,12 @@ Author：Maybe515
 
 ### Added
 - 言語切り替え機能を実装 (JP / EN) 
+  - 切替タブを更新日の左隣に配置
+  - `./json/lang`：パスを追加
+  - `lang`フォルダに各言語のテキスト `jp.json`, `en.json` を追加
+  - Selectタグ `langSelect`のイベントハンドラを追加（言語テキストを再読み込み）
+  - LocalStorageに `langSelect` の状態を保存
+
+### Changed
+- 他言語対応に伴い、`agents.json`, `enemies.json` の内容をリファクタリング
+

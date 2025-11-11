@@ -4,6 +4,9 @@ import { $, q, qa, setText, setValue, bindCopyButtons } from "./ui.js";
 import { defaults, selectDefaults, anomalyCorrTable, rangeTable, matchTable, paths, urls, factionIcons, specialtyIcons, attributeIcons, attributeValueMap } from "./data.js";
 import { applyLanguage } from "./lang.js";
 
+// ---------------- 辞書参照ヘルパー ----------------
+const t = (dict, key, fallback = "-") => (dict && dict[key] !== undefined ? dict[key] : fallback);
+
 // ---------------- Data ----------------
 const agents = {};
 const enemies = {};
@@ -15,7 +18,7 @@ const fields = [
   "agentLevel", "lvCorrPct", "atk", "anomalyMastery", "penRatioPct", "pen",
   "critRatePct", "critDmgPct",
   "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
-  "skillPct", "anomalyCorrPct", "rangeWeakPct",
+  "skillPct", "anomalyCorrPct", "weakRangePct",
   "enemyLevel", "lvCoeff", "def",
   "defUpPct", "defDownPct", "attrResiDownPct", "attrResiIgnorePct", "attrMatchPct",
   "breakBonusPct",
@@ -24,6 +27,7 @@ const fields = [
 
 // select系・checkbox系の初期値マッピング表
 const selectMapping = {
+  langSelect: "langSelect",
   modeNormal: "modeNormal",
   agentSelect: "agentSelect",
   attrSelect: "attrSelect",
@@ -50,13 +54,12 @@ function updateText(id, value) {
   el.title = el.textContent;
 }
 
-function updateIcon(id, value, iconPath, iconMap, altPrefix = "") {
-  updateText(id, value);
+function updateIcon(id, key, iconPath, iconMap, altLabel = "") {
   const el = $(id + "Icon");
   if (!el) return;
-  if (value && iconMap[value]) {
-    el.src = iconPath + iconMap[value];
-    el.alt = altPrefix ? `${altPrefix}: ${value}` : value;
+  if (key && iconMap[key]) {
+    el.src = iconPath + iconMap[key];
+    el.alt = altLabel ? `${altLabel}: ${t(i18nDict, `${id}.${key}`, key)}` : key;
   } else {
     el.src = "";
     el.alt = "";
@@ -78,30 +81,23 @@ function updateLink(id, link) {
 }
 
 // ---------------- Agent Info ----------------
-function updateAgentInfo() {
+function updateAgentInfo(dict = {}) {
   const sel = $("agentSelect")?.value;
   const agent = agents[sel] || {};
 
-  updateText("faction", agent.faction);
-  updateText("specialty", agent.specialty);
-  updateText("attribute", agent.attribute);
+  updateText("faction", t(dict, `faction.${agent.factionId}`, agent.factionId));
+  updateText("specialty", t(dict, `specialty.${agent.specialtyId}`, agent.specialtyId));
+  updateText("attribute", t(dict, `attribute.${agent.attributeId}`, agent.attributeId));
 
-  updateIcon("faction", agent.faction, paths.faction, factionIcons, "陣営");
-  updateIcon("specialty", agent.specialty, paths.specialty, specialtyIcons, "役割");
-  updateIcon("attribute", agent.attribute, paths.attribute, attributeIcons, "属性");
+  updateIcon("faction", agent.factionId, paths.faction, factionIcons, t(dict, "ui.factionLabel", "Faction"));
+  updateIcon("specialty", agent.specialtyId, paths.specialty, specialtyIcons, t(dict, "ui.specialtyLabel", "Specialty"));
+  updateIcon("attribute", agent.attributeId, paths.attribute, attributeIcons, t(dict, "ui.attributeLabel", "Attribute"));
 
-  // 属性選択反映
-  const attrSelect = $("attrSelect");
-  if (attrSelect) {
-    attrSelect.value = attributeValueMap[agent.attribute] ?? "";
-    updateAnomalyCorr();
-  }
+  $("attrSelect").value = attributeValueMap[agent.attributeId] ?? "";
+  updateAnomalyCorr();
 
-  // 画像とランク
-  updateImage("agentImage", agent.image ? paths.agent + agent.image : "", agent.image ? `画像:${sel}` : "");
+  updateImage("agentImage", agent.image ? paths.agent + agent.image : "", agent.image ? `画像:${t(dict, `agent.${sel}`, sel)}` : "");
   updateImage("rankImage", agent.rank ? `${paths.rank}rank_${agent.rank}.png` : "", agent.rank ? `ランク${agent.rank}` : "");
-
-  // リンク
   updateLink("agentLink", agent.link ? urls.hoyowiki + agent.link : "");
 }
 
@@ -123,7 +119,7 @@ function updateVisibilityByMode() {
 
 // ---------------- Derived field updates ----------------
 const updateAnomalyCorr = () => setValue("anomalyCorrPct", anomalyCorrTable[$("attrSelect")?.value] ?? 0);
-const updateRangeWeak = () => setValue("rangeWeakPct", rangeTable[$("rangeSelect")?.value] ?? 100);
+const updateWeakRange = () => setValue("weakRangePct", rangeTable[$("rangeSelect")?.value] ?? 100);
 const updateAttrMatchPct = () => setValue("attrMatchPct", matchTable[$("matchSelect")?.value] ?? 0);
 
 // ---------------- Break controls ----------------
@@ -147,7 +143,7 @@ function compute() {
     + percent.toFrac(v.dmgBonusPtPct);
 
   const breakBonusMul = breakToggle?.checked ? percent.toMul(v.breakBonusPct - 100) : 1.0;
-  const rangeWeakMul = percent.toMul(v.rangeWeakPct - 100);
+  const weakRangeMul = percent.toMul(v.weakRangePct - 100);
 
   const defEff = v.def * (1 + percent.toFrac(v.defUpPct) - percent.toFrac(v.defDownPct));
   const defValid = defEff * (1 - percent.toFrac(v.penRatioPct)) - v.pen;
@@ -160,7 +156,7 @@ function compute() {
 
   const computeFn = (mode === "mode--normal") ? computeNormal : computeAnomaly;
   if (mode === "mode--normal") {
-    computeFn(v, digits, totalBonus, breakBonusMul, rangeWeakMul, defMul, resistMul, setText);
+    computeFn(v, digits, totalBonus, breakBonusMul, weakRangeMul, defMul, resistMul, setText);
   }
   else {
     computeFn(v, digits, totalBonus, breakBonusMul, defMul, resistMul, setText);
@@ -183,16 +179,17 @@ function applyDefaults(force = false) {
     }
   });
 
-  updateAgentInfo();
+  updateAgentInfo(i18nDict);
   updateVisibilityByMode();
   updateAnomalyCorr();
-  updateRangeWeak();
+  updateWeakRange();
   updateAttrMatchPct();
   updateBreakControls();
 }
 
 function resetAll() {
   Object.entries(selectMapping).forEach(([key, id]) => {
+    if (key === "langSelect") return;
     setElementValue($(id), selectDefaults[key]);
   });
 
@@ -223,33 +220,33 @@ async function loadJSON(path, target, callback) {
 }
 
 async function loadAllData() {
-  const lang = localStorage.getItem("lang") || $("langSelect")?.value || "jp";
   return Promise.all([
-    loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents)),
-    loadJSON("./json/enemies.json", enemies, () => populateSelect("enemySelect", enemies)),
+    loadJSON("./json/agents.json", agents, () => populateSelect("agentSelect", agents, i18nDict)),
+    loadJSON("./json/enemies.json", enemies, () => populateSelect("enemySelect", enemies, i18nDict)),
     loadJSON("./json/lvCoeffTable.json", lvCoeffTable),
     loadJSON("./json/helpTexts.json", helpTexts),
-    loadJSON(`./json/lang/${lang}.json`, i18nDict, dict => applyLanguage(dict))
+    loadJSON(`./json/lang/${$("langSelect").value || "jp"}.json`, i18nDict, dict => applyLanguage(dict))
   ]);
 }
 
-function populateSelect(id, data) {
+// ---------------- Select生成 ----------------
+function populateSelect(id, data, dict = {}) {
   const select = $(id);
   if (!select) return;
 
-  const lang = $("langSelect")?.value || "jp";
-  const labels = {
-    jp: "-- 選択してください --",
-    en: "-- Select Agent --"
-  }
+  const currentValue = select.value;
 
-  const label = labels[lang] || labels.jp;
-  
-  const options = [
+  const label = t(dict, "ui.selectPrompt", "-- Select --");
+  select.innerHTML = [
     `<option value="">${label}</option>`,
-    ...Object.keys(data).map(name => `<option value="${name}">${name}</option>`)
-  ];
-  select.innerHTML = options.join("");
+    ...Object.keys(data).map(agentId =>
+      `<option value="${agentId}">${t(dict, `agent.${agentId}`, agentId)}</option>`
+    )
+  ].join("");
+
+  if (currentValue && data[currentValue]) {
+    select.value = currentValue;
+  }
 }
 
 // 共通: 値を要素にセット
@@ -269,6 +266,16 @@ function getElementValue(el) {
     return el.checked;
   }
   return el.value;
+}
+
+function getLabelValue(labels) {
+  const lang = $("langSelect")?.value || "jp";
+  return labels[lang] || labels.jp;
+}
+
+async function loadLanguage() {
+  const lang = $("langSelect")?.value || "jp";
+  await loadJSON(`./json/lang/${$("langSelect").value || "jp"}.json`, i18nDict, dict => applyLanguage(dict));
 }
 
 // ---------------- Local Storage ----------------
@@ -371,7 +378,13 @@ function loadLastModified() {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
-  el.textContent = `Last Modified: ${y}/${m}/${day}`;
+
+  const labels = {
+    jp: "更新日: ",
+    en: "Last Modified: "
+  }
+  const label = getLabelValue(labels);
+  el.textContent = `${label}${y}/${m}/${day}`;
 }
 
 // ---------------- Event binding ----------------
@@ -381,30 +394,28 @@ function bindEvents() {
     fields.forEach(id => $(id)?.addEventListener(type, compute));
   });
 
-  $("langSelect").addEventListener("change", async e => {
-    const lang = $("langSelect")?.value || "jp";
-    await loadJSON(`./json/lang/${lang}.json`, i18nDict, dict => applyLanguage(dict));
-    localStorage.setItem("lang", lang);
+  // セレクト系は共通ハンドラでまとめる
+  const bindChange = (id, handler) => $(id)?.addEventListener("change", () => { handler(); compute(); });
+
+  bindChange("langSelect", async () => {
+    await loadLanguage();
+
+    populateSelect("agentSelect", agents, i18nDict);
+    populateSelect("enemySelect", enemies, i18nDict);
+    updateAgentInfo(i18nDict);
+
+    loadLastModified();
+    localStorage.setItem("lang", $("langSelect").value);
   });
 
-  $("attrSelect")?.addEventListener("change", () => { updateAnomalyCorr(); compute(); });
-  $("rangeSelect")?.addEventListener("change", () => { updateRangeWeak(); compute(); });
-  $("matchSelect")?.addEventListener("change", () => { updateAttrMatchPct(); compute(); });
-  $("agentSelect")?.addEventListener("change", () => { updateAgentInfo(); compute(); });
-
-  $("enemySelect")?.addEventListener("change", () => {
-    const enem = enemies[$("enemySelect")?.value] || {};
-    setText("attrWeak", enem.attrWeak ?? "-");
-    setText("attrResist", enem.attrResist ?? "-");
-    compute();
-  });
-
-  $("agentLevel")?.addEventListener("input", () => {
-    const level = Number($("agentLevel")?.value ?? defaults.agentLevel);
-    const corrMulPct = (1 + 0.016949 * (level - 1)) * 100;
-    setValue("lvCorrPct", fmt(corrMulPct, 2));
-    setValue("lvCoeff", lvCoeffTable[level] ?? defaults.lvCoeff);
-    compute();
+  bindChange("attrSelect", updateAnomalyCorr);
+  bindChange("rangeSelect", updateWeakRange);
+  bindChange("matchSelect", updateAttrMatchPct);
+  bindChange("agentSelect", () => updateAgentInfo(i18nDict));
+  bindChange("enemySelect", () => {
+    const enemy = enemies[$("enemySelect")?.value] || {};
+    setText("attrWeak", enemy.attrWeak ?? "-");
+    setText("attrResist", enemy.attrResist ?? "-");
   });
 
   qa('input[name="calcMode"]').forEach(el =>
@@ -412,7 +423,7 @@ function bindEvents() {
   );
 
   $("breakToggle")?.addEventListener("change", () => { updateBreakControls(); compute(); });
-  $("resetBtn")?.addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
+  $("resetBtn")?.addEventListener("click", e => { e.preventDefault(); resetAll(); });
 
   // 共通ポップアップ制御
   const popup = document.getElementById("infoPopup");
@@ -454,16 +465,15 @@ function bindEvents() {
 
 // ---------------- Init ----------------
 async function init() {
+  loadFromLocalStorage();
+  await loadLanguage();
   await loadAllData();
   loadLastModified();
-  loadFromLocalStorage();
+  // loadFromLocalStorage();
 
   applyDefaults();
-  updateAgentInfo();
+  updateAgentInfo(i18nDict);
   updateVisibilityByMode();
-  updateAnomalyCorr();
-  updateRangeWeak();
-  updateAttrMatchPct();
   updateBreakControls();
 
   bindEvents();

@@ -1,20 +1,14 @@
 // lang.js
 export function applyLanguage(dict) {
+  const apply = (selector, prop) => {
+    document.querySelectorAll(selector).forEach(el => {
+      const key = el.getAttribute(selector.replace(/\[|\]/g, ""));
+      if (dict[key] !== undefined) {
+        el[prop] = dict[key];
+      }
+    });
+  };
 
-  // 通常テキスト
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (dict[key] !== undefined) {
-      el.textContent = dict[key];
-    }
-  });
-
-  // ツールチップ (title属性)
-  document.querySelectorAll("[data-i18n-title]").forEach(el => {
-    const key = el.getAttribute("data-i18n-title");
-    if (dict[key] !== undefined) {
-      el.title = dict[key];
-    }
-  });
+  apply("[data-i18n]", "textContent");
+  apply("[data-i18n-title]", "title");
 }
-

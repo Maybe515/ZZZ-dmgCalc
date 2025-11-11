@@ -472,12 +472,12 @@ select[disabled]:hover {
   border-radius: var(--radius-sm);
   font-size: 0.75rem;
   white-space: nowrap;
-  transition: opacity 0.2s;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
   z-index: 1001;
 }
 
 .tooltip:hover .tooltip__content,
-.tooltip:focus .tooltip__content {
+.tooltip:focus-within .tooltip__content {
   visibility: visible;
   opacity: 1;
 }
@@ -682,6 +682,10 @@ details[open] .details__summary::before {
   margin-top: .5rem;
   font-size: .85rem;
   color: var(--color-muted);
+}
+
+.footer--disclaimer, .footer--copyright {
+  white-space: pre-line;
 }
 
 /* ---------------- Links ---------------- */
