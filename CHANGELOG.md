@@ -144,9 +144,9 @@ Author：Maybe515
   - `getElementValue()`：要素から値を取得
 
 ### Changed
-- 【初期値に戻す】ボタンを押下した時に `<Select>`, `<checkbox>` 要素もリセットするように変更
+- 【初期値に戻す】ボタンを押下した時に `<select>`, `<checkbox>` 要素もリセットするように変更
 
-## [2025/11/10] - Ver.1.8.0
+## [2025/11/12] - Ver.1.8.0
 Author：Maybe515
 
 ### Added
@@ -158,5 +158,13 @@ Author：Maybe515
   - LocalStorageに `langSelect` の状態を保存
 
 ### Changed
-- 他言語対応に伴い、`agents.json`, `enemies.json` の内容をリファクタリング
+- 多言語対応に伴い、一部の関数を修正
+  - `agents.json`, `enemies.json` の内容をリファクタリング
+    - 共通IDに統一し、`lang`ファイルにテキストを追加
+  - `agentSelect`, `enemySelect` の `<options>` 追加処理
+
+### Fixed
+- `kv__value` のテキストが省略されない、`card__col-right` が見切れてしまう問題を修正
+  - `card--two-column` の `grid-template-columns` を修正
+    - `1fr 1fr` → `minmax(350px, 1fr) 1fr`
 
