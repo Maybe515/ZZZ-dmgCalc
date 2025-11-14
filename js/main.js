@@ -1,11 +1,11 @@
 // main.js
 import { computeNormal, computeAnomaly, fmt, percent } from "./calc.js";
 import { $, q, qa, setText, setValue, bindCopyButtons } from "./ui.js";
-import { defaults, selectDefaults, anomalyCorrTable, rangeTable, matchTable, paths, urls, factionIcons, specialtyIcons, attributeIcons, attributeValueMap } from "./data.js";
+import { defaults, selectDefaults, anomalyCorrTable, rangeTable, matchTable, paths, urls, attributeValueMap } from "./data.js";
 import { applyLanguage } from "./lang.js";
 
 // ---------------- 辞書参照ヘルパー ----------------
-const t = (dict, key, fallback = "-") => (dict && dict[key] !== undefined ? dict[key] : fallback);
+const t = (dict, key, fallback = "") => (dict && dict[key] !== undefined ? dict[key] : fallback);
 
 // ---------------- Data ----------------
 const agents = {};
@@ -50,19 +50,22 @@ const numericKeys = [
 function updateText(id, value) {
   const el = $(id);
   if (!el) return;
-  el.textContent = value ?? "-";
-  el.title = el.textContent;
+  el.textContent = value || "";
+  el.title = value || "";
+  el.style.display = value ? "" : "none";
 }
 
-function updateIcon(id, key, iconPath, iconMap, altLabel = "") {
+function updateIcon(id, key, iconPath, altLabel = "", ext = ".webp") {
   const el = $(id + "Icon");
   if (!el) return;
-  if (key && iconMap[key]) {
-    el.src = iconPath + iconMap[key];
+  if (key && key !== "none") {
+    el.src = `${iconPath}${key}${ext}`;
     el.alt = altLabel ? `${altLabel}: ${t(i18nDict, `${id}.${key}`, key)}` : key;
+    el.style.display = "";
   } else {
     el.src = "";
     el.alt = "";
+    el.style.display = "none";
   }
 }
 
@@ -80,6 +83,35 @@ function updateLink(id, link) {
   el.style.pointerEvents = link ? "auto" : "none";  // リンクが無い場合は無効化
 }
 
+function updateAttrGroup(attrs, prefix, dict) {
+  for (let i = 0; i < 2; i++) {
+    const attrId = attrs[i];
+    const baseId = `${prefix}${i + 1}`;
+
+    updateText(baseId, attrId && attrId !== "none" ? t(dict, `attribute.${attrId}`, attrId) : "");
+    updateIcon(baseId, attrId, paths.attribute, t(dict, "ui.attributeLabel", "Attribute"));
+  }
+}
+
+function updateMatchSelect() {
+  const attribute = $("attribute").textContent.trim();
+  const weakAttr1 = $("weakAttr1").textContent.trim();
+  const weakAttr2 = $("weakAttr2").textContent.trim();
+  const resistAttr1 = $("resistAttr1").textContent.trim();
+  const resistAttr2 = $("resistAttr2").textContent.trim();
+  const matchSelect = $("matchSelect");
+
+  if (attribute === weakAttr1 || attribute === weakAttr2) {
+    matchSelect.value = "weak";
+  } else if (attribute === resistAttr1 || attribute === resistAttr2) {
+    matchSelect.value = "resist";
+  } else {
+    matchSelect.value = "none";
+  }
+
+  updateAttrMatchPct();
+}
+
 // ---------------- Agent Info ----------------
 function updateAgentInfo(dict = {}) {
   const sel = $("agentSelect")?.value;
@@ -89,9 +121,9 @@ function updateAgentInfo(dict = {}) {
   updateText("specialty", t(dict, `specialty.${agent.specialtyId}`, agent.specialtyId));
   updateText("attribute", t(dict, `attribute.${agent.attributeId}`, agent.attributeId));
 
-  updateIcon("faction", agent.factionId, paths.faction, factionIcons, t(dict, "ui.factionLabel", "Faction"));
-  updateIcon("specialty", agent.specialtyId, paths.specialty, specialtyIcons, t(dict, "ui.specialtyLabel", "Specialty"));
-  updateIcon("attribute", agent.attributeId, paths.attribute, attributeIcons, t(dict, "ui.attributeLabel", "Attribute"));
+  updateIcon("faction", agent.factionId, paths.faction, t(dict, "ui.factionLabel", "Faction"));
+  updateIcon("specialty", agent.specialtyId, paths.specialty, t(dict, "ui.specialtyLabel", "Specialty"));
+  updateIcon("attribute", agent.attributeId, paths.attribute, t(dict, "ui.attributeLabel", "Attribute"));
 
   $("attrSelect").value = attributeValueMap[agent.attributeId] ?? "";
   updateAnomalyCorr();
@@ -100,6 +132,19 @@ function updateAgentInfo(dict = {}) {
   updateImage("rankImage", agent.rank ? `${paths.rank}rank_${agent.rank}.png` : "", agent.rank ? `ランク${agent.rank}` : "");
   updateLink("agentLink", agent.link ? urls.hoyowiki + agent.link : "");
 }
+
+// ---------------- Enemy Info ----------------
+function updateEnemyInfo(dict = {}) {
+  const sel = $("enemySelect")?.value;
+  const enemy = enemies[sel] || {};
+
+  updateAttrGroup(enemy.weakAttrId || [], "weakAttr", dict);
+  updateAttrGroup(enemy.resistAttrId || [], "resistAttr", dict);
+
+  updateImage("enemyImage", enemy.image ? paths.enemy + enemy.image : "", enemy.image ? `画像:${t(dict, `enemy.${sel}`, sel)}` : "");
+  updateLink("enemyLink", enemy.link ? urls.hoyowiki + enemy.link : "");
+}
+
 
 // ---------------- Mode handling ----------------
 const getCalcMode = () => q('input[name="calcMode"]:checked')?.value || "mode--normal";
@@ -180,6 +225,7 @@ function applyDefaults(force = false) {
   });
 
   updateAgentInfo(i18nDict);
+  updateEnemyInfo(i18nDict);
   updateVisibilityByMode();
   updateAnomalyCorr();
   updateWeakRange();
@@ -237,10 +283,15 @@ function populateSelect(id, data, dict = {}) {
   const currentValue = select.value;
 
   const label = t(dict, "ui.selectPrompt", "-- Select --");
+  const prefix =
+    id === "agentSelect" ? "agent" :
+      id === "enemySelect" ? "enemy" :
+        id; // fallback
+
   select.innerHTML = [
     `<option value="">${label}</option>`,
-    ...Object.keys(data).map(agentId =>
-      `<option value="${agentId}">${t(dict, `agent.${agentId}`, agentId)}</option>`
+    ...Object.keys(data).map(key =>
+      `<option value="${key}">${t(dict, `${prefix}.${key}`, key)}</option>`
     )
   ].join("");
 
@@ -411,11 +462,13 @@ function bindEvents() {
   bindChange("attrSelect", updateAnomalyCorr);
   bindChange("rangeSelect", updateWeakRange);
   bindChange("matchSelect", updateAttrMatchPct);
-  bindChange("agentSelect", () => updateAgentInfo(i18nDict));
+  bindChange("agentSelect", () => {
+    updateAgentInfo(i18nDict);
+    updateMatchSelect();
+  });
   bindChange("enemySelect", () => {
-    const enemy = enemies[$("enemySelect")?.value] || {};
-    setText("attrWeak", enemy.attrWeak ?? "-");
-    setText("attrResist", enemy.attrResist ?? "-");
+    updateEnemyInfo(i18nDict);
+    updateMatchSelect();
   });
 
   qa('input[name="calcMode"]').forEach(el =>
@@ -426,8 +479,8 @@ function bindEvents() {
   $("resetBtn")?.addEventListener("click", e => { e.preventDefault(); resetAll(); });
 
   // 共通ポップアップ制御
-  const popup = document.getElementById("infoPopup");
-  const popupText = document.getElementById("popupText");
+  const popup = $("infoPopup");
+  const popupText = $("popupText");
 
   function openPopup() {
     popup.style.display = "block"; // 再表示
@@ -469,10 +522,10 @@ async function init() {
   await loadLanguage();
   await loadAllData();
   loadLastModified();
-  // loadFromLocalStorage();
 
   applyDefaults();
   updateAgentInfo(i18nDict);
+  updateEnemyInfo(i18nDict);
   updateVisibilityByMode();
   updateBreakControls();
 

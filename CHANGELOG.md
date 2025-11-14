@@ -146,7 +146,7 @@ Author：Maybe515
 ### Changed
 - 【初期値に戻す】ボタンを押下した時に `<select>`, `<checkbox>` 要素もリセットするように変更
 
-## [2025/11/12] - Ver.1.8.0
+## [2025/11/14] - Ver.1.8.0
 Author：Maybe515
 
 ### Added
@@ -156,6 +156,8 @@ Author：Maybe515
   - `lang`フォルダに各言語のテキスト `jp.json`, `en.json` を追加
   - Selectタグ `langSelect`のイベントハンドラを追加（言語テキストを再読み込み）
   - LocalStorageに `langSelect` の状態を保存
+  - 残りのエネミーデータを `enemies.json` に追加
+  - エージェントとエネミーの属性に応じて、属性相性（弱点・耐性）を自動補完する機能を追加
 
 ### Changed
 - 多言語対応に伴い、一部の関数を修正

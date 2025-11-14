@@ -566,37 +566,29 @@ select[disabled]:hover {
   flex-shrink: 0;
 }
 
-.details .kv__value {
-  flex: 0;
-  margin-left: auto;
-  margin-right: .5rem;
-  justify-content: flex-end;
-}
-
-/* ---------------- Agent-Select ---------------- */
-.agent-select {
+/* ---------------- Agent, Enemy Select ---------------- */
+.agent-select, .enemy-select {
   display: flex;
   align-items: stretch;
   gap: .75rem;
   margin: 0 .15rem 0 0;
 }
 
-.agent-select__left {
+.agent-select__left, .enemy-select__left {
   flex: 0 0 auto;
   position: relative;
 }
 
-.agent-select__right {
+.agent-select__right, .enemy-select__right {
   flex: 1;
   min-width: 0;
 }
 
-.agent-select__right select,
-.card--enemy select {
+.agent-select__right select, .enemy-select__right select {
   margin-top: .25rem;
 }
 
-.agent-select__image {
+.agent-select__image, .enemy-select__image {
   display: block;
   width: 100px;
   height: 100%;
@@ -617,7 +609,7 @@ select[disabled]:hover {
 .icon--sm {
   height: 20px;
   vertical-align: middle;
-  margin-right: 6px;
+  margin: 0 5px;
 }
 
 .copy-icon {
@@ -681,6 +673,13 @@ select[disabled]:hover {
 /* ---------------- Details ---------------- */
 .details {
   margin-top: .75rem;
+}
+
+.details .kv__value {
+  flex: 0;
+  margin-left: auto;
+  margin-right: .5rem;
+  justify-content: flex-end;
 }
 
 .details__summary {
