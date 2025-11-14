@@ -292,7 +292,7 @@ body {
 
 .card--two-column {
   display: grid;
-  grid-template-columns: minmax(350px, 1fr) 1fr;
+  grid-template-columns: minmax(370px, 1fr) 1fr;
   gap: .5rem;
   background: var(--color-bg);
   border: thick double var(--color-border-strong);
@@ -549,17 +549,30 @@ select[disabled]:hover {
 
 .kv__label {
   font-weight: 500;
-  flex: 0 0 auto;
-  margin: 0 .5rem;
+  flex: 0 1 auto;
+  margin: 0 .25rem;
+  min-width: 6ch;
+  max-width: 50%;
+  white-space: normal;     
+  word-break: break-word;  
 }
 
 .kv__value {
-  flex: 1;
+  flex: 1 1 auto;          
   min-width: 0;
   display: flex;
+  flex-wrap: wrap;         
   align-items: center;
   gap: .25rem;
   color: var(--color-fg);
+  white-space: normal;
+}
+
+.attr-item {
+  display: inline-flex;    
+  align-items: flex-start;
+  gap: .25rem;
+  white-space: nowrap;
 }
 
 .kv__value img {
@@ -567,28 +580,33 @@ select[disabled]:hover {
 }
 
 /* ---------------- Agent, Enemy Select ---------------- */
-.agent-select, .enemy-select {
+.agent-select,
+.enemy-select {
   display: flex;
   align-items: stretch;
   gap: .75rem;
   margin: 0 .15rem 0 0;
 }
 
-.agent-select__left, .enemy-select__left {
+.agent-select__left,
+.enemy-select__left {
   flex: 0 0 auto;
   position: relative;
 }
 
-.agent-select__right, .enemy-select__right {
+.agent-select__right,
+.enemy-select__right {
   flex: 1;
   min-width: 0;
 }
 
-.agent-select__right select, .enemy-select__right select {
+.agent-select__right select,
+.enemy-select__right select {
   margin-top: .25rem;
 }
 
-.agent-select__image, .enemy-select__image {
+.agent-select__image,
+.enemy-select__image {
   display: block;
   width: 100px;
   height: 100%;
