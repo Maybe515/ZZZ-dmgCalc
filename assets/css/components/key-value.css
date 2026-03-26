@@ -1,0 +1,30 @@
+.kv-list { margin: 0; padding: 0; }
+
+.kv {
+  display: flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .5rem 0;
+  color: var(--color-muted);
+  border-top: 1px dashed var(--color-border-default);
+}
+
+.kv__label {
+  font-weight: 500;
+  min-width: 6ch;
+  max-width: 50%;
+}
+
+.kv__value {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .25rem;
+  color: var(--color-fg);
+}
+
+.attr-item {
+  display: inline-flex;
+  gap: .25rem;
+  white-space: nowrap;
+}

@@ -1,0 +1,109 @@
+.details {
+  margin-top: .75rem;
+}
+
+.details .kv-list {
+  margin: 0 7px;
+}
+
+.details .kv__value {
+  flex: 0;
+  margin-left: auto;
+  margin-right: .5rem; 
+  justify-content: flex-end;
+}
+
+.details__summary {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+  padding: 5px 7px 5px 2em;
+  margin-bottom: 5px;
+  border-radius: var(--radius-sm);
+  transition: background 0.2s;
+}
+
+/* Chrome, Safari用 */
+.details__summary::-webkit-details-marker {
+  display: none;
+}
+
+.details__summary:hover {
+  background: var(--color-hover-bg);
+}
+
+.details__summary::before,
+.details__summary::after {
+  position: absolute;
+  margin: auto;
+  content: "";
+  left: 5px;
+  top: 0;
+  bottom: 0;
+}
+
+.details__summary::before {
+  position: absolute;
+  content: "";
+  left: 6px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-details-bg);
+}
+
+.details__summary::after {
+  position: absolute;
+  content: "";
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 10px;
+  height: 10px;
+  border: 6px solid transparent;
+  border-left: 8px solid var(--color-details-arrow);
+  box-sizing: border-box;
+  transition: transform 0.15s, left 0.15s, top 0.15s;
+}
+
+.details[open] .details__summary::after {
+  transform: rotate(90deg);
+  left: 8.5px;
+  top: 6.9px;
+}
+
+.details[open] .kv-list,
+.details[open] .card--option {
+  animation: fadeIn-Details 0.5s ease-out;
+}
+@keyframes fadeIn-Details {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.details.is-closing .kv-list,
+.details.is-closing .card--option {
+  animation: fadeOut-Details 0.4s ease-out forwards;
+}
+@keyframes fadeOut-Details {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}

@@ -1,0 +1,36 @@
+select {
+  background: var(--color-field-bg);
+  color: #eee;
+  border: 1px solid var(--color-field-border);
+  border-radius: var(--radius-md);
+  padding: 0.4rem 0.6rem;
+  padding-right: 1.8rem;
+  font-size: 0.95rem;
+  transition: background .15s, border-color .15s, box-shadow .15s;
+}
+
+select option {
+  background-color: #222;
+  color: #eee;
+}
+
+select option:disabled {
+  color: #777;
+}
+
+select:focus {
+  outline: none;
+}
+
+input:hover,
+select:hover {
+  background: var(--color-field-hover-bg);
+  border-color: var(--color-field-hover-border);
+  box-shadow: var(--shadow-sm);
+}
+
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-field-focus-ring);
+  outline-offset: 2px;
+}
