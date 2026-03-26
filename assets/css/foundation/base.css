@@ -1,0 +1,74 @@
+:root {
+  /* Colors */
+  --color-bg: #1f1f1f;
+  --color-fg: #e7e9f5;
+  --color-muted: #a6accd;
+
+  /* Borders */
+  --color-border-default: #464646;
+  --color-border-strong: #606060;
+  
+  /* States */
+  --color-ok: #7ee081;
+  --color-warn: #ffd166;
+  --color-hover-bg: rgba(255, 255, 255, 0.1);
+  
+  /* Surfaces */
+  --color-card: #101010;
+  --color-card-heading: #e0e000;
+  --color-input-bg: #1b1b1b;
+  
+  /* Links */
+  --color-link: #1073ff;
+  --color-link-hover: #6aa8ff;
+  
+  /* Mode toggle */
+  --color-mode-bg: #000;
+  --color-mode-fg: #aaa;
+  --color-mode-active-bg: #ffff00;
+  --color-mode-active-fg: #000;
+  
+  /* Fields */
+  --color-field-bg: rgba(255, 255, 255, 0.06);
+  --color-field-border: #444;
+  --color-field-hover-bg: rgba(255, 255, 255, 0.10);
+  --color-field-hover-border: #666;
+  --color-field-focus-ring: #88c0d0;
+  
+  /* Details */
+  --color-details-bg: #f5e642;
+  --color-details-arrow: #1a1a1a;
+
+  /* Spacing */
+  --space-xs: .25rem;
+  --space-sm: .5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 10px;
+  
+  /* Shadows */
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.15);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.3);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-width: 550px;
+  padding-top: 1.25rem;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
+}
+
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}

@@ -1,0 +1,15 @@
+.footer {
+  margin-top: 1.5rem;
+}
+
+.footer__text {
+  display: block;
+  margin-top: .5rem;
+  font-size: .85rem;
+  color: var(--color-muted);
+}
+
+.footer--disclaimer,
+.footer--copyright {
+  white-space: pre-line;
+}

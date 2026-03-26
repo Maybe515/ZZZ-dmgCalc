@@ -1,0 +1,30 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  background: var(--color-card);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  padding: .75rem;
+}
+
+.card__title {
+  font-size: 1rem;
+  margin: 0 0 .5rem;
+  color: var(--color-card-heading);
+}
+
+.card--two-column {
+  display: grid;
+  grid-template-columns: minmax(370px, 1fr) 1fr;
+  gap: .5rem;
+  background: var(--color-bg);
+  border: thick double var(--color-border-strong);
+}
+
+.card__col {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.card--option { max-width: 300px; }

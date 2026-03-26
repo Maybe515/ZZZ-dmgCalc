@@ -1,0 +1,43 @@
+.text-ellipsis {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.is-disabled {
+  opacity: .5;
+  pointer-events: none;
+}
+
+.u-mt-sm { margin-top: .5rem; }
+.u-mt-md { margin-top: 1rem; }
+.u-mt-lg { margin-top: 1.5rem; }
+
+.u-fade-hover {
+  opacity: 0;
+  transition: all .2s ease;
+}
+
+.u-fade-hover:hover,
+.u-fade-hover:focus-visible {
+  opacity: 1;
+  background: var(--color-hover-bg);
+}
+
+.u-text-red { color: red; }
+.u-text-blue { color: blue; }
+.u-text-green { color: green; }
+.u-text-purple { color: purple; }
+.u-text-crimson { color: crimson; }
+.u-text-physical { color: darkorange; }
+.u-text-ice { color: deepskyblue; }
+.u-text-electronic { color: #1073ff; }
+.u-text-ether { color: deeppink; }
+
+.u-text-bold { font-weight: bold; }
+.u-text-header { font-size: large; font-weight: bold; }
+.u-text-underline { text-decoration: underline; }
+
+.u-bg-highlight { background: lemonchiffon; padding: 0 0.2rem; }

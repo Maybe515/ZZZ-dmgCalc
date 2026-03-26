@@ -1,0 +1,29 @@
+.layout {
+  gap: 2rem;
+  margin: 0 auto;
+  padding: 1.5rem;
+  max-width: 1600px;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: .5rem;
+  width: 100%;
+}
+
+.grid > .card {
+  flex: 1 1 300px;
+}
+
+.content-section {
+  display: flex;
+  gap: .2rem .5rem;
+  align-items: flex-start;
+}
+
+.content-section > section {
+  flex: 1;
+}

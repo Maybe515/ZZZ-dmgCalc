@@ -1,0 +1,39 @@
+.info-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 .25rem;
+  width: 1.4em;
+  height: 1.4em;
+  border-radius: 50%;
+  background-color: #444;
+  color: #fff;
+  font-size: 0.8em;
+  cursor: pointer;
+}
+
+.tooltip {
+  position: relative;
+}
+
+.tooltip__content {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 105%;
+  left: 20%;
+  background: #333;
+  color: #fff;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  transition: opacity .2s, visibility .2s;
+  z-index: 1001;
+}
+
+.tooltip:hover .tooltip__content,
+.tooltip:focus-within .tooltip__content {
+  visibility: visible;
+  opacity: 1;
+}
