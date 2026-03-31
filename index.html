@@ -23,9 +23,8 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@Maybe515" />
 
-        <!-- スクリプト -->
-    <script type="module" src="./assets/js/main.js"></script>
-    <!-- <link rel="stylesheet" href="./css/style.css" /> -->
+    <!-- スクリプト -->
+    <script type="module" src="./assets/js/core/main.js"></script>
 </head>
 
 <body class="theme--zzz">
@@ -202,16 +201,7 @@
                                 <span class="info-circle info-btn" data-key="anomalyCorr">？</span>
                             </label>
                             <div class="form form--grid">
-                                <select id="attrSelect" class="form__input is-disabled-normal">
-                                    <option value="" data-i18n="ui.selectPrompt">-- 選択してください --</option>
-                                    <option value="physical" data-i18n="physical">物理</option>
-                                    <option value="electric" data-i18n="electric">電気</option>
-                                    <option value="fire" data-i18n="fire">炎</option>
-                                    <option value="ice" data-i18n="ice">氷</option>
-                                    <option value="ether" data-i18n="ether">エーテル</option>
-                                    <option value="frost" data-i18n="frost">霜烈</option>
-                                    <option value="auric_ink" data-i18n="auric_ink">玄墨</option>
-                                </select>
+                                <select id="attrSelect" class="form__input is-disabled-normal"></select>
                                 <input type="number" id="anomalyCorrPct" class="form__input is-disabled-normal"
                                     value="0" min="0" />
                             </div>
@@ -221,12 +211,7 @@
                                 <span class="info-circle info-btn" data-key="weakRange">？</span>
                             </label>
                             <div class="form form--grid">
-                                <select id="rangeSelect" class="form__input is-disabled-anomaly">
-                                    <option value="0-15" data-i18n="0-15">0~15m</option>
-                                    <option value="15-20" data-i18n="15-20">15~20m</option>
-                                    <option value="20-25" data-i18n="20-25">20~25m</option>
-                                    <option value="25-" data-i18n="25-">25m~</option>
-                                </select>
+                                <select id="rangeSelect" class="form__input is-disabled-anomaly"></select>
                                 <input type="number" id="weakRangePct" class="form__input is-disabled-anomaly"
                                     value="100" readonly />
                             </div>
@@ -323,14 +308,14 @@
                                 <label for="defDownPct" class="form__label" data-i18n="defDown">防御力DOWN [%]</label>
                                 <input type="number" id="defDownPct" class="form__input" value="0" min="0" step="0.1" />
 
-                                <label for="attrResiDownPct" class="form__label" data-i18n="attrResistDown">属性耐性DOWN
+                                <label for="attrResistDownPct" class="form__label" data-i18n="attrResistDown">属性耐性DOWN
                                     [%]</label>
-                                <input type="number" id="attrResiDownPct" class="form__input" value="0" min="0"
+                                <input type="number" id="attrResistDownPct" class="form__input" value="0" min="0"
                                     step="0.1" />
 
-                                <label for="attrResiIgnorePct" class="form__label" data-i18n="attrResistIgnore">属性耐性無視
+                                <label for="attrResistIgnorePct" class="form__label" data-i18n="attrResistIgnore">属性耐性無視
                                     [%]</label>
-                                <input type="number" id="attrResiIgnorePct" class="form__input" value="0" min="0"
+                                <input type="number" id="attrResistIgnorePct" class="form__input" value="0" min="0"
                                     max="100" step="0.1" />
                             </div>
 
@@ -338,11 +323,7 @@
                                 <span class="info-circle info-btn" data-key="attrMatch">？</span>
                             </label>
                             <div class="form form--grid">
-                                <select id="matchSelect" class="form__input">
-                                    <option value="none" data-i18n="nonCorr">補正なし</option>
-                                    <option value="weak" data-i18n="weakAttr">弱点属性</option>
-                                    <option value="resist" data-i18n="resistAttr">耐性属性</option>
-                                </select>
+                                <select id="matchSelect" class="form__input"></select>
                                 <input type="number" id="attrMatchPct" class="form__input" value="0" step="0.1"
                                     readonly />
                             </div>
@@ -448,9 +429,9 @@
                     <span id="defMul" class="kv__value">-</span>
                 </div>
                 <div class="kv">
-                    <span class="kv__label" data-i18n="resiMul">属性補正率</span>
+                    <span class="kv__label" data-i18n="resistMul">属性補正率</span>
                     <span class="info-circle info-btn" data-key="resistMul">？</span>
-                    <span id="resiMul" class="kv__value">-</span>
+                    <span id="resistMul" class="kv__value">-</span>
                 </div>
             </div>
 

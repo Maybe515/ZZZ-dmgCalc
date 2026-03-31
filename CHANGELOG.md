@@ -196,3 +196,18 @@ Author：Maybe515
 ### Refactored
 - `style.css` を分割し、以下フォルダに格納  
   → `components`, `foundation`, `utils`
+
+## [2026/3/30] - Ver.1.6.0
+Author：Maybe515
+
+### Added
+- エージェント 追加
+  - 照、葉瞬光、千夏、アリア、南宮羽、シーシィア、プロメイア、スターライト・ビリー
+- 陣営 追加
+  - 妄想エンジェル、都市秩序部
+- 属性 追加
+  - 凛刃
+
+### Refactored
+- `main.js` を分割し、以下フォルダに格納  
+  → `components`, `foundation`, `utils`
