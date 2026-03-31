@@ -19,7 +19,7 @@
             "状態異常ダメージに参照される値で、最小100% (Lv1) から始まり、最大200% (Lv60) まで上昇します。",
             "",
             "<span class='u-text-bold'>▼計算式</span>",
-            "<span class='u-bg-highlight'>= 1 + 0.016949 × ( 【レベル[N]】- 1 )</span>",
+            "<span class='u-bg-highlight'>= 1 + 0.016949 × ( レベル[N] - 1 )</span>",
             "",
             "※この計算によって求められる値はあくまで近似値であり、実際の数値と異なる場合がございます。"
         ]
@@ -32,7 +32,7 @@
             "<span class='u-text-bold'>▼合計ダメージ倍率</span>",
             "状態異常時に一度しかダメージが発生しない<span class='u-text-physical'>【強撃】</span><span class='u-text-ice'>【破氷】</span>は特殊な計算式がないため等倍で設定。",
             "一定時間継続してダメージが発生する<span class='u-text-fire'>【熱傷】</span><span class='u-text-electronic'>【感電】</span><span class='u-text-ether'>【侵蝕】</span>は以下の計算式で算出しています。",
-            "<span class='u-bg-highlight'>=【ダメージ倍率[%]】 × ( 10 / 【ダメージ周期[s]】 )</span>",
+            "<span class='u-bg-highlight'>= ダメージ倍率[%] × ( 10 / ダメージ周期[s] )</span>",
             "",
             "属性ごとのダメージ倍率・ダメージ周期を反映させると計算式は下記の通りになります。",
             "<span class='u-bg-highlight'>・<span class='u-text-fire'>【熱傷】</span>　= 50% × ( 10 / 0.5s )",
@@ -56,7 +56,7 @@
             "通常ダメージ・状態異常ダメージ問わず、最終的なダメージを決定する際に参照される値で、最小50 (Lv1) から始まり、最大794 (Lv60) まで上昇します。",
             "",
             "<span class='u-text-bold'>▼計算式</span>",
-            "<span class='u-bg-highlight'>= 0.1551 × 【レベル[N]】^ 2 + 3.141 × 【レベル[N]】+ 47.2039 )</span>",
+            "<span class='u-bg-highlight'>= 0.1551 × レベル[N] ^ 2 + 3.141 × レベル[N] + 47.2039 )</span>",
             "",
             "※この計算で求めれる近似値は誤差が大きいため、本ツールでは係数表を参照して補完しています。"
         ]
@@ -73,7 +73,7 @@
             "通常ダメージのベースとなる値。",
             "",
             "<span class='u-text-bold'>▼計算式</span>",
-            "<span class='u-bg-highlight'>= 【最終攻撃力[N]】 × ( 【スキルダメージ倍率[%]】 / 100 )</span>"
+            "<span class='u-bg-highlight'>= 最終攻撃力[N] × ( スキルダメージ倍率[%] / 100 )</span>"
         ]
     },
     "expCrit": {
@@ -81,7 +81,7 @@
             "会心率と会心ダメージによる期待値。",
             "",
             "<span class='u-text-bold'>▼計算式</span>",
-            "<span class='u-bg-highlight'>= 【ダメージ[N]】 × ( 1 + 【会心率[%]】 × 【会心ダメージ[%]】 )</span>"
+            "<span class='u-bg-highlight'>= ダメージ[N] × ( 1 + 会心率[%] × 会心ダメージ[%] )</span>"
         ]
     },
     "defMul": {
@@ -90,13 +90,13 @@
             "",
             "<span class='u-text-bold'>▼計算式</span>",
             "<span class='u-text-bold'>【防御補正率[R]】</span>",
-            "<span class='u-bg-highlight'>= 【レベル係数[N]】 × ( 【レベル係数[N]】 + <span class='u-text-green'>【実行防御力[N]】</span> )</span>",
+            "<span class='u-bg-highlight'>= レベル係数[N] × ( レベル係数[N] + <span class='u-text-green'>実行防御力[N]</span> )</span>",
             "",
             "<span class='u-text-green u-text-bold'>【実行防御力[R]】</span>",
-            "<span class='u-bg-highlight'>= <span class='u-text-blue'>【実防御力[R]】</span> × ( 1 - 【貫通率[%]】 + 【貫通値[N]】 )</span></span>",
+            "<span class='u-bg-highlight'>= <span class='u-text-blue'>実防御力[R]</span> × ( 1 - 貫通率[%] + 貫通値[N] )</span></span>",
             "",
             "<span class='u-text-blue u-text-bold'>【実防御力[R]】</span>",
-            "<span class='u-bg-highlight'>= 【基礎防御力[R]】 × ( 1 + 【防御力UP[%]】 + 【防御力DOWN[%]】 ) + 【防御実数[N]】</span></span>",
+            "<span class='u-bg-highlight'>= 基礎防御力[R] × ( 1 + 防御力UP[%] + 防御力DOWN[%] ) + 防御実数[N]</span></span>",
             "",
             "※【防御実数】に関してはゲーム上での具体的なバフが確認できていないため、本ツールでは考慮していません。"
         ]
@@ -107,7 +107,7 @@
             "ここでは便宜上【属性補正率】と称しています。",
             "",
             "<span class='u-text-bold'>▼計算式</span>",
-            "<span class='u-bg-highlight'>= 1 - ( 【属性相性補正[%]】 + 【属性耐性DOWN[%]】 + 【属性耐性無視[%]】 / 100 ) + 【補正値実数[N]】</span>",
+            "<span class='u-bg-highlight'>= 1 - ( 属性相性補正[%] + 属性耐性DOWN[%] + 属性耐性無視[%] / 100 ) + 補正値実数[N]</span>",
             "",
             "※【補正値実数】に関してはゲーム上での具体的なバフが確認できていないため、本ツールでは考慮していません。"
         ]
@@ -120,10 +120,10 @@
             "",
             "<span class='u-text-bold'>▼計算式</span>",
             "通常ダメージ：",
-            "<span class='u-bg-highlight'>=【最終攻撃力[N]】 × 【属性ダメ・与ダメ補正率[%]】 × <span class='u-text-crimson'>【スキルダメージ倍率[%]】 × 【会心補正率[%]】</span> × 【ブレイク弱体倍率[%]】 × <span class='u-text-crimson'>【距離減衰補正率[%]】</span> × 【防御補正率[%]】 × 【属性補正率[%]】</span>",
+            "<span class='u-bg-highlight'>= 最終攻撃力[N] × 属性ダメ・与ダメ補正率[%] × <span class='u-text-crimson'>スキルダメージ倍率[%] × 会心補正率[%]</span> × ブレイク弱体倍率[%] × <span class='u-text-crimson'>距離減衰補正率[%]</span> × 防御補正率[%] × 属性補正率[%]</span>",
             "",
             "状態異常ダメージ：",
-            "<span class='u-bg-highlight'>=【最終攻撃力[N]】 × 【属性ダメ・与ダメ補正率[%]】 × <span class='u-text-purple'>( 【異常マスタリー[N]】 / 100 ) × 【キャラレベル補正率[%]】 × 【状態異常ダメージ倍率[%]】</span> × 【ブレイク弱体倍率[%]】 × 【防御補正率[%]】 × 【属性補正率[%]】</span>"
+            "<span class='u-bg-highlight'>= 最終攻撃力[N] × 属性ダメ・与ダメ補正率[%] × <span class='u-text-purple'>( 異常マスタリー[N] / 100 ) × キャラレベル補正率[%] × 状態異常ダメージ倍率[%]</span> × ブレイク弱体倍率[%] × 防御補正率[%] × 属性補正率[%]</span>"
         ]
     }
 }

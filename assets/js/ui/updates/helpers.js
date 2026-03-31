@@ -1,0 +1,52 @@
+// UI 更新の基礎関数
+
+import { $ } from "../dom-helpers.js";
+import { t } from "../../i18n/i18n-helpers.js";
+import { i18nDict } from "../../data/state.js";
+
+export function updateText(id, value) {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = value || "";
+  el.title = value || "";
+  el.style.display = value ? "" : "none";
+}
+
+export function updateIcon(id, key, iconPath, altLabel = "", ext = ".webp") {
+  const el = $(id + "Icon");
+  if (!el) return;
+
+  if (key && key !== "none") {
+    el.src = `${iconPath}${key}${ext}`;
+    el.alt = altLabel ? `${altLabel}: ${t(i18nDict, `${id}.${key}`, key)}` : key;
+    el.style.display = "";
+  } else {
+    el.src = "";
+    el.alt = "";
+    el.style.display = "none";
+  }
+}
+
+export function updateImage(id, src, alt) {
+  const el = $(id);
+  if (!el) return;
+  el.src = src || "";
+  el.alt = alt || "";
+}
+
+export function updateLink(id, link) {
+  const el = $(id);
+  if (!el) return;
+  el.href = link || "#";
+  el.style.pointerEvents = link ? "auto" : "none";
+}
+
+export function updateAttrGroup(attrs, prefix, dict) {
+  for (let i = 0; i < 2; i++) {
+    const attrId = attrs[i];
+    const baseId = `${prefix}${i + 1}`;
+
+    updateText(baseId, attrId ? t(dict, `attribute.${attrId}`, attrId) : "");
+    updateIcon(baseId, attrId, "assets/image/stats/", t(dict, "ui.attributeLabel", "Attribute"));
+  }
+}
