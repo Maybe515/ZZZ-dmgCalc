@@ -210,4 +210,20 @@ Author：Maybe515
 
 ### Refactored
 - `main.js` を分割し、以下フォルダに格納  
-  → `components`, `foundation`, `utils`
+  → `calc`, `core`, `data`, `events`, `i18n`, `storage`, `ui`
+
+## [2026/3/30] - Ver.1.6.0
+Author：Maybe515
+
+### Added
+- エネミー 追加
+  - 主に 自由戦闘、エキスパート挑戦、要警戒狩り、危局強襲戦 に登場するエネミーが対象
+
+## [2026/4/1] - Ver.1.6.0
+Author：Maybe515
+
+### Added
+- マウスカーソルを変更
+- エージェント・エネミーが未選択の時に表示する汎用画像を追加
+- 背景を画像に変更
+- エネミー画像の右下にドロップする強化素材の画像を表示
