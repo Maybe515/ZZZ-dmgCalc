@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <title>ZZZ Dmg Calc</title>
-    <link rel="icon" href="/assets/favicon-32x32.ico?v=1" type="image/x-icon">
+    <link rel="icon" href="/assets/favicon/favicon-32x32.ico?v=1" type="image/x-icon">
 
     <meta name="description"
         content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。攻撃力や会心補正・バフ補正などを入力して、通常時ダメージ/会心時ダメージ/ダメージ期待値をシミュレーションできます。" />
@@ -16,7 +16,7 @@
     <meta property="og:description" content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://maybe515.github.io/ZZZ-dmgCalc/" />
-    <meta property="og:image" content="https://github.com/Maybe515/ZZZ-dmgCalc/blob/main/assets/logo.png" />
+    <meta property="og:image" content="https://github.com/Maybe515/ZZZ-dmgCalc/blob/main/assets/common/zzz-logo.svg" />
     <meta property="og:site_name" content="ZZZ Dmg Calc" />
     <meta property="og:locale" content="ja_JP" />
 
@@ -34,14 +34,14 @@
         <header class="header">
             <div class="header__row">
                 <a href="https://wiki.hoyolab.com/pc/zzz/" target="_blank" class="header__logo-link tooltip">
-                    <img src="./assets/image/zzz-logo.svg" alt="Site Logo" class="header__logo">
+                    <img src="./assets/image/common/zzz-logo.svg" alt="Site Logo" class="header__logo">
                     <span class="tooltip__content" data-i18n="linkWiki">HoYoWiki に飛びます</span>
                 </a>
                 <h1 class="header__title" data-i18n="headerTitle">ゼンレスゾーンゼロ ダメージ計算ツール</h1>
                 <div class="header__meta">
                     <select id="langSelect" class="form__input">
-                        <option value="jp">jp</option>
-                        <option value="en">en</option>
+                        <option value="jp">JP</option>
+                        <option value="en">EN</option>
                     </select>
                     <span class="header__last-modified" id="lastModified"></span>
                     <!-- <span class="info-circle info-btn" data-key="changeLog">？</span> -->
@@ -240,6 +240,7 @@
                                         <span class="tooltip__content" data-i18n="linkEnemy">HoYoWiki の
                                             エネミーページに飛びます</span>
                                     </a>
+                                    <img id="materialImage" class="enemy-material-icon" alt="素材画像" />
                                 </div>
                                 <div class="enemy-select__right">
                                     <label for="enemySelect" class="visually-hidden"
