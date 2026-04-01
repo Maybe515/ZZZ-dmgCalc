@@ -3,6 +3,7 @@
   --color-bg: #1f1f1f;
   --color-fg: #e7e9f5;
   --color-muted: #a6accd;
+  --color-bg-rgb: rgba(31, 31, 31, 0.8);
 
   /* Borders */
   --color-border-default: #464646;
@@ -62,9 +63,11 @@ body {
   min-height: 100vh;
   min-width: 550px;
   padding-top: 1.25rem;
-  background: var(--color-bg);
   color: var(--color-fg);
+  background: var(--color-bg);
+  background-image: url("../../image/common/bg_pages.png");
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
+  cursor: url("../../image/common/cursor-pointer.png") 4 4, auto;
 }
 
 .container {

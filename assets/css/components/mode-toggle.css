@@ -13,6 +13,7 @@
 .mode__toggle {
   display: flex;
   flex-wrap: wrap;
+  background: var(--color-bg);
   border: 3px solid var(--color-border-strong);
   border-radius: var(--radius-md);
   gap: .5rem 1rem;
