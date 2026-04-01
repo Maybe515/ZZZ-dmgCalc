@@ -1,0 +1,14 @@
+{
+  "none": {
+    "value": 0,
+    "label": "nonCorr"
+  },
+  "weak": {
+    "value": -20,
+    "label": "weakAttr"
+  },
+  "resist": {
+    "value": 20,
+    "label": "resistAttr"
+  }
+}

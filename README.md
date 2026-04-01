@@ -2,11 +2,12 @@
 
 本ツールは、ゲーム内の数値をもとに検証を目的としたツールです。  
 ゲーム内の仕様変更により、実際の数値と異なる場合があります。
-<br>
-- 詳しくは本プロジェクトの [Wikiページ](https://github.com/Maybe515/ZZZ-dmgCalc/wiki) をご覧ください。
+
+- 本プロジェクトについてやご利用方法は本プロジェクトの [Wikiページ](https://github.com/Maybe515/ZZZ-dmgCalc/wiki) をご覧ください。
 - 本ツールをご利用の方は以下のURLよりアクセスください。  
   https://maybe515.github.io/ZZZ-dmgCalc/
-<br>
+
+本ツールの開発や進捗についての記事は [HoYoLAB](https://www.hoyolab.com/creatorCollection/10187274) で軽くまとめていますので、よろしければ併せてご覧ください。  
 
 ## 🔮 Roadmap / ToDo
 以下は今後実装予定の機能になります。
