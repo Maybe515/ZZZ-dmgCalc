@@ -20,10 +20,10 @@ export const updateAttrMatchPct = () =>
   setValue("attrMatchPct", getMatchValue($("matchSelect")?.value));
 
 
-export function getAnomalyCorr(attrId) {
+function getAnomalyCorr(attrId) {
   return attributes[attrId]?.anomalyCorr ?? 0;
 }
 
-export function getMatchValue(matchId) {
+function getMatchValue(matchId) {
   return matchTable[matchId]?.value ?? 0;
 }

@@ -30,7 +30,16 @@ export function updateIcon(id, key, iconPath, altLabel = "", ext = ".webp") {
 export function updateImage(id, src, alt) {
   const el = $(id);
   if (!el) return;
-  el.src = src || "";
+
+  if (!src) {
+    el.style.display = "none";
+    el.src = "";
+    el.alt = "";
+    return;
+  }
+
+  el.style.display = "";
+  el.src = src;
   el.alt = alt || "";
 }
 

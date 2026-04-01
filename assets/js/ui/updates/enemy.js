@@ -12,6 +12,7 @@ export function updateEnemyInfo(dict = i18nDict) {
   updateAttrGroup(enemy.weakAttrId || [], "weakAttr", dict);
   updateAttrGroup(enemy.resistAttrId || [], "resistAttr", dict);
 
-  updateImage("enemyImage", enemy.image ? `${imgPaths.base}${imgPaths.enemy}${enemy.image}` : "", "");
+  updateImage("enemyImage", enemy.image ? `${imgPaths.base}${imgPaths.enemy}${enemy.image}` : `${imgPaths.base}${imgPaths.common}` + "empty.webp", "");
+  updateImage("materialImage", enemy.gif ? `${imgPaths.base}${imgPaths.material}${enemy.gif}` : "", "");
   updateLink("enemyLink", enemy.link ? urls.hoyowiki + enemy.link : "");
 }

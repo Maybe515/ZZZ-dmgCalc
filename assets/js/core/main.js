@@ -18,11 +18,11 @@ import { compute } from "../calc/compute-handler.js";
 async function init() {
   loadCssFiles();         // CSS読み込み
 
-  loadFromLocalStorage(); // 保存データ復元
-  await loadLanguage();   // 言語ロード
   await loadAllData();    // JSONデータロード
+  loadFromLocalStorage(); // 保存データ復元
   loadLastModified();     // 最終更新日表示
   applyDefaults();        // UI 初期値適用 (ロード後に実施)
+  await loadLanguage();   // 言語ロード
 
   bindEvents();           // イベントバインド
 

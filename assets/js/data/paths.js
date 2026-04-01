@@ -6,12 +6,14 @@
  */
 export const imgPaths = {
   base: "assets/image/",
+  common: "common/",
+  agent: "agent/",
+  enemy: "enemy/",
   faction: "faction/",
   specialty: "specialty/",
   attribute: "stats/",
-  agent: "agent/",
-  enemy: "enemy/",
-  rank: "rank/"
+  rank: "rank/",
+  material: "material/"
 };
 
 /**

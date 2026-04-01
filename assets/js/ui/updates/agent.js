@@ -23,7 +23,7 @@ export function updateAgentInfo(dict = i18nDict) {
   $("attrSelect").value = attributes[id] ? id : "";
   updateAnomalyCorr();
 
-  updateImage("agentImage", agent.image ? `${imgPaths.base}${imgPaths.agent}${agent.image}` : "", "");
+  updateImage("agentImage", agent.image ? `${imgPaths.base}${imgPaths.agent}${agent.image}` : `${imgPaths.base}${imgPaths.common}` + "empty.webp", "");
   updateImage("rankImage", agent.rank ? `${imgPaths.base}${imgPaths.rank}rank_${agent.rank}.png` : "", "");
 
   updateLink("agentLink", agent.link ? urls.hoyowiki + agent.link : "");

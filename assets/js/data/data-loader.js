@@ -3,7 +3,7 @@
 // ---------------- Imports ----------------
 // UI
 import { applyLanguage } from "../ui/language.js";
-import { populateSelect, generateAttrSelect, generateRangeSelect, generateMatchSelect } from "../ui/generate-selects.js";
+import { generateAgentSelect, generateEnemySelect, generateAttrSelect, generateRangeSelect, generateMatchSelect } from "../ui/generate-selects.js";
 import { $ } from "../ui/dom-helpers.js";
 
 // Data stores
@@ -44,10 +44,10 @@ export async function loadAllData() {
 
   return Promise.all([
     loadJSON("./assets/data/agents.json", agents, () =>
-      populateSelect("agentSelect", agents, i18nDict)
+      generateAgentSelect()
     ),
     loadJSON("./assets/data/enemies.json", enemies, () =>
-      populateSelect("enemySelect", enemies, i18nDict)
+      generateEnemySelect()
     ),
     loadJSON("./assets/data/attributes.json", attributes, () =>
       generateAttrSelect()

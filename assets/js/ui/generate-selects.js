@@ -1,46 +1,7 @@
 // Select 要素を自動生成する
 
 import { $ } from "./dom-helpers.js";
-import { attributes, rangeTable, matchTable } from "../data/state.js";
-
-// i18n helper
-import { t } from "../i18n/i18n-helpers.js";
-
-
-/**
- * セレクトの prefix を決定する
-*/
-function getPrefix(id) {
-    if (id === "agentSelect") return "agent";
-    if (id === "enemySelect") return "enemy";
-    return id; // fallback
-}
-
-/**
- * セレクト要素に options を生成する
-*/
-export function populateSelect(id, data, dict = {}) {
-    const select = $(id);
-    if (!select) return;
-    
-    const currentValue = select.value;
-    const prefix = getPrefix(id);
-    
-    const label = t(dict, "ui.selectPrompt", "-- Select --");
-    
-    select.innerHTML = [
-        `<option value="">${label}</option>`,
-        ...Object.keys(data).map(key => {
-            const text = t(dict, `${prefix}.${key}`, key);
-            return `<option value="${key}">${text}</option>`;
-        })
-    ].join("");
-    
-    // 元の選択値が有効なら復元
-    if (currentValue && data[currentValue]) {
-        select.value = currentValue;
-    }
-}
+import { agents, enemies, attributes, rangeTable, matchTable } from "../data/state.js";
 
 /**
  * 汎用 option 生成
@@ -50,6 +11,40 @@ function createOption(value, i18nKey) {
   opt.value = value;
   opt.setAttribute("data-i18n", i18nKey);
   return opt;
+}
+
+/**
+ * エージェントセレクト(agentSelect)を生成
+ * agents.json を元に生成する
+*/
+export function generateAgentSelect() {
+  const select = $("agentSelect");
+  if (!select) return;
+
+  select.innerHTML = "";
+
+  select.appendChild(createOption("", "ui.selectPrompt"));
+
+  Object.entries(agents).forEach(([id, meta]) => {
+    select.appendChild(createOption(id, `agent.${id}`));
+  });
+}
+
+/**
+ * エネミーセレクト(enemySelect)を生成
+ * enemies.json を元に生成する
+*/
+export function generateEnemySelect() {
+  const select = $("enemySelect");
+  if (!select) return;
+
+  select.innerHTML = "";
+
+  select.appendChild(createOption("", "ui.selectPrompt"));
+
+  Object.entries(enemies).forEach(([id, meta]) => {
+    select.appendChild(createOption(id, `enemy.${id}`));
+  });
 }
 
 /**

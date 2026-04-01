@@ -7,14 +7,11 @@ import { compute } from "../calc/compute-handler.js";
 // Data loading
 import { loadLanguage } from "../data/data-loader.js";
 
-// Select Generate
-import { populateSelect } from "../ui/generate-selects.js";
-
 // UI updates
 import { updateAgentInfo } from "../ui/updates/agent.js";
 import { updateEnemyInfo } from "../ui/updates/enemy.js";
 import { updateMatchSelect } from "../ui/updates/match.js";
-import { updateLevelCorrect ,updateLevelCoefficient, updateAnomalyCorr, updateWeakRange, updateAttrMatchPct } from "../ui/updates/derived.js";
+import { updateLevelCorrect, updateLevelCoefficient, updateAnomalyCorr, updateWeakRange, updateAttrMatchPct } from "../ui/updates/derived.js";
 import { updateVisibilityByMode } from "../ui/updates/mode.js";
 import { updateBreakControls } from "../ui/updates/break.js";
 
@@ -29,7 +26,7 @@ import { getCopyResult } from "../ui/copy.js";
 import { loadLastModified, resetAll } from "./init.js";
 
 // Data
-import { agents, enemies, i18nDict, helpTexts } from "../data/state.js";
+import { i18nDict, helpTexts } from "../data/state.js";
 import { fields } from "../data/form-config.js";
 
 // DOM helpers
@@ -54,10 +51,8 @@ function bindChange(id, handler) {
 async function handleLanguageChange() {
   await loadLanguage();
 
-  populateSelect("agentSelect", agents, i18nDict);
-  populateSelect("enemySelect", enemies, i18nDict);
-
   updateAgentInfo(i18nDict);
+  updateEnemyInfo(i18nDict);
   loadLastModified();
 
   localStorage.setItem("lang", $("langSelect").value);
