@@ -5,6 +5,9 @@
   --color-muted: #a6accd;
   --color-bg-rgb: rgba(31, 31, 31, 0.8);
 
+  /* Body */
+  --color-body-bg: #020202;
+
   /* Borders */
   --color-border-default: #464646;
   --color-border-strong: #606060;
@@ -64,8 +67,11 @@ body {
   min-width: 550px;
   padding-top: 1.25rem;
   color: var(--color-fg);
-  background: var(--color-bg);
+  background: var(--color-body-bg);
   background-image: url("../../image/common/bg_pages.png");
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: contain;
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
   cursor: url("../../image/common/cursor-pointer.png") 4 4, auto;
 }
