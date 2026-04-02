@@ -49,6 +49,7 @@
     "attrMatch": "属性相性補正率 [%]",
     "nonCorr": "補正なし",
     "labelBreak": "ブレイク状態にする",
+    "labelMiasmaShield": "ミアズマシールドを有効にする",
     "breakBonus": "ブレイク弱体倍率 [%]",
     "headerOption": "オプション",
     "decimalPoint": "小数点桁数",

@@ -49,6 +49,7 @@
     "attrMatch": "Attribute Compatibility Correction [%]",
     "nonCorr": "Non Correction",
     "labelBreak": "Break the enemy",
+    "labelMiasmaShield": "Enable the Miasma Shield",
     "breakBonus": "Break Bonus [%]",
     "headerOption": "Options",
     "decimalPoint": "Decimal Point",
