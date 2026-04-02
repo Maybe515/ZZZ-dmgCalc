@@ -6,7 +6,7 @@ import { generateAgentSelect, generateEnemySelect, generateAttrSelect, generateR
 import { $ } from "../ui/dom-helpers.js";
 
 // Data stores
-import { agents, enemies, i18nDict, helpTexts, attributes, rangeTable, matchTable } from "./state.js";
+import { agents, enemies, i18nDict, helpTexts, attributes, rangeTable, matchTable, miasmaBuffTable } from "./state.js";
 
 // ---------------- JSON Loader ----------------
 /**
@@ -48,15 +48,16 @@ export async function loadAllData() {
     loadJSON("./assets/data/enemies.json", enemies, () =>
       generateEnemySelect()
     ),
-    loadJSON("./assets/data/attributes.json", attributes, () =>
+    loadJSON("./assets/data/tables/attributes.json", attributes, () =>
       generateAttrSelect()
     ),
     loadJSON("./assets/data/tables/range.json", rangeTable, () =>
       generateRangeSelect()
-  ),
+    ),
     loadJSON("./assets/data/tables/match.json", matchTable, () =>
       generateMatchSelect()
-  ),
+    ),
+    loadJSON("./assets/data/tables/miasma-buff.json", miasmaBuffTable),
     loadJSON("./assets/data/helpTexts.json", helpTexts),
     loadJSON(`./assets/data/languages/${lang}.json`, i18nDict, dict =>
       applyLanguage(dict)

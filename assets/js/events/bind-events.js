@@ -94,7 +94,19 @@ export function bindEvents() {
   );
 
   // ブレイクトグル
-  $("breakToggle")?.addEventListener("change", () => {
+  const breakToggle = $("breakToggle");
+  breakToggle?.addEventListener("change", () => {
+    if (breakToggle.checked) miasmaToggle.checked = false;
+    
+    updateBreakControls();
+    compute();
+  });
+
+  // ミアズマトグル
+  const miasmaToggle = $("miasmaToggle");
+  miasmaToggle?.addEventListener("change", () => {
+    if (miasmaToggle.checked) breakToggle.checked = false;
+  
     updateBreakControls();
     compute();
   });

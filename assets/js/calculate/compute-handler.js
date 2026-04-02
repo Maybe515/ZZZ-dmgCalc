@@ -12,6 +12,7 @@ import { saveToLocalStorage } from "../storage/local-storage.js";
 // Config / Data
 import { fields } from "../data/form-config.js";
 import { defaults } from "../data/default.js";
+import { miasmaBuffTable } from "../data/state.js";
 
 // Calculation modules
 import { computeNormal } from "./compute-normal.js";
@@ -21,6 +22,7 @@ import { fmt } from "./fmt.js";
 
 // ---------------- Cached DOM ----------------
 const breakToggle = $("breakToggle");
+const miasmaToggle = $("miasmaToggle");
 
 // ---------------- Value Collection ----------------
 /**
@@ -45,6 +47,8 @@ export function collectValues() {
 export function compute() {
   const mode = getCalcMode();
   const v = collectValues();
+  const enemyId = $("enemySelect")?.value;
+  const miasmaBuff = miasmaBuffTable[enemyId] ?? { defUp: 80, dmgCut: 25};
 
   const digits = Math.max(0, Math.min(6, v.digits));
 
@@ -62,9 +66,11 @@ export function compute() {
   const weakRangeMul = percent.toMul(v.weakRangePct - 100);
 
   // --- Defense multiplier ---
+  const defUpPct = v.defUpPct + (miasmaToggle.checked ? miasmaBuff.defUp : 0);
+
   const defEff =
     v.def *
-    (1 + percent.toFrac(v.defUpPct) - percent.toFrac(v.defDownPct));
+    (1 + percent.toFrac(defUpPct) - percent.toFrac(v.defDownPct));
 
   const defValid = defEff * (1 - percent.toFrac(v.penRatioPct)) - v.pen;
 
@@ -78,6 +84,9 @@ export function compute() {
     percent.toFrac(v.attrResistDownPct) +
     percent.toFrac(v.attrResistIgnorePct);
 
+  // --- Damage Cut multiplier ---
+  const dmgCutMul = miasmaToggle.checked ? percent.toFrac(100 - miasmaBuff.dmgCut) : 1;
+
   // --- Mode-specific compute ---
   const computeFn = mode === "mode--normal" ? computeNormal : computeAnomaly;
 
@@ -90,6 +99,7 @@ export function compute() {
       weakRangeMul,
       defMul,
       resistMul,
+      dmgCutMul,
       setText
     );
   } else {
@@ -100,6 +110,7 @@ export function compute() {
       breakBonusMul,
       defMul,
       resistMul,
+      dmgCutMul,
       setText
     );
   }

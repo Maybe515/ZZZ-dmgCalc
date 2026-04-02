@@ -28,7 +28,8 @@ export const selectMapping = {
   rangeSelect: "rangeSelect",
   enemySelect: "enemySelect",
   matchSelect: "matchSelect",
-  breakToggle: "breakToggle"
+  breakToggle: "breakToggle",
+  miasmaToggle: "miasmaToggle"
 };
 
 /**

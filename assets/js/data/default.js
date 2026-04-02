@@ -50,5 +50,6 @@ export const selectDefaults = {
   rangeSelect: "0-15",
   enemySelect: "",
   matchSelect: "none",
-  breakToggle: false
+  breakToggle: false,
+  miasmaToggle: false,
 };

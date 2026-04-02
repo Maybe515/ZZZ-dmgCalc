@@ -12,6 +12,7 @@ export function computeAnomaly(
   breakBonusMul,
   defMul,
   resistMul,
+  dmgCutMul,
   setText
 ) {
   
@@ -29,7 +30,8 @@ export function computeAnomaly(
     lvCorrMul *
     anomalyMul *
     defMul *
-    resistMul;
+    resistMul *
+    dmgCutMul;
 
   // --- UI 更新 ---
   setText("base", fmt(v.atk, digits));

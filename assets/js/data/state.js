@@ -32,6 +32,14 @@ export const rangeTable = {};
 export const matchTable = {};
 
 /**
+ * ミアズマシールド補正テーブル（miasma-buff.json からロード）
+ * - depUp: 防御力UP
+ * - dmgCut: ダメージカット
+ */
+export const miasmaBuffTable = {};
+
+
+/**
  * ヘルプテキスト（helpTexts.json からロード）
  */
 export const helpTexts = {};

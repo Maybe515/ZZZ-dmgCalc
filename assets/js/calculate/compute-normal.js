@@ -13,6 +13,7 @@ export function computeNormal(
   weakRangeMul,
   defMul,
   resistMul,
+  dmgCutMul,
   setText
 ) {
   
@@ -31,7 +32,8 @@ export function computeNormal(
     breakBonusMul *
     weakRangeMul *
     defMul *
-    resistMul;
+    resistMul *
+    dmgCutMul;
 
   // --- UI 更新 ---
   setText("base", fmt(base, digits));
