@@ -19,6 +19,7 @@ function collectBaseParams() {
     enemy: $("enemySelect")?.value,
     attrMatch: $("matchSelect")?.value,
     breakToggle: $("breakToggle")?.checked,
+    miasmaToggle: $("miasmaToggle")?.checked,
     ...collectValues()
   };
 }
