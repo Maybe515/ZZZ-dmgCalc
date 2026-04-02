@@ -85,7 +85,8 @@
                                     <a id="agentLink" href="#" target="_blank" rel="noopener noreferrer"
                                         class="tooltip">
                                         <img id="agentImage" class="agent-select__image" alt="キャラクター画像" />
-                                        <span class="tooltip__content" data-i18n="linkChara">HoYoWiki のキャラクターページに飛びます</span>
+                                        <span class="tooltip__content" data-i18n="linkChara">HoYoWiki
+                                            のキャラクターページに飛びます</span>
                                     </a>
                                     <img id="rankImage" class="agent-rank-icon" alt="ランク画像" />
                                 </div>
@@ -332,14 +333,24 @@
                         <!-- その他 -->
                         <article class="card card--other-enemy">
                             <h3 class="card__title" data-i18n="headerOther">その他</h3>
-                            <div class="form form--row">
-                                <input type="checkbox" id="breakToggle" class="form__checkbox" />
-                                <label for="breakToggle" class="form__label form__label--break"
-                                    data-i18n="labelBreak">敵をブレイク状態にする</label>
+                            <div class="form--break">
+                                <div class="form form--row">
+                                    <input type="checkbox" id="breakToggle" class="form__checkbox" />
+                                    <label for="breakToggle" class="form__label form__label--break"
+                                        data-i18n="labelBreak">ブレイク状態にする</label>
+                                </div>
+                                <div id="breakControls" class="form form--row">
+                                    <label for="breakBonusPct" class="form__label" data-i18n="breakBonus">ブレイク倍率
+                                        [%]</label>
+                                    <input type="number" id="breakBonusPct" class="form__input" value="100" min="0" />
+                                </div>
                             </div>
-                            <div id="breakControls" class="form form--row">
-                                <label for="breakBonusPct" class="form__label" data-i18n="breakBonus">ブレイク倍率 [%]</label>
-                                <input type="number" id="breakBonusPct" class="form__input" value="100" min="0" />
+                            <div class="form--miasma">
+                                <div class="form form--row">
+                                    <input type="checkbox" id="miasmaToggle" class="form__checkbox" />
+                                    <label for="miasmaToggle" class="form__label form__label--miasma"
+                                        data-i18n="labelMiasmaShield">ミアズマシールドを有効にする</label>
+                                </div>
                             </div>
                         </article>
                     </div>
