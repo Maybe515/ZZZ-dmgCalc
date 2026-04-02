@@ -2,3 +2,22 @@
   height: 20px;
   margin: 0 5px;
 }
+
+.info-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 .25rem;
+  width: 1.4em;
+  height: 1.4em;
+  cursor: pointer;
+  font-size: 0.8em;
+  border-radius: 50%;
+  color: #fff;
+  background-color: var(--color-icon-bg);
+  transition: background 0.2s;
+}
+
+.info-circle:hover {
+  background: var(--color-icon-hover-bg);
+}

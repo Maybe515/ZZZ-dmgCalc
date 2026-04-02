@@ -38,7 +38,11 @@
   --color-field-hover-bg: rgba(255, 255, 255, 0.10);
   --color-field-hover-border: #666;
   --color-field-focus-ring: #88c0d0;
-  
+
+  /* Icons */
+  --color-icon-bg: #444444;
+  --color-icon-hover-bg: #777;
+
   /* Details */
   --color-details-bg: #f5e642;
   --color-details-arrow: #1a1a1a;
