@@ -1,5 +1,4 @@
 // JSON ロード後に内容が書き込まれる「アプリ内データストア」
-
 /**
  * エージェント情報（agents.json からロード）
  * key: agentId, value: agentData

@@ -1,10 +1,9 @@
 // UI 初期化とデフォルト適用を担当するモジュール
-
 // ---------------- Imports ----------------
-// 計算関連
-import { setElementValue, compute } from "../calc/compute-handler.js";
+// Calculate
+import { setElementValue, compute } from "../calculate/compute-handler.js";
 
-// UI 更新
+// Update UI
 import { updateAgentInfo } from "../ui/updates/agent.js";
 import { updateEnemyInfo } from "../ui/updates/enemy.js";
 import { updateAnomalyCorr, updateWeakRange, updateAttrMatchPct, updateLevelCorrect, updateLevelCoefficient } from "../ui/updates/derived.js";

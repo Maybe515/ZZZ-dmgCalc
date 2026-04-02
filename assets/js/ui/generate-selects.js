@@ -1,5 +1,4 @@
-// Select 要素を自動生成する
-
+// <Select> 要素を自動生成するモジュール
 import { $ } from "./dom-helpers.js";
 import { agents, enemies, attributes, rangeTable, matchTable } from "../data/state.js";
 

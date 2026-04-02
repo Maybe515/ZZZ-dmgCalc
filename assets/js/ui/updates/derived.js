@@ -2,7 +2,7 @@
 import { $, setValue } from "../dom-helpers.js";
 import { rangeTable, matchTable, attributes } from "../../data/state.js";
 import { lvCoeffTable } from "../../data/lv-coefficient-table.js";
-import { calcurateLevelCorrect } from "../../calc/math-utils.js";
+import { calcurateLevelCorrect } from "../../calculate/math-utils.js";
 
 export const updateLevelCorrect = () =>
   setValue("lvCorrPct", calcurateLevelCorrect($("agentLevel")?.value) ?? 0);

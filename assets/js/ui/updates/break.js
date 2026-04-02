@@ -1,4 +1,4 @@
-// ブレイクUI の制御
+// ブレイクUI の制御をするモジュール
 import { $ } from "../dom-helpers.js";
 
 const breakToggle = $("breakToggle");

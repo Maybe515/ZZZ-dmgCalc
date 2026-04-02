@@ -1,5 +1,4 @@
 // JSON データのロードとセレクト生成を担当するモジュール
-
 // ---------------- Imports ----------------
 // UI
 import { applyLanguage } from "../ui/language.js";
@@ -37,7 +36,7 @@ async function loadJSON(path, target, callback) {
 
 // ---------------- All Data Loader ----------------
 /**
- * 全データをロードする（初期化時に使用）
+ * すべてのデータをロードする（初期化時に使用）
  */
 export async function loadAllData() {
   const lang = $("langSelect").value || "jp";
@@ -56,7 +55,7 @@ export async function loadAllData() {
       generateRangeSelect()
   ),
     loadJSON("./assets/data/tables/match.json", matchTable, () =>
-    generateMatchSelect()
+      generateMatchSelect()
   ),
     loadJSON("./assets/data/helpTexts.json", helpTexts),
     loadJSON(`./assets/data/languages/${lang}.json`, i18nDict, dict =>

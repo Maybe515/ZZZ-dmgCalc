@@ -1,5 +1,4 @@
-// エージェントUI 更新
-
+// エージェントUI を更新するモジュール
 import { $ } from "../dom-helpers.js";
 import { agents, attributes, i18nDict } from "../../data/state.js";
 import { imgPaths, urls } from "../../data/paths.js";

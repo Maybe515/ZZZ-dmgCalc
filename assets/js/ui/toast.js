@@ -1,5 +1,4 @@
-// トースト通知の表示制御
-
+// トースト通知の表示制御をするモジュール
 import { $ } from "./dom-helpers.js";
 
 const TOAST_DURATION = 1500; // 表示時間（ms）

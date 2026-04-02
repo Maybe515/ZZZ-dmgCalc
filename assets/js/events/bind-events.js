@@ -1,8 +1,7 @@
 // UI のイベントバインドを担当するモジュール
-
 // ---------------- Imports ----------------
-// Calc
-import { compute } from "../calc/compute-handler.js";
+// Calculate
+import { compute } from "../calculate/compute-handler.js";
 
 // Data loading
 import { loadLanguage } from "../data/data-loader.js";
@@ -48,6 +47,9 @@ function bindChange(id, handler) {
 }
 
 // ---------------- Language change handler ----------------
+/** 
+ * 言語切り替えの処理を行うハンドラー
+*/
 async function handleLanguageChange() {
   await loadLanguage();
 

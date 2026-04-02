@@ -1,5 +1,4 @@
 // i18n（国際化）関連のヘルパー関数
-
 import { $ } from "../ui/dom-helpers.js";
 
 /**

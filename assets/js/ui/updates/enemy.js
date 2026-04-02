@@ -1,5 +1,4 @@
-// エネミーUI 更新
-
+// エネミーUI の更新をするモジュール
 import { $, } from "../dom-helpers.js";
 import { enemies, i18nDict } from "../../data/state.js";
 import { imgPaths, urls } from "../../data/paths.js";
