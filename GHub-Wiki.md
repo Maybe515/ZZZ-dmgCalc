@@ -1,3 +1,19 @@
+## ToDo
+- [ ] 「透徹力」による計算
+- [x] 「ミアズマシールド」による補正
+  - 防御力80%UP、ダメージカット25%、ブレイク不可
+    - ワンダリングハンター：防御100%UP、ダメージカット25%
+    - 始まりの主：防御力10%UP、ダメージカット50%
+- [ ] サイトシェア機能の実装
+- [ ] 各パラメータ値の保存機能（CSV入出力）
+- [ ] 更新履歴をサイト上から表示できるようにする
+
+### ミアズマシールド
+- ブレイク同様にチェックボックスで有効にする
+- シールドにチェックボックスを入れた時、ブレイク状態の checked を False にする。
+- 逆も同様に処理する
+
+## ファイル構成
 ```
 📁 root/
 ├── 📁 assets/
@@ -5,15 +21,17 @@
 │   ├── 📁 data/
 │   │   ├── 📁 languages/               # 言語データ
 │   │   ├── 📁 tables/                  
+│   │   │   ├── attributes.json         # 属性テーブル
 │   │   │   ├── match.json              # 属性相性補正テーブル
+│   │   │   ├── miasma-buff.json        # ミアズマシールド補正テーブル
 │   │   │   └── range.json              # 距離減衰補正テーブル
 │   │   ├── agents.json                 # エージェント情報
-│   │   ├── attributes.json             # 属性情報
 │   │   ├── enemies.json                # エネミー情報
-│   │   └── helpTexts.json              # ヘルプテキスト
+│   │   ├── helpTexts.json              # ヘルプテキスト
+│   │   └── languages.json              # 言語一覧
 │   ├── 📁 image/                       # UI で使用する画像
 │   └── 📁 js/
-│       ├── 📁 calc/
+│       ├── 📁 calculate/
 │       │   ├── compute-anomaly.js      # 状態異常モードのダメージ計算
 │       │   ├── compute-handler.js      # 計算処理の中央ロジック
 │       │   ├── compute-normal.js       # 通常モードのダメージ計算
@@ -46,9 +64,10 @@
 │           │   ├── match.js            # 属性相性の自動判定
 │           │   └── mode.js             # モード切り替えによる UI 更新
 │           ├── copy.js                 # 「結果カード」の値をコピーする
+│           ├── custom-select.js        # Custom Select を生成する
 │           ├── details-animation.js    # details要素の閉じるアニメーションを制御する
-│           ├── dom-helpers.ja          # DOM 操作の基盤ユーティリティ
-│           ├── generate-select.ja      # Select 要素を自動生成する
+│           ├── dom-helpers.js          # DOM 操作の基盤ユーティリティ
+│           ├── generate-options.js     # Custom Select の Option を取得する
 │           ├── language.js             # data-i18n 系属性を使用して UI テキストを更新する
 │           ├── load-css.js             # CSS を動的に読み込むユーティリティ
 │           ├── mode.js                 # 計算モードの状態を取得を担当するモジュール
