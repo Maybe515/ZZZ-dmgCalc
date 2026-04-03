@@ -1,5 +1,4 @@
-// 実行環境（Local or GitHub Pages）に応じてベースパスを返す
-
+// 実行環境（Local or GitHub Pages）に応じてベースパスを返すモジュール
 const REPO_NAME = "ZZZ-dmgCalc";
 
 // GitHub Pages で動作しているか判定

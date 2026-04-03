@@ -1,5 +1,4 @@
-// ポップアップの表示制御
-
+// ポップアップの表示制御をするモジュール
 // ---------------- Popup control ----------------
 export function openPopup(popup) {
   popup.style.display = "block";

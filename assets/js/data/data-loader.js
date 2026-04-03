@@ -1,13 +1,10 @@
 // JSON データのロードとセレクト生成を担当するモジュール
-
 // ---------------- Imports ----------------
 // UI
 import { applyLanguage } from "../ui/language.js";
-import { generateAgentSelect, generateEnemySelect, generateAttrSelect, generateRangeSelect, generateMatchSelect } from "../ui/generate-selects.js";
-import { $ } from "../ui/dom-helpers.js";
 
 // Data stores
-import { agents, enemies, i18nDict, helpTexts, attributes, rangeTable, matchTable } from "./state.js";
+import { agents, enemies, i18nDict, helpTexts, attributes, rangeTable, matchTable, miasmaBuffTable, languages, state } from "./state.js";
 
 // ---------------- JSON Loader ----------------
 /**
@@ -37,31 +34,18 @@ async function loadJSON(path, target, callback) {
 
 // ---------------- All Data Loader ----------------
 /**
- * 全データをロードする（初期化時に使用）
+ * すべてのデータをロードする（初期化時に使用）
  */
 export async function loadAllData() {
-  const lang = $("langSelect").value || "jp";
-
   return Promise.all([
-    loadJSON("./assets/data/agents.json", agents, () =>
-      generateAgentSelect()
-    ),
-    loadJSON("./assets/data/enemies.json", enemies, () =>
-      generateEnemySelect()
-    ),
-    loadJSON("./assets/data/attributes.json", attributes, () =>
-      generateAttrSelect()
-    ),
-    loadJSON("./assets/data/tables/range.json", rangeTable, () =>
-      generateRangeSelect()
-  ),
-    loadJSON("./assets/data/tables/match.json", matchTable, () =>
-    generateMatchSelect()
-  ),
+    loadJSON("./assets/data/agents.json", agents),
+    loadJSON("./assets/data/enemies.json", enemies),
+    loadJSON("./assets/data/tables/attributes.json", attributes),
+    loadJSON("./assets/data/tables/range.json", rangeTable),
+    loadJSON("./assets/data/tables/match.json", matchTable),
+    loadJSON("./assets/data/languages.json", languages),
+    loadJSON("./assets/data/tables/miasma-buff.json", miasmaBuffTable),
     loadJSON("./assets/data/helpTexts.json", helpTexts),
-    loadJSON(`./assets/data/languages/${lang}.json`, i18nDict, dict =>
-      applyLanguage(dict)
-    )
   ]);
 }
 
@@ -70,7 +54,7 @@ export async function loadAllData() {
  * 言語ファイルをロードして UI に適用する
  */
 export async function loadLanguage() {
-  const lang = $("langSelect").value || "jp";
+  const lang = state.lang || "jp";
   await loadJSON(
     `./assets/data/languages/${lang}.json`,
     i18nDict,

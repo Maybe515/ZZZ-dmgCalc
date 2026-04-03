@@ -1,5 +1,4 @@
 // 入力フィールドおよびセレクト要素のデフォルト値
-
 /**
  * 数値入力フィールドのデフォルト値
  * 計算ロジックの基礎となる初期パラメータ
@@ -51,5 +50,6 @@ export const selectDefaults = {
   rangeSelect: "0-15",
   enemySelect: "",
   matchSelect: "none",
-  breakToggle: false
+  breakToggle: false,
+  miasmaToggle: false,
 };

@@ -1,12 +1,11 @@
-// エネミーUI 更新
-
+// エネミーUI の更新をするモジュール
 import { $, } from "../dom-helpers.js";
-import { enemies, i18nDict } from "../../data/state.js";
+import { enemies, i18nDict, state } from "../../data/state.js";
 import { imgPaths, urls } from "../../data/paths.js";
 import { updateImage, updateLink, updateAttrGroup } from "./helpers.js";
 
 export function updateEnemyInfo(dict = i18nDict) {
-  const sel = $("enemySelect")?.value;
+  const sel = state.enemyId;
   const enemy = enemies[sel] || {};
 
   updateAttrGroup(enemy.weakAttrId || [], "weakAttr", dict);

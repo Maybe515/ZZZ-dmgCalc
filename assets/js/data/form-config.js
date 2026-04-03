@@ -1,5 +1,4 @@
 // UI フィールド構成と、保存・復元に使うマッピング定義
-
 /**
  * 数値入力フィールド（compute-handler の collectValues で扱う）
  * UI の <input type="number"> に対応
@@ -29,7 +28,8 @@ export const selectMapping = {
   rangeSelect: "rangeSelect",
   enemySelect: "enemySelect",
   matchSelect: "matchSelect",
-  breakToggle: "breakToggle"
+  breakToggle: "breakToggle",
+  miasmaToggle: "miasmaToggle"
 };
 
 /**

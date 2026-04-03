@@ -1,8 +1,7 @@
 // UI 状態の保存・復元を担当するモジュール
-
 import { $ } from "../ui/dom-helpers.js";
 import { getCalcMode } from "../ui/mode.js";
-import { getElementValue, setElementValue, collectValues } from "../calc/compute-handler.js";
+import { getElementValue, setElementValue, collectValues } from "../calculate/compute-handler.js";
 import { selectMapping, numericKeys } from "../data/form-config.js";
 
 const STORAGE_KEY = "lastParams";
@@ -20,6 +19,7 @@ function collectBaseParams() {
     enemy: $("enemySelect")?.value,
     attrMatch: $("matchSelect")?.value,
     breakToggle: $("breakToggle")?.checked,
+    miasmaToggle: $("miasmaToggle")?.checked,
     ...collectValues()
   };
 }

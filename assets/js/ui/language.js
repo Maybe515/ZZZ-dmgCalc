@@ -1,5 +1,4 @@
-// data-i18n 系属性を使用して UI テキストを更新する
-
+// data-i18n 系属性を使用して UI テキストを更新するモジュール
 /**
  * 指定された属性（例: data-i18n）を持つ要素に辞書を適用する
  * @param {string} attrName - 例: "data-i18n"

@@ -1,5 +1,4 @@
-// UI 更新の基礎関数
-
+// UI 更新の基礎関数モジュール
 import { $ } from "../dom-helpers.js";
 import { t } from "../../i18n/i18n-helpers.js";
 import { i18nDict } from "../../data/state.js";

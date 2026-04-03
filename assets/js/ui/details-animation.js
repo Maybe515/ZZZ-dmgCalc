@@ -1,6 +1,5 @@
-// <details> 要素の閉じるアニメーションを制御する
-
-const ANIMATION_DURATION = 400; // CSS のアニメーション時間と合わせる
+// <details> 要素の閉じるアニメーションを制御するモジュール
+const ANIMATION_DURATION = 400;     // CSS のアニメーション時間と合わせる
 
 export function initDetailsAnimation() {
   const detailsList = document.querySelectorAll("details");
