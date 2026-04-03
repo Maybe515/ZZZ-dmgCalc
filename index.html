@@ -39,10 +39,7 @@
                 </a>
                 <h1 class="header__title" data-i18n="headerTitle">ゼンレスゾーンゼロ ダメージ計算ツール</h1>
                 <div class="header__meta">
-                    <select id="langSelect" class="form__input">
-                        <option value="jp">JP</option>
-                        <option value="en">EN</option>
-                    </select>
+                    <div class="custom-select" id="langSelect"></div>
                     <span class="header__last-modified" id="lastModified"></span>
                     <!-- <span class="info-circle info-btn" data-key="changeLog">？</span> -->
                 </div>
@@ -85,15 +82,15 @@
                                     <a id="agentLink" href="#" target="_blank" rel="noopener noreferrer"
                                         class="tooltip">
                                         <img id="agentImage" class="agent-select__image" alt="キャラクター画像" />
-                                        <span class="tooltip__content" data-i18n="linkChara">HoYoWiki の
-                                            キャラクターページに飛びます</span>
+                                        <span class="tooltip__content" data-i18n="linkChara">HoYoWiki
+                                            のキャラクターページに飛びます</span>
                                     </a>
                                     <img id="rankImage" class="agent-rank-icon" alt="ランク画像" />
                                 </div>
                                 <div class="agent-select__right">
                                     <label for="agentSelect" class="visually-hidden"
                                         data-i18n="agentSelect">エージェント選択</label>
-                                    <select id="agentSelect" class="form__input"></select>
+                                    <div class="custom-select" id="agentSelect"></div>
                                     <div class="kv-list">
                                         <div class="kv">
                                             <span class="kv__label" data-i18n="faction">陣営</span>
@@ -201,7 +198,7 @@
                                 <span class="info-circle info-btn" data-key="anomalyCorr">？</span>
                             </label>
                             <div class="form form--grid">
-                                <select id="attrSelect" class="form__input is-disabled-normal"></select>
+                                <div class="custom-select is-disabled-normal" id="attrSelect"></div>
                                 <input type="number" id="anomalyCorrPct" class="form__input is-disabled-normal"
                                     value="0" min="0" />
                             </div>
@@ -211,7 +208,7 @@
                                 <span class="info-circle info-btn" data-key="weakRange">？</span>
                             </label>
                             <div class="form form--grid">
-                                <select id="rangeSelect" class="form__input is-disabled-anomaly"></select>
+                                <div class="custom-select is-disabled-anomaly" id="rangeSelect"></div>
                                 <input type="number" id="weakRangePct" class="form__input is-disabled-anomaly"
                                     value="100" readonly />
                             </div>
@@ -245,7 +242,7 @@
                                 <div class="enemy-select__right">
                                     <label for="enemySelect" class="visually-hidden"
                                         data-i18n="enemySelect">エネミー選択</label>
-                                    <select id="enemySelect" class="form__input"></select>
+                                    <div class="custom-select" id="enemySelect"></div>
                                     <div class="kv-list">
                                         <div class="kv">
                                             <span class="kv__label" data-i18n="weakAttr">弱点属性</span>
@@ -324,7 +321,7 @@
                                 <span class="info-circle info-btn" data-key="attrMatch">？</span>
                             </label>
                             <div class="form form--grid">
-                                <select id="matchSelect" class="form__input"></select>
+                                <div class="custom-select" id="matchSelect"></div>
                                 <input type="number" id="attrMatchPct" class="form__input" value="0" step="0.1"
                                     readonly />
                             </div>
@@ -333,14 +330,24 @@
                         <!-- その他 -->
                         <article class="card card--other-enemy">
                             <h3 class="card__title" data-i18n="headerOther">その他</h3>
-                            <div class="form form--row">
-                                <input type="checkbox" id="breakToggle" class="form__checkbox" />
-                                <label for="breakToggle" class="form__label form__label--break"
-                                    data-i18n="labelBreak">敵をブレイク状態にする</label>
+                            <div class="form--break">
+                                <div class="form form--row">
+                                    <input type="checkbox" id="breakToggle" class="form__checkbox" />
+                                    <label for="breakToggle" class="form__label form__label--break"
+                                        data-i18n="labelBreak">ブレイク状態にする</label>
+                                </div>
+                                <div id="breakControls" class="form form--row">
+                                    <label for="breakBonusPct" class="form__label" data-i18n="breakBonus">ブレイク倍率
+                                        [%]</label>
+                                    <input type="number" id="breakBonusPct" class="form__input" value="100" min="0" />
+                                </div>
                             </div>
-                            <div id="breakControls" class="form form--row">
-                                <label for="breakBonusPct" class="form__label" data-i18n="breakBonus">ブレイク倍率 [%]</label>
-                                <input type="number" id="breakBonusPct" class="form__input" value="100" min="0" />
+                            <div class="form--miasma">
+                                <div class="form form--row">
+                                    <input type="checkbox" id="miasmaToggle" class="form__checkbox" />
+                                    <label for="miasmaToggle" class="form__label form__label--miasma"
+                                        data-i18n="labelMiasmaShield">ミアズマシールドを有効にする</label>
+                                </div>
                             </div>
                         </article>
                     </div>
@@ -365,17 +372,17 @@
             <div class="result__grid">
                 <article class="result__card is-hidden-anomaly" role="status">
                     <h3 class="result__label" data-i18n="nonCrit">通常時</h3>
-                    <div class="result__value" id="nonCrit">-</div>
+                    <div class="result__value" id="nonCrit"></div>
                     <button type="button" class="copy-icon u-fade-hover" aria-label="通常時の値をコピー">📋コピー</button>
                 </article>
                 <article class="result__card is-hidden-anomaly" role="status">
                     <h3 class="result__label" data-i18n="crit">会心時</h3>
-                    <div class="result__value" id="crit">-</div>
+                    <div class="result__value" id="crit"></div>
                     <button type="button" class="copy-icon u-fade-hover" aria-label="会心時の値をコピー">📋コピー</button>
                 </article>
                 <article class="result__card" role="status">
                     <h3 class="result__label" data-i18n="expected">期待値</h3>
-                    <div class="result__value" id="expected">-</div>
+                    <div class="result__value" id="expected"></div>
                     <button type="button" class="copy-icon u-fade-hover" aria-label="期待値をコピー">📋コピー</button>
                 </article>
             </div>
@@ -405,34 +412,34 @@
                 <div class="kv">
                     <span class="kv__label" data-i18n="base">基礎ダメージ</span>
                     <span class="info-circle info-btn" data-key="baseAtk">？</span>
-                    <span id="base" class="kv__value">-</span>
+                    <span id="base" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="totalBonus">属性ダメージ・与ダメージ補正率</span>
-                    <span id="totalBonus" class="kv__value">-</span>
+                    <span id="totalBonus" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="nonCritMul">非会心倍率</span>
-                    <span id="nonCritMul" class="kv__value">-</span>
+                    <span id="nonCritMul" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="critMul">会心倍率</span>
-                    <span id="critMul" class="kv__value">-</span>
+                    <span id="critMul" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="expCritMul">期待値会心倍率</span>
                     <span class="info-circle info-btn" data-key="expCrit">？</span>
-                    <span id="expCritMul" class="kv__value">-</span>
+                    <span id="expCritMul" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="defMul">防御補正率</span>
                     <span class="info-circle info-btn" data-key="defMul">？</span>
-                    <span id="defMul" class="kv__value">-</span>
+                    <span id="defMul" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="resistMul">属性補正率</span>
                     <span class="info-circle info-btn" data-key="resistMul">？</span>
-                    <span id="resistMul" class="kv__value">-</span>
+                    <span id="resistMul" class="kv__value"></span>
                 </div>
             </div>
 
@@ -440,24 +447,16 @@
 
         <!-- フッター -->
         <footer class="footer">
-            <p class="footer__text footer--disclaimer" data-i18n="disclaimer">
-                Disclaimer: This is an unofficial fan-made tool for testing purposes and is not affiliated with or
-                endorsed by HoYoverse.<br>
-                Due to possible game updates, actual values may differ.
-            </p>
-            <p class="footer__text footer--copyright" data-i18n="copyright">
-                © HoYoverse. All rights reserved.<br>
-                "HoYoverse" and "Zenless Zone Zero" are trademarks or registered trademarks of HoYoverse.
-            </p>
+            <p class="footer__text footer--disclaimer" data-i18n="disclaimer"></p>
+            <p class="footer__text footer--copyright" data-i18n="copyright"></p>
             <p class="footer__text">
-                © 2025 Maybe515. All rights reserved.<br>
+                © 2025-2026 Maybe515. All rights reserved.<br>
                 Created by
                 <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
                     rel="noopener noreferrer">Maybe515</a> ｜
                 Designed by
                 <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
                     rel="noopener noreferrer">Maybe515</a>
-
             </p>
         </footer>
     </main>
