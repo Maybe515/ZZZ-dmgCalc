@@ -14,6 +14,7 @@
   font-size: .95rem;
   min-width: 80px;
   margin: .25rem 0;
+  align-content: center;
 }
 
 .form__input {
@@ -32,17 +33,22 @@
   color: var(--color-muted);
 }
 
+.header__meta .form__input {  
+  min-width: 60px;
+  text-align: center;
+}
+
 .form__checkbox {
   transform: scale(1.1);
   cursor: pointer;
 }
 
-.form__label--break:hover {
-  text-decoration: underline;
-  cursor: pointer;
+.form--break {
+  margin-bottom: 5px;
 }
 
-.header__meta .form__input {  
-  min-width: 60px;
-  text-align: center;
+.form__label--break:hover,
+.form__label--miasma:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }

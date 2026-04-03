@@ -2,6 +2,15 @@
   margin-top: 1.5rem;
 }
 
+.footer a {
+  color: var(--color-muted);
+  transition: color 0.2s;
+}
+
+.footer a:hover {
+  color: #c8c8ff;
+}
+
 .footer__text {
   display: block;
   margin-top: .5rem;

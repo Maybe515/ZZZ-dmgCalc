@@ -18,7 +18,8 @@
   --color-hover-bg: rgba(255, 255, 255, 0.1);
   
   /* Surfaces */
-  --color-card: #101010;
+  --color-card-bg: #101010;
+  --color-card-bg-hover: #202020;
   --color-card-heading: #e0e000;
   --color-input-bg: #1b1b1b;
   
@@ -38,7 +39,11 @@
   --color-field-hover-bg: rgba(255, 255, 255, 0.10);
   --color-field-hover-border: #666;
   --color-field-focus-ring: #88c0d0;
-  
+
+  /* Icons */
+  --color-icon-bg: #444444;
+  --color-icon-hover-bg: #777;
+
   /* Details */
   --color-details-bg: #f5e642;
   --color-details-arrow: #1a1a1a;
@@ -68,7 +73,7 @@ body {
   padding-top: 1.25rem;
   color: var(--color-fg);
   background: var(--color-body-bg);
-  background-image: url("../../image/common/bg_pages.png");
+  background-image: url("../../image/common/bg-pages.png");
   background-position: top center;
   background-repeat: no-repeat;
   background-size: contain;

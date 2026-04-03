@@ -13,10 +13,10 @@
   font-weight: 600;
   padding: 0 .75rem;
   color: var(--color-fg);
-  background: var(--color-card);
+  background: var(--color-card-bg);
   transition: background .2s ease;
 }
 
 .btn--rst:hover {
-  background: var(--color-hover-bg);
+  background: var(--color-card-bg-hover);
 }
