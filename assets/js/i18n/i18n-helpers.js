@@ -16,9 +16,9 @@ export function t(dict, key, fallback = "") {
  * ラベルオブジェクトから現在の言語の値を取得する
  * @param {object} labels - { jp: "...", en: "...", ... }
  */
-export function getLabelValue(labels) {
-  if (!labels || typeof labels !== "object") return "";
+// export function getLabelValue(labels) {
+//   if (!labels || typeof labels !== "object") return "";
 
-  const lang = $("langSelect")?.value || "jp";
-  return labels[lang] || labels.jp || "";
-}
+//   const lang = $("langSelect")?.value || "jp";
+//   return labels[lang] || labels.jp || "";
+// }

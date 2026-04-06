@@ -111,18 +111,16 @@ export function bindEvents() {
           // エージェントの属性を attrSelect に反映
           const attrId = agents[value] ? agents[value].attributeId : "";
           selects.attrSelect.setValue(attrId);
-
-          await loadLanguage();
           break;
 
         case "enemySelect":
           state.enemyId = value;
           updateEnemyInfo(i18nDict);
           updateMatchSelect();
-          await loadLanguage();
           break;
       }
 
+      await loadLanguage();
       compute();
     });
   });

@@ -74,7 +74,7 @@ export function getMatchOptions() {
 export function getLangOptions() {
   return Object.keys(languages).map(code => ({
     value: code,
-    label: languages[code].label,
-    i18n: `lang.${code}`
+    labelShort: languages[code].labelShort,
+    labelLong: languages[code].labelLong
   }));
 }

@@ -14,9 +14,6 @@ import { updateBreakControls } from "../ui/updates/break.js";
 import { createCustomSelect } from "../ui/custom-select.js";
 import { getLangOptions, getAgentOptions, getEnemyOptions, getAttrOptions, getRangeOptions, getMatchOptions } from "../ui/generate-options.js";
 
-// i18n
-import { getLabelValue } from "../i18n/i18n-helpers.js";
-
 // Data / Config
 import { i18nDict, selects } from "../data/state.js";
 import { selectMapping, fields } from "../data/form-config.js";
@@ -43,9 +40,9 @@ export function applyDefaults(force = false) {
   });
 
   // UI 更新
+  updateVisibilityByMode();
   updateAgentInfo(i18nDict);
   updateEnemyInfo(i18nDict);
-  updateVisibilityByMode();
   updateLevelCorrect();
   updateLevelCoefficient();
   updateAnomalyCorr();
@@ -93,10 +90,5 @@ export function loadLastModified() {
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
 
-  const label = getLabelValue({
-    jp: "更新日: ",
-    en: "Last Modified: "
-  });
-
-  el.textContent = `${label}${y}/${m}/${day}`;
+  el.textContent = `${y}/${m}/${day}`;
 }

@@ -13,6 +13,36 @@ export function createCustomSelect(root, options) {
   // 表示部分
   const display = document.createElement("div");
   display.className = "custom-select-display";
+  display.tabIndex = 0
+
+  // ★ アイコン部分（langSelect のときだけ表示）
+  const icon = document.createElement("img");
+  icon.className = "custom-select-icon";
+
+  // langSelect のときだけ 🌎 を入れる
+  if (root.id === "langSelect") {
+    icon.src = "/assets/image/common/globe.svg";
+    icon.alt = "";
+    display.appendChild(icon);
+  }
+
+  // テキスト部分
+  const label = document.createElement("span");
+  label.className = "custom-select-label";
+
+  // ▼アイコン（SVG）
+  const caret = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  caret.setAttribute("class", "custom-select-caret");
+  caret.setAttribute("width", "20");
+  caret.setAttribute("height", "20");
+  caret.setAttribute("viewBox", "0 0 24 24");
+
+  // ▼のパス
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", "M7 10l5 5 5-5z"); // ▼の形
+  path.setAttribute("fill", "currentColor");
+
+  caret.appendChild(path);
 
   // リスト部分
   const list = document.createElement("div");
@@ -26,8 +56,11 @@ export function createCustomSelect(root, options) {
     const opt = options.find(o => o.value === value) || options[0];
     currentValue = opt.value;
 
-    display.textContent = opt.label ?? opt.i18n ?? opt.value;
-    display.dataset.i18n = opt.i18n;
+    label.textContent = opt.labelShort ?? opt.i18n ?? opt.value;
+    label.dataset.i18n = opt.i18n;
+
+    display.appendChild(label);
+    display.appendChild(caret);
 
     // selected クラス更新
     list.querySelectorAll(".custom-select-item").forEach(item => {
@@ -43,12 +76,13 @@ export function createCustomSelect(root, options) {
     const item = document.createElement("div");
     item.className = "custom-select-item";
 
-    item.textContent = opt.label ?? opt.i18n ?? opt.value;
+    item.textContent = opt.labelLong ?? opt.i18n ?? opt.value;
     item.dataset.value = opt.value;
     item.dataset.i18n = opt.i18n;
 
     item.addEventListener("click", () => {
       updateDisplay(opt.value);
+      display.classList.remove("open");
       list.classList.remove("open");
 
       // ★ カスタムイベントを発火する
@@ -64,11 +98,20 @@ export function createCustomSelect(root, options) {
 
   // 開閉
   display.addEventListener("click", () => {
-    list.classList.toggle("open");
+    const isOpenList = list.classList.toggle("open");
+    display.classList.toggle("open", isOpenList);
   });
 
   root.appendChild(display);
   root.appendChild(list);
+
+  // --- 外側クリックで閉じる ---
+  document.addEventListener("click", e => {
+    if (!root.contains(e.target)) {
+      display.classList.remove("open");
+      list.classList.remove("open");
+    }
+  });
 
   // ★ 外部から値をセットできる API を返す
   return {

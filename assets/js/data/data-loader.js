@@ -40,12 +40,12 @@ export async function loadAllData() {
   return Promise.all([
     loadJSON("./assets/data/agents.json", agents),
     loadJSON("./assets/data/enemies.json", enemies),
-    loadJSON("./assets/data/tables/attributes.json", attributes),
-    loadJSON("./assets/data/tables/range.json", rangeTable),
-    loadJSON("./assets/data/tables/match.json", matchTable),
-    loadJSON("./assets/data/languages.json", languages),
-    loadJSON("./assets/data/tables/miasma-buff.json", miasmaBuffTable),
     loadJSON("./assets/data/helpTexts.json", helpTexts),
+    loadJSON("./assets/data/languages.json", languages),
+    loadJSON("./assets/data/tables/attributes.json", attributes),
+    loadJSON("./assets/data/tables/match.json", matchTable),
+    loadJSON("./assets/data/tables/miasma-buff.json", miasmaBuffTable),
+    loadJSON("./assets/data/tables/range.json", rangeTable)
   ]);
 }
 

@@ -15,14 +15,18 @@ export function updateIcon(id, key, iconPath, altLabel = "", ext = ".webp") {
   const el = $(id + "Icon");
   if (!el) return;
 
-  if (key && key !== "none") {
-    el.src = `${iconPath}${key}${ext}`;
-    el.alt = altLabel ? `${altLabel}: ${t(i18nDict, `${id}.${key}`, key)}` : key;
+  if (key) {
     el.style.display = "";
+    if (key != "none") {
+      el.src = `${iconPath}${key}${ext}`;
+    } else {
+      el.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMB/6XWiwAAAABJRU5ErkJggg==";
+    }
+    el.alt = altLabel ? `${altLabel}: ${t(i18nDict, `${id}.${key}`, key)}` : key;
   } else {
-    el.src = "";
-    el.alt = "";
     el.style.display = "none";
+    el.src = ""
+    el.alt = "";
   }
 }
 
