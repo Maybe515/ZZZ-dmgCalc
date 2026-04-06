@@ -20,9 +20,9 @@
   min-width: 0;
 }
 
-.agent-select__right .form__input,
-.enemy-select__right .form__input {
-  margin: 5px 0;
+.agent-select__right .custom-select-root,
+.enemy-select__right .custom-select-root {
+  margin: 4px 0;
 }
 
 .agent-select__image,

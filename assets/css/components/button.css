@@ -7,6 +7,11 @@
   white-space: nowrap;
 }
 
+.btn:focus-visible {
+  outline: 2px solid var(--color-field-focus-ring);
+  outline-offset: 2px;
+}
+
 .btn--rst {
   height: 2.25rem;
   font-size: .9rem;

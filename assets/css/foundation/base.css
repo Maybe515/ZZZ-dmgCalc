@@ -20,7 +20,7 @@
   /* Surfaces */
   --color-card-bg: #101010;
   --color-card-bg-hover: #202020;
-  --color-card-heading: #e0e000;
+  --color-card-heading: #f5e642;
   --color-input-bg: #1b1b1b;
   
   /* Links */
@@ -30,7 +30,7 @@
   /* Mode toggle */
   --color-mode-bg: #000;
   --color-mode-fg: #aaa;
-  --color-mode-active-bg: #ffff00;
+  --color-mode-active-bg: #e0e000;
   --color-mode-active-fg: #000;
   
   /* Fields */
@@ -43,6 +43,9 @@
   /* Icons */
   --color-icon-bg: #444444;
   --color-icon-hover-bg: #777;
+
+  /* Custom Select */
+  --color-scrollbar-thumb: #f5e642;
 
   /* Details */
   --color-details-bg: #f5e642;
@@ -65,6 +68,10 @@
 }
 
 * { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
 
 body {
   margin: 0;

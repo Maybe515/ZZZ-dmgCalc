@@ -1,21 +1,47 @@
-.kv-list { margin: 0; padding: 0; }
+.kv-list {
+  margin: 0;
+  padding: 0;
+}
 
 .kv {
   display: flex;
   align-items: center;
-  gap: .3rem;
+  gap: .4rem;
   padding: .5rem 0;
   color: var(--color-muted);
   border-top: 1px dashed var(--color-border-default);
 }
 
 .kv__label {
-  font-weight: 500;
+  display: inline-block;
   min-width: 6ch;
-  max-width: 50%;
+  max-width: 100%;
+  white-space: nowrap;        
+  overflow-wrap: break-word;  
+  font-weight: 500;
 }
 
 .kv__value {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;            
+  align-items: center;
+  gap: .25rem;
+  min-width: 0;
+  max-width: 100%;
+  color: var(--color-fg);
+}
+
+.enemy-kv .kv__label {
+  flex: 1;
+  flex-wrap: wrap;
+  min-width: 6ch;
+  max-width: 80%;
+  white-space: normal;
+  font-weight: 500;
+}
+
+.enemy-kv .kv__value {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
@@ -25,6 +51,7 @@
 
 .attr-item {
   display: inline-flex;
-  gap: .25rem;
   white-space: nowrap;
+  gap: .25rem;
+  margin-left: 5px;
 }
