@@ -23,7 +23,7 @@ input:focus-visible,
   outline-offset: 2px;
 }
 
-.custom-select-root {
+.custom-select {
   position: relative;
 }
 
@@ -89,13 +89,13 @@ input:focus-visible,
 .custom-select-list::-webkit-scrollbar-thumb {
   background: var(--color-scrollbar-thumb);
   border-radius: 4px;
-  margin: 2px;
   transition: all 0.2s ease;
   cursor: pointer;
 }
 
 .custom-select-list::-webkit-scrollbar-thumb:hover {
   margin: 0px;
+  background: var(--color-scrollbar-thumb-hover);
 }
 
 /* スクロールバーの背景 */
