@@ -43,7 +43,7 @@
                     <div class="header__last-modified">
                         <span data-i18n="lastModified"></span>
                         <span id="lastModified"></span>
-                        <!-- <span class="info-circle info-btn" data-key="changeLog">？</span> -->
+                        <!-- <div class="info-circle info-btn" data-key="changeLog"></div> -->
                     </div>
                 </div>
             </div>
@@ -54,7 +54,7 @@
             <div class="mode__grid">
                 <fieldset class="mode__toggle mode__toggle--md">
                     <legend class="visually-hidden" data-i18n="calcMode">
-                        <span class="info-circle info-btn" data-key="modeCalc">？</span>
+                        <div class="info-circle info-btn" data-key="modeCalc"></div>
                     </legend>
                     <input type="radio" name="calcMode" value="mode--normal" id="modeNormal" checked />
                     <label for="modeNormal" class="mode__label" data-i18n="normalDamage"></label>
@@ -83,10 +83,10 @@
                             <div class="agent-select">
                                 <div class="agent-select__left">
                                     <a id="agentLink" href="#" target="_blank" rel="noopener noreferrer" class="tooltip">
-                                        <img id="agentImage" class="agent-select__image" alt="キャラクター画像" />
+                                        <img id="agentImage" class="agent-select__image" alt="image_agent" />
                                         <span class="tooltip__content" data-i18n="linkChara"></span>
                                     </a>
-                                    <img id="rankImage" class="agent-rank-icon" alt="ランク画像" />
+                                    <img id="rankImage" class="agent-rank-icon" alt="image_rank" />
                                 </div>
                                 <div class="agent-select__right">
                                     <label class="visually-hidden" data-i18n="agentSelect"></label>
@@ -126,12 +126,15 @@
                                 <input type="number" id="agentLevel" class="form__input" min="1" max="60" />
 
                                 <label for="lvCorrPct" class="form__label is-disabled-normal" data-i18n="lvCorr">
-                                    <span class="info-circle info-btn" data-key="lvCorr">？</span>
+                                    <div class="info-circle info-btn" data-key="lvCorr"></div>
                                 </label>
                                 <input type="number" id="lvCorrPct" class="form__input is-disabled-normal" max="200" readonly />
 
                                 <label for="atk" class="form__label" data-i18n="atk"></label>
                                 <input type="number" id="atk" class="form__input" min="0" />
+
+                                <label for="sheerForce" class="form__label" data-i18n="sheerForce"></label>
+                                <input type="number" id="sheerForce" class="form__input" min="0" />
 
                                 <label for="anomalyMastery" class="form__label is-disabled-normal"
                                     data-i18n="anomalyMastery"></label>
@@ -173,6 +176,9 @@
 
                                 <label for="dmgBonusPtPct" class="form__label" data-i18n="dmgBonusPt"></label>
                                 <input type="number" id="dmgBonusPtPct" class="form__input" min="0" />
+
+                                <label for="sheerForceDmgBonusPct" class="form__label" data-i18n="sheerForceDmgBonus"></label>
+                                <input type="number" id="sheerForceDmgBonusPct" class="form__input" min="0" />
                             </div>
                         </article>
 
@@ -185,7 +191,7 @@
                             </div>
 
                             <label class="form__label is-disabled-normal" data-i18n="anomalyCorr">
-                                <span class="info-circle info-btn" data-key="anomalyCorr">？</span>
+                                <div class="info-circle info-btn" data-key="anomalyCorr"></div>
                             </label>
                             <div class="form form--grid">
                                 <div class="custom-select is-disabled-normal" id="attrSelect"></div>
@@ -193,7 +199,7 @@
                             </div>
 
                             <label class="form__label is-disabled-anomaly" data-i18n="weakRange">
-                                <span class="info-circle info-btn" data-key="weakRange">？</span>
+                                <div class="info-circle info-btn" data-key="weakRange"></div>
                             </label>
                             <div class="form form--grid">
                                 <div class="custom-select is-disabled-anomaly" id="rangeSelect"></div>
@@ -219,10 +225,10 @@
                             <div class="enemy-select">
                                 <div class="enemy-select__left">
                                     <a id="enemyLink" href="#" target="_blank" rel="noopener noreferrer" class="tooltip">
-                                        <img id="enemyImage" class="enemy-select__image" alt="キャラクター画像" />
+                                        <img id="enemyImage" class="enemy-select__image" alt="image_enemy" />
                                         <span class="tooltip__content" data-i18n="linkEnemy"></span>
                                     </a>
-                                    <img id="materialImage" class="enemy-material-icon" alt="素材画像" />
+                                    <!-- <img id="materialImage" class="enemy-material-icon" alt="image_material" /> -->
                                 </div>
                                 <div class="enemy-select__right">
                                     <label class="visually-hidden" data-i18n="enemySelect"></label>
@@ -254,6 +260,13 @@
                                                 </span>
                                             </span>
                                         </div>
+                                        <div class="kv enemy-kv">
+                                            <span class="kv__label" data-i18n="dropItem"></span>
+                                            <span class="kv__value" id="dropItemWrapper">
+                                                <img class="icon-kv icon--mid" id="materialImage" alt="" />
+                                                <span class="text-ellipsis" id="material"></span>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -267,7 +280,7 @@
                                 <input type="number" id="enemyLevel" class="form__input" min="1" max="70" />
 
                                 <label for="lvCoeff" class="form__label" data-i18n="lvCoeff">
-                                    <span class="info-circle info-btn" data-key="lvCoeff">？</span>
+                                    <div class="info-circle info-btn" data-key="lvCoeff"></div>
                                 </label>
                                 <input type="number" id="lvCoeff" class="form__input" min="0" step="0.1" />
 
@@ -298,7 +311,7 @@
                             </div>
 
                             <label class="form__label" data-i18n="attrMatch">
-                                <span class="info-circle info-btn" data-key="attrMatch">？</span>
+                                <div class="info-circle info-btn" data-key="attrMatch"></div>
                             </label>
                             <div class="form form--grid">
                                 <div class="custom-select" id="matchSelect"></div>
@@ -343,23 +356,23 @@
         <!-- 結果 -->
         <section class="result">
             <h2 class="result__title" data-i18n="result">
-                <span class="info-circle info-btn" data-key="result">？</span>
+                <div class="info-circle info-btn" data-key="result"></div>
             </h2>
             <div class="result__grid">
                 <article class="result__card is-hidden-anomaly" role="status">
                     <h3 class="result__label" data-i18n="nonCrit"></h3>
                     <div class="result__value" id="nonCrit"></div>
-                    <button type="button" class="copy-icon u-fade-hover" aria-label="通常時の値をコピー"></button>
+                    <button type="button" class="copy-icon u-fade-hover" aria-label="通常時の値をコピー" data-i18n="resultCopy"></button>
                 </article>
                 <article class="result__card is-hidden-anomaly" role="status">
                     <h3 class="result__label" data-i18n="crit"></h3>
                     <div class="result__value" id="crit"></div>
-                    <button type="button" class="copy-icon u-fade-hover" aria-label="会心時の値をコピー"></button>
+                    <button type="button" class="copy-icon u-fade-hover" aria-label="会心時の値をコピー" data-i18n="resultCopy"></button>
                 </article>
                 <article class="result__card" role="status">
                     <h3 class="result__label" data-i18n="expected"></h3>
                     <div class="result__value" id="expected"></div>
-                    <button type="button" class="copy-icon u-fade-hover" aria-label="期待値をコピー"></button>
+                    <button type="button" class="copy-icon u-fade-hover" aria-label="期待値をコピー" data-i18n="resultCopy"></button>
                 </article>
             </div>
         </section>
@@ -385,7 +398,7 @@
             <div class="kv-list">
                 <div class="kv">
                     <span class="kv__label" data-i18n="base"></span>
-                    <span class="info-circle info-btn" data-key="baseAtk">？</span>
+                    <div class="info-circle info-btn" data-key="baseAtk"></div>
                     <span id="base" class="kv__value"></span>
                 </div>
                 <div class="kv">
@@ -402,17 +415,17 @@
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="expCritMul"></span>
-                    <span class="info-circle info-btn" data-key="expCrit">？</span>
+                    <div class="info-circle info-btn" data-key="expCrit"></div>
                     <span id="expCritMul" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="defMul"></span>
-                    <span class="info-circle info-btn" data-key="defMul">？</span>
+                    <div class="info-circle info-btn" data-key="defMul"></div>
                     <span id="defMul" class="kv__value"></span>
                 </div>
                 <div class="kv">
                     <span class="kv__label" data-i18n="resistMul"></span>
-                    <span class="info-circle info-btn" data-key="resistMul">？</span>
+                    <div class="info-circle info-btn" data-key="resistMul"></div>
                     <span id="resistMul" class="kv__value"></span>
                 </div>
             </div>
