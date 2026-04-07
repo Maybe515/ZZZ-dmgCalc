@@ -4,10 +4,10 @@
  * UI の <input type="number"> に対応
  */
 export const fields = [
-  "agentLevel", "lvCorrPct", "atk", "anomalyMastery",
+  "agentLevel", "lvCorrPct", "atk", "sheerForce", "anomalyMastery",
   "penRatioPct", "pen",
   "critRatePct", "critDmgPct",
-  "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
+  "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct", "sheerForceDmgBonusPct",
   "skillPct", "anomalyCorrPct", "weakRangePct",
   "enemyLevel", "lvCoeff", "def",
   "defUpPct", "defDownPct",
@@ -17,19 +17,26 @@ export const fields = [
 ];
 
 /**
- * select / checkbox / radio の UI 要素の ID マッピング
- * storage.js の save/load で使用
+ * select の UI 要素の ID マッピング
+ * local-storage.js の save/load で使用
  */
 export const selectMapping = {
-  langSelect: "langSelect",
-  modeNormal: "modeNormal",
-  agentSelect: "agentSelect",
-  attrSelect: "attrSelect",
-  rangeSelect: "rangeSelect",
-  enemySelect: "enemySelect",
-  matchSelect: "matchSelect",
-  breakToggle: "breakToggle",
-  miasmaToggle: "miasmaToggle"
+  lang: { id: "langSelect", state: "lang" },
+  agent: { id: "agentSelect", state: "agentId" },
+  enemy: { id: "enemySelect", state: "enemyId" },
+  attribute: { id: "attrSelect", state: "attrId" },
+  range: { id: "rangeSelect", state: "range" },
+  attrMatch: { id: "matchSelect", state: "match" },
+};
+
+/**
+ * checkbox / radio の UI 要素の ID マッピング
+ * local-storage.js の save/load で使用
+ */
+export const toggleMapping = {
+  breakToggle:  { id: "breakToggle",  state: "breakToggle" },
+  breakToggle:  { id: "breakToggle",  state: "breakToggle" },
+  miasmaToggle: { id: "miasmaToggle", state: "miasmaToggle" }
 };
 
 /**
@@ -37,10 +44,10 @@ export const selectMapping = {
  * fields とほぼ同じだが、UI の selectMapping とは別扱い
  */
 export const numericKeys = [
-  "agentLevel", "atk", "anomalyMastery",
+  "agentLevel", "atk", "sheerForce", "anomalyMastery",
   "penRatioPct", "pen",
   "critRatePct", "critDmgPct",
-  "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct",
+  "attrBonusPct", "dmgBonusPct", "dmgBonusPtPct", "sheerForceDmgBonusPct",
   "skillPct", "anomalyCorrPct",
   "enemyLevel", "lvCoeff", "def",
   "defUpPct", "defDownPct",

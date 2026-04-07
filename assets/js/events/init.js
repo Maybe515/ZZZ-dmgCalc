@@ -9,15 +9,16 @@ import { updateEnemyInfo } from "../ui/updates/enemy.js";
 import { updateAnomalyCorr, updateWeakRange, updateAttrMatchPct, updateLevelCorrect, updateLevelCoefficient } from "../ui/updates/derived.js";
 import { updateVisibilityByMode } from "../ui/updates/mode.js";
 import { updateBreakControls } from "../ui/updates/break.js";
+import { updateSheerField } from "../ui/updates/sheer.js";
 
 // Generate UI
 import { createCustomSelect } from "../ui/custom-select.js";
 import { getLangOptions, getAgentOptions, getEnemyOptions, getAttrOptions, getRangeOptions, getMatchOptions } from "../ui/generate-options.js";
 
 // Data / Config
-import { i18nDict, selects } from "../data/state.js";
-import { selectMapping, fields } from "../data/form-config.js";
-import { defaults, selectDefaults } from "../data/default.js";
+import { i18nDict, selects, state } from "../data/state.js";
+import { selectMapping, fields, toggleMapping } from "../data/form-config.js";
+import { defaults, selectDefaults, toggleDefaults } from "../data/default.js";
 
 // DOM
 import { $ } from "../ui/dom-helpers.js";
@@ -49,6 +50,7 @@ export function applyDefaults(force = false) {
   updateWeakRange();
   updateAttrMatchPct();
   updateBreakControls();
+  updateSheerField();
 }
 
 /**
@@ -68,14 +70,33 @@ export function initCustomSelects() {
  * 全フィールドを selectDefaults にリセットし、UI を再構築する
  */
 export function resetAll() {
-  Object.entries(selectMapping).forEach(([key, id]) => {
-    if (key === "langSelect") return; // 言語は維持
-    setElementValue($(id), selectDefaults[key]);
+  // --- Reset custom selects ---
+  Object.entries(selectMapping).forEach(([key, map]) => {
+    if (key === "lang") return; // 言語は維持
+
+    const defaultValue = selectDefaults[key];
+    if (defaultValue !== undefined) {
+      selects[map.id]?.setValue(defaultValue);
+      state[map.state] = defaultValue;
+    }
+  });
+
+  // --- Reset toggles ---
+  Object.entries(toggleMapping).forEach(([key, map]) => {
+    const defaultValue = toggleDefaults[key];
+    if (defaultValue !== undefined) {
+      const el = document.getElementById(map.id);
+      if (el) {
+        el.checked = defaultValue;
+        state[map.state] = defaultValue;
+      }
+    }
   });
 
   applyDefaults(true);
   compute();
 }
+
 
 // ---------------- Last Modified ----------------
 /**

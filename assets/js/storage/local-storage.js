@@ -2,7 +2,8 @@
 import { $ } from "../ui/dom-helpers.js";
 import { getCalcMode } from "../ui/mode.js";
 import { getElementValue, setElementValue, collectValues } from "../calculate/compute-handler.js";
-import { selectMapping, numericKeys } from "../data/form-config.js";
+import { selectMapping, numericKeys, toggleMapping } from "../data/form-config.js";
+import { selects, state } from "../data/state.js";
 
 const STORAGE_KEY = "lastParams";
 
@@ -11,13 +12,13 @@ const STORAGE_KEY = "lastParams";
  */
 function collectBaseParams() {
   return {
-    lang: $("langSelect")?.value,
+    lang: state.lang,
     mode: getCalcMode(),
-    agent: $("agentSelect")?.value,
-    attribute: $("attrSelect")?.value,
-    range: $("rangeSelect")?.value,
-    enemy: $("enemySelect")?.value,
-    attrMatch: $("matchSelect")?.value,
+    agent: state.agentId,
+    enemy: state.enemyId,
+    attribute: state.attrId,
+    range: state.range,
+    attrMatch: state.match,
     breakToggle: $("breakToggle")?.checked,
     miasmaToggle: $("miasmaToggle")?.checked,
     ...collectValues()
@@ -49,10 +50,28 @@ export function saveToLocalStorage() {
  * selectMapping に従って UI に値をセット
  */
 function restoreSelectMapping(params) {
-  Object.entries(selectMapping).forEach(([key, id]) => {
-    if (params[key] !== undefined) {
-      setElementValue($(id), params[key]);
+  Object.entries(selectMapping).forEach(([key, map]) => {
+    const value = params[key];
+    if (value !== undefined) {
+      selects[map.id]?.setValue(value); // UI 更新
+      state[map.state] = value;         // state 更新
     }
+  });
+}
+
+/**
+ * toggleMapping に従って UI に値をセット
+ */
+export function restoreToggleMapping(params) {
+  Object.entries(toggleMapping).forEach(([key, map]) => {
+    const value = params[key];
+    if (value === undefined) return;
+
+    const el = document.getElementById(map.id);
+    if (!el) return;
+
+    el.checked = value;
+    state[map.state] = value;
   });
 }
 
@@ -89,8 +108,14 @@ export function loadFromLocalStorage() {
     $("modeAnomaly").checked = true;
   }
 
-  restoreSelectMapping(params);
   restoreNumericFields(params);
+  restoreSelectMapping(params);
+  restoreToggleMapping(params);
+
+  // 言語切り替え（CSS 用）
+  if (params.lang) {
+    document.documentElement.setAttribute("lang", params.lang);
+  }
 }
 
 /**

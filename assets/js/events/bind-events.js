@@ -13,6 +13,7 @@ import { updateMatchSelect } from "../ui/updates/match.js";
 import { updateLevelCorrect, updateLevelCoefficient, updateAnomalyCorr, updateWeakRange, updateAttrMatchPct } from "../ui/updates/derived.js";
 import { updateVisibilityByMode } from "../ui/updates/mode.js";
 import { updateBreakControls } from "../ui/updates/break.js";
+import { updateSheerField } from "../ui/updates/sheer.js";
 
 // Popup
 import { openPopup, closePopup } from "../ui/popup.js";
@@ -22,7 +23,7 @@ import { showToast } from "../ui/toast.js";
 import { getCopyResult } from "../ui/copy.js";
 
 // Init helpers
-import { loadLastModified, resetAll } from "./init.js";
+import { resetAll } from "./init.js";
 
 // Data
 import { i18nDict, helpTexts, state, agents, selects } from "../data/state.js";
@@ -46,28 +47,6 @@ function bindChange(id, handler) {
   });
 }
 
-// /**
-//  * セレクト系のイベントを統一的にバインドする
-//  * handler → compute の順で実行
-//  */
-// export function onSelect(id, handler) {
-//   document.addEventListener(`select:${id}`, handler);
-// }
-
-// ---------------- Language change handler ----------------
-/** 
- * 言語切り替えの処理を行うハンドラー
-*/
-async function handleLanguageChange() {
-  await loadLanguage();
-
-  updateAgentInfo(i18nDict);
-  updateEnemyInfo(i18nDict);
-  loadLastModified();
-
-  localStorage.setItem("lang", $("langSelect").value);
-}
-
 // ---------------- Main binding ----------------
 export function bindEvents() {
   // 入力フィールド（input / change）
@@ -82,10 +61,28 @@ export function bindEvents() {
 
       switch (id) {
         case "langSelect":
+          document.documentElement.setAttribute("lang", value || "jp");
           state.lang = value;
           await loadLanguage();
           updateAgentInfo(i18nDict);
           updateEnemyInfo(i18nDict);
+          break;
+
+        case "agentSelect":
+          state.agentId = value;
+          updateAgentInfo(i18nDict);
+          updateMatchSelect();
+          updateSheerField();
+
+          // エージェントの属性を attrSelect に反映
+          const attrId = agents[value] ? agents[value].attributeId : "";
+          selects.attrSelect.setValue(attrId);
+          break;
+
+        case "enemySelect":
+          state.enemyId = value;
+          updateEnemyInfo(i18nDict);
+          updateMatchSelect();
           break;
 
         case "attrSelect":
@@ -103,21 +100,6 @@ export function bindEvents() {
           updateAttrMatchPct();
           break;
 
-        case "agentSelect":
-          state.agentId = value;
-          updateAgentInfo(i18nDict);
-          updateMatchSelect();
-
-          // エージェントの属性を attrSelect に反映
-          const attrId = agents[value] ? agents[value].attributeId : "";
-          selects.attrSelect.setValue(attrId);
-          break;
-
-        case "enemySelect":
-          state.enemyId = value;
-          updateEnemyInfo(i18nDict);
-          updateMatchSelect();
-          break;
       }
 
       await loadLanguage();

@@ -22,16 +22,18 @@ async function init() {
   
   // --- Populate UI ---
   initCustomSelects();        // カスタムセレクトを生成する
+  bindEvents();               // イベントバインド
+
+  loadFromLocalStorage();     // 保存データ復元
+
   initDetailsAnimation();     // Details 開閉アニメーション
   initResultFixedObserver();  // Result 固定表示（モバイル用）
 
   // --- Initialize UI ---
-  loadFromLocalStorage();     // 保存データ復元
   loadLastModified();         // 最終更新日表示
   applyDefaults();            // UI 初期値適用 (ロード後に実施)
   await loadLanguage();       // 言語ロード
   
-  bindEvents();               // イベントバインド
   compute();                  // 初回計算
 }
 
