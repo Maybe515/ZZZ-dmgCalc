@@ -1,4 +1,5 @@
 // CSS を動的に読み込むユーティリティ
+import { ce } from "./dom-helpers.js";
 import { getBasePath } from "../core/base-path.js";
 
 // CSS のベースパス
@@ -43,7 +44,7 @@ export function loadCssFiles() {
   const base = getCssBasePath();
 
   cssFiles.forEach(path => {
-    const link = document.createElement("link");
+    const link = ce("link");
     link.rel = "stylesheet";
     link.href = base + path;
     document.head.appendChild(link);

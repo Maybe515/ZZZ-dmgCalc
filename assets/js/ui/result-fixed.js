@@ -1,5 +1,5 @@
 // モバイル時の「結果パネル」を制御するモジュール
-import { q } from "./dom-helpers.js";
+import { al, q } from "./dom-helpers.js";
 
 /**
  * 通常の result セクションの内容を固定パネルへコピーする
@@ -26,8 +26,8 @@ function initFallbackVisibility(normal, fixed) {
     fixed.classList.toggle("is-visible", !isVisible);
   };
 
-  window.addEventListener("scroll", toggle);
-  window.addEventListener("resize", toggle);
+  al("scroll", toggle, window);
+  al("resize", toggle, window);
   toggle();
 }
 

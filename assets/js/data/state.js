@@ -55,7 +55,12 @@ export const helpTexts = {};
 export const i18nDict = {};
 
 /**
- * UI 状態（Custom Select で更新される）
+ * カスタムセレクト ID（カスタムセレクト生成時にセットされる）
+ */
+export const selects = {};
+
+/**
+ * カスタムセレクトにセットされたステータス（Custom Select の イベントが発火すると更新される）
  */
 export const state = {
   lang: "",
@@ -65,5 +70,3 @@ export const state = {
   range: "",
   match: ""
 };
-
-export const selects = {};

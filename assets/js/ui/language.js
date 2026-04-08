@@ -1,4 +1,6 @@
 // data-i18n 系属性を使用して UI テキストを更新するモジュール
+import { qa } from "./dom-helpers.js";
+
 /**
  * 指定された属性（例: data-i18n）を持つ要素に辞書を適用する
  * @param {string} attrName - 例: "data-i18n"
@@ -6,7 +8,7 @@
  * @param {object} dict - 翻訳辞書
  */
 function applyAttribute(attrName, prop, dict) {
-  const elements = document.querySelectorAll(`[${attrName}]`);
+  const elements = qa(`[${attrName}]`);
 
   elements.forEach(el => {
     const key = el.getAttribute(attrName);

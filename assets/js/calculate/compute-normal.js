@@ -7,6 +7,7 @@ import { fmt } from "./fmt.js";
  */
 export function computeNormal(
   v,
+  base,
   digits,
   totalBonus,
   breakBonusMul,
@@ -17,7 +18,7 @@ export function computeNormal(
   setText
 ) {
   
-  const base = v.atk * percent.toFrac(v.skillPct);    // 基礎ダメージ（攻撃力 × スキルダメージ倍率）
+  const baseMul = base * percent.toFrac(v.skillPct);    // 基礎ダメージ（攻撃力 × スキルダメージ倍率）
   const critMul = 1 + percent.toFrac(v.critDmgPct);   // 会心倍率
 
   // 期待値会心倍率 = 1 + (会心率 × 会心ダメージ倍率)
@@ -26,7 +27,7 @@ export function computeNormal(
 
   // --- ダメージ関数 ---
   const dmgFn = critMultiplier =>
-    base *
+    baseMul *
     totalBonus *
     critMultiplier *
     breakBonusMul *
@@ -36,7 +37,7 @@ export function computeNormal(
     dmgCutMul;
 
   // --- UI 更新 ---
-  setText("base", fmt(base, digits));
+  setText("base", fmt(baseMul, digits));
 
   setText("nonCritMul", fmt(1, digits + 2));
   setText("critMul", fmt(critMul, digits + 2));

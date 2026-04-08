@@ -7,6 +7,7 @@ import { fmt } from "./fmt.js";
  */
 export function computeAnomaly(
   v,
+  base,
   digits,
   totalBonus,
   breakBonusMul,
@@ -22,7 +23,7 @@ export function computeAnomaly(
 
   // --- ダメージ関数 ---
   const dmgFn = anomalyMultiplier =>
-    v.atk *
+    base *
     totalBonus *
     anomalyMultiplier *
     breakBonusMul *
@@ -34,7 +35,7 @@ export function computeAnomaly(
     dmgCutMul;
 
   // --- UI 更新 ---
-  setText("base", fmt(v.atk, digits));
+  setText("base", fmt(base, digits));
 
   // 状態異常時は会心が発生しないため、中間倍率に値を表示しない
   ["nonCritMul", "critMul", "expCritMul"].forEach(id => setText(id, "-"));

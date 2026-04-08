@@ -34,7 +34,7 @@ async function loadJSON(path, target, callback) {
 
 // ---------------- All Data Loader ----------------
 /**
- * すべてのデータをロードする（初期化時に使用）
+ * すべての外部ファイルを読み込む（初期化時に使用）
  */
 export async function loadAllData() {
   return Promise.all([
@@ -55,9 +55,5 @@ export async function loadAllData() {
  */
 export async function loadLanguage() {
   const lang = state.lang || "jp";
-  await loadJSON(
-    `./assets/data/languages/${lang}.json`,
-    i18nDict,
-    dict => applyLanguage(dict)
-  );
+  await loadJSON(`./assets/data/languages/${lang}.json`, i18nDict, dict => applyLanguage(dict));
 }

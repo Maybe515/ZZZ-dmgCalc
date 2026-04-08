@@ -1,5 +1,5 @@
 // UI 状態の保存・復元を担当するモジュール
-import { $ } from "../ui/dom-helpers.js";
+import { $, sa } from "../ui/dom-helpers.js";
 import { getCalcMode } from "../ui/mode.js";
 import { getElementValue, setElementValue, collectValues } from "../calculate/compute-handler.js";
 import { selectMapping, numericKeys, toggleMapping } from "../data/form-config.js";
@@ -67,7 +67,7 @@ export function restoreToggleMapping(params) {
     const value = params[key];
     if (value === undefined) return;
 
-    const el = document.getElementById(map.id);
+    const el = $(map.id);
     if (!el) return;
 
     el.checked = value;
@@ -114,7 +114,7 @@ export function loadFromLocalStorage() {
 
   // 言語切り替え（CSS 用）
   if (params.lang) {
-    document.documentElement.setAttribute("lang", params.lang);
+    sa("lang", params.lang);
   }
 }
 

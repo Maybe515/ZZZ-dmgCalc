@@ -1,14 +1,16 @@
 // <details> 要素の閉じるアニメーションを制御するモジュール
+import { al, q, qa } from "./dom-helpers.js";
+
 const ANIMATION_DURATION = 400;     // CSS のアニメーション時間と合わせる
 
 export function initDetailsAnimation() {
-  const detailsList = document.querySelectorAll("details");
+  const detailsList = qa("details");
 
   detailsList.forEach(details => {
-    const summary = details.querySelector("summary");
+    const summary = q("summary", details);
     if (!summary) return; // 安全性向上
 
-    summary.addEventListener("click", e => {
+    al("click", e => {
       if (!details.open) return;
 
       // デフォルトの即閉じを止める
@@ -22,6 +24,6 @@ export function initDetailsAnimation() {
         details.classList.remove("is-closing");
         details.removeAttribute("open");
       }, ANIMATION_DURATION);
-    });
+    }, summary);
   });
 }

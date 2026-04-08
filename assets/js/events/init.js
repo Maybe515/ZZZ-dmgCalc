@@ -6,10 +6,9 @@ import { setElementValue, compute } from "../calculate/compute-handler.js";
 // Update UI
 import { updateAgentInfo } from "../ui/updates/agent.js";
 import { updateEnemyInfo } from "../ui/updates/enemy.js";
-import { updateAnomalyCorr, updateWeakRange, updateAttrMatchPct, updateLevelCorrect, updateLevelCoefficient } from "../ui/updates/derived.js";
+import { updateAnomalyCorr, updateWeakRange, updateAttrMatchPct, updateLevelCorrect, updateLevelCoefficient, refreshSheerField, refreshAttackField } from "../ui/updates/derived.js";
 import { updateVisibilityByMode } from "../ui/updates/mode.js";
 import { updateBreakControls } from "../ui/updates/break.js";
-import { updateSheerField } from "../ui/updates/sheer.js";
 
 // Generate UI
 import { createCustomSelect } from "../ui/custom-select.js";
@@ -50,11 +49,12 @@ export function applyDefaults(force = false) {
   updateWeakRange();
   updateAttrMatchPct();
   updateBreakControls();
-  updateSheerField();
+  refreshAttackField();
+  refreshSheerField();
 }
 
 /**
- * Custom Select を生成し、アプリ内データストアに初期値をセットする
+ * Custom Select を生成し、アプリ内データストアに ID をセットする
  */
 export function initCustomSelects() {
   selects.langSelect = createCustomSelect($("langSelect"), getLangOptions());
@@ -85,7 +85,7 @@ export function resetAll() {
   Object.entries(toggleMapping).forEach(([key, map]) => {
     const defaultValue = toggleDefaults[key];
     if (defaultValue !== undefined) {
-      const el = document.getElementById(map.id);
+      const el = $(map.id);
       if (el) {
         el.checked = defaultValue;
         state[map.state] = defaultValue;

@@ -1,4 +1,5 @@
 // Custom Select を生成するモジュール
+import { al, ce, qa } from "./dom-helpers.js";
 
 /**
  * カスタムセレクトを生成する
@@ -11,12 +12,12 @@ export function createCustomSelect(root, options) {
   const id = root.id;
 
   // 表示部分
-  const display = document.createElement("div");
+  const display = ce("div");
   display.className = "custom-select-display";
   display.tabIndex = 0
 
   // ★ アイコン部分（langSelect のときだけ表示）
-  const icon = document.createElement("img");
+  const icon = ce("img");
   icon.className = "custom-select-icon";
 
   // langSelect のときだけ 🌎 を入れる
@@ -27,7 +28,7 @@ export function createCustomSelect(root, options) {
   }
 
   // テキスト部分
-  const label = document.createElement("span");
+  const label = ce("span");
   label.className = "custom-select-label";
 
   // ▼アイコン（SVG）
@@ -45,7 +46,7 @@ export function createCustomSelect(root, options) {
   caret.appendChild(path);
 
   // リスト部分
-  const list = document.createElement("div");
+  const list = ce("div");
   list.className = "custom-select-list";
 
   // 現在の値
@@ -63,7 +64,7 @@ export function createCustomSelect(root, options) {
     display.appendChild(caret);
 
     // selected クラス更新
-    list.querySelectorAll(".custom-select-item").forEach(item => {
+    qa(".custom-select-item", list).forEach(item => {
       item.classList.toggle("selected", item.dataset.value === value);
     });
   }
@@ -73,14 +74,14 @@ export function createCustomSelect(root, options) {
 
   // リスト生成
   options.forEach(opt => {
-    const item = document.createElement("div");
+    const item = ce("div");
     item.className = "custom-select-item";
 
     item.textContent = opt.labelLong ?? opt.i18n ?? opt.value;
     item.dataset.value = opt.value;
     item.dataset.i18n = opt.i18n;
 
-    item.addEventListener("click", () => {
+    al("click", () => {
       updateDisplay(opt.value);
       display.classList.remove("open");
       list.classList.remove("open");
@@ -91,22 +92,22 @@ export function createCustomSelect(root, options) {
           detail: { id, value: opt.value }
         })
       );
-    });
+    }, item);
 
     list.appendChild(item);
   });
 
   // 開閉
-  display.addEventListener("click", () => {
+  al("click", () => {
     const isOpenList = list.classList.toggle("open");
     display.classList.toggle("open", isOpenList);
-  });
+  }, display);
 
   root.appendChild(display);
   root.appendChild(list);
 
   // --- 外側クリックで閉じる ---
-  document.addEventListener("click", e => {
+  al("click", e => {
     if (!root.contains(e.target)) {
       display.classList.remove("open");
       list.classList.remove("open");

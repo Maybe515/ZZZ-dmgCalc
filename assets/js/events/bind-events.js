@@ -10,10 +10,9 @@ import { loadLanguage } from "../data/data-loader.js";
 import { updateAgentInfo } from "../ui/updates/agent.js";
 import { updateEnemyInfo } from "../ui/updates/enemy.js";
 import { updateMatchSelect } from "../ui/updates/match.js";
-import { updateLevelCorrect, updateLevelCoefficient, updateAnomalyCorr, updateWeakRange, updateAttrMatchPct } from "../ui/updates/derived.js";
+import { updateLevelCorrect, updateLevelCoefficient, updateAnomalyCorr, updateWeakRange, updateAttrMatchPct, refreshSheerField, refreshAttackField } from "../ui/updates/derived.js";
 import { updateVisibilityByMode } from "../ui/updates/mode.js";
 import { updateBreakControls } from "../ui/updates/break.js";
-import { updateSheerField } from "../ui/updates/sheer.js";
 
 // Popup
 import { openPopup, closePopup } from "../ui/popup.js";
@@ -30,7 +29,7 @@ import { i18nDict, helpTexts, state, agents, selects } from "../data/state.js";
 import { fields } from "../data/form-config.js";
 
 // DOM helpers
-import { $, qa } from "../ui/dom-helpers.js";
+import { $, al, qa, sa } from "../ui/dom-helpers.js";
 
 // ---------------- Helper: bind change event ----------------
 /**
@@ -41,27 +40,27 @@ function bindChange(id, handler) {
   const el = $(id);
   if (!el) return;
 
-  el.addEventListener("change", () => {
+  al("change", () => {
     handler();
     compute();
-  });
+  }, el);
 }
 
 // ---------------- Main binding ----------------
 export function bindEvents() {
   // 入力フィールド（input / change）
   ["input", "change"].forEach(type => {
-    fields.forEach(id => $(id)?.addEventListener(type, compute));
+    fields.forEach(id => al(type, compute, $(id)));
   });
 
   // ---------------- Custom Selects ----------------
-  document.querySelectorAll(".custom-select").forEach(root => {
-    root.addEventListener("select:change", async e => {
+  qa(".custom-select").forEach(root => {
+    al("select:change", async e => {
       const { id, value } = e.detail;
 
       switch (id) {
         case "langSelect":
-          document.documentElement.setAttribute("lang", value || "jp");
+          sa("lang", value || "jp");
           state.lang = value;
           await loadLanguage();
           updateAgentInfo(i18nDict);
@@ -72,7 +71,8 @@ export function bindEvents() {
           state.agentId = value;
           updateAgentInfo(i18nDict);
           updateMatchSelect();
-          updateSheerField();
+          refreshAttackField();
+          refreshSheerField();
 
           // エージェントの属性を attrSelect に反映
           const attrId = agents[value] ? agents[value].attributeId : "";
@@ -99,20 +99,19 @@ export function bindEvents() {
           state.match = value;
           updateAttrMatchPct();
           break;
-
       }
 
       await loadLanguage();
       compute();
-    });
+    }, root);
   });
 
   // ---------------- Mode ----------------
   qa('input[name="calcMode"]').forEach(el =>
-    el.addEventListener("change", () => {
+    al("change", () => {
       updateVisibilityByMode();
       compute();
-    })
+    }, el)
   );
 
   // ---------------- Input ----------------
@@ -121,32 +120,32 @@ export function bindEvents() {
 
   // ---------------- Toggle ----------------
   const breakToggle = $("breakToggle");
-  breakToggle?.addEventListener("change", () => {
+  al("change", () => {
     if (breakToggle.checked) miasmaToggle.checked = false;
 
     updateBreakControls();
     compute();
-  });
+  }, breakToggle);
 
   const miasmaToggle = $("miasmaToggle");
-  miasmaToggle?.addEventListener("change", () => {
+  al("change", () => {
     if (miasmaToggle.checked) breakToggle.checked = false;
 
     updateBreakControls();
     compute();
-  });
+  }, miasmaToggle);
 
   // ---------------- Button ----------------
-  $("resetBtn")?.addEventListener("click", e => {
+  const resetBtn = $("resetBtn");
+  al("click", e => {
     e.preventDefault();
     resetAll();
-  });
+  }, resetBtn);
 
   // ---------------- Popup ----------------
   const popup = $("infoPopup");
-
-  document.querySelectorAll(".info-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+  qa(".info-btn").forEach(btn => {
+    al("click", () => {
       const key = btn.dataset.key;
       const info = helpTexts[key];
       if (!info) return;
@@ -154,15 +153,15 @@ export function bindEvents() {
       const popupText = $("popupText");
       popupText.innerHTML = info.text.join("<br>");
       openPopup(popup);
-    });
+    }, btn);
   });
 
-  popup.querySelectorAll("[data-close]").forEach(el => {
-    el.addEventListener("click", () => closePopup(popup));
-  });
+  qa("[data-close]").forEach(el => {
+    al("click", () => closePopup(popup), el);
+  }, popup);
 
   // ---------------- Toast ----------------
-  document.addEventListener("click", async e => {
+  al("click", async e => {
     const btn = e.target.closest(".copy-icon");
     if (!btn) return;
 

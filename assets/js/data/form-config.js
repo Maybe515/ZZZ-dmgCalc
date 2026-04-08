@@ -30,13 +30,23 @@ export const selectMapping = {
 };
 
 /**
- * checkbox / radio の UI 要素の ID マッピング
+ * checkbox / radio の UI 要素の ID マッピング  
  * local-storage.js の save/load で使用
  */
 export const toggleMapping = {
-  breakToggle:  { id: "breakToggle",  state: "breakToggle" },
-  breakToggle:  { id: "breakToggle",  state: "breakToggle" },
+  breakToggle: { id: "breakToggle", state: "breakToggle" },
+  breakToggle: { id: "breakToggle", state: "breakToggle" },
   miasmaToggle: { id: "miasmaToggle", state: "miasmaToggle" }
+};
+
+/**
+ * エージェントの派生属性を既存の属性として扱うためのマッピング
+ * updateMatchSelect() で使用
+ */
+export const attrAliasMapping = {
+  frost: "ice",
+  auric_ink: "ether",
+  honed_edge: "physical"
 };
 
 /**
