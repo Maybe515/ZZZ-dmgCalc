@@ -7,7 +7,7 @@ import { loadAllData, loadLanguage } from "../data/data-loader.js";
 import { loadFromLocalStorage } from "../storage/local-storage.js";
 
 // ---------------- UI ----------------
-import { applyDefaults, initCustomSelects, loadLastModified } from "../events/init.js";
+import { applyDefaults, initCustomSelects, initStrapPhysics, loadLastModified } from "../events/init.js";
 import { bindEvents } from "../events/bind-events.js";
 import { initDetailsAnimation } from "../ui/details-animation.js";
 import { initResultFixedObserver } from "../ui/result-fixed.js";
@@ -35,6 +35,7 @@ async function init() {
   // --- Initialize UX ---
   initDetailsAnimation();     // Details 開閉アニメーション
   initResultFixedObserver();  // Result 固定表示（モバイル用）
+  initStrapPhysics();
 
   // --- Initialize UI ---
   loadLastModified();         // 最終更新日表示

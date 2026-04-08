@@ -28,6 +28,7 @@ const cssFiles = [
   "/components/responsive.css",
   "/components/result.css",
   "/components/select.css",
+  "/components/strap.css",
   "/components/toast.css",
   "/components/tooltip.css",
   "/utils/utilities.css"

@@ -13,6 +13,7 @@ import { updateBreakControls } from "../ui/updates/break.js";
 // Generate UI
 import { createCustomSelect } from "../ui/custom-select.js";
 import { getLangOptions, getAgentOptions, getEnemyOptions, getAttrOptions, getRangeOptions, getMatchOptions } from "../ui/generate-options.js";
+import { createStrapLine, createStrapPhysics } from "../ui/strap-physics.js";
 
 // Data / Config
 import { i18nDict, selects, state } from "../data/state.js";
@@ -20,7 +21,7 @@ import { selectMapping, fields, toggleMapping } from "../data/form-config.js";
 import { defaults, selectDefaults, toggleDefaults } from "../data/default.js";
 
 // DOM
-import { $ } from "../ui/dom-helpers.js";
+import { $, al } from "../ui/dom-helpers.js";
 
 // ---------------- Apply Defaults ----------------
 /**
@@ -64,6 +65,38 @@ export function initCustomSelects() {
   selects.rangeSelect = createCustomSelect($("rangeSelect"), getRangeOptions());
   selects.matchSelect = createCustomSelect($("matchSelect"), getMatchOptions());
 }
+
+/**
+ * 物理ストラップを生成する
+ */
+export function initStrapPhysics() {
+  const circle = $("strapCircle");
+  const anchor = $("strapAnchor");
+
+  if (!circle || !anchor) return;
+
+  const wrapperRect = anchor.parentElement.getBoundingClientRect();
+  const circleRect = circle.getBoundingClientRect();
+
+  anchor.style.left = `${circleRect.left - wrapperRect.left + circleRect.width / 2}px`;
+  anchor.style.top = `${circleRect.top - wrapperRect.top}px`;
+
+  const line = createStrapLine(anchor, circle);
+  const strap = createStrapPhysics(circle, {
+    anchorX: 0,
+    anchorY: 0,
+    length: 140,
+    gravity: 0.003,
+    damping: 0.992,
+    initialAngle: 0.2,
+    onUpdate: () => line.update()
+  });
+
+  al("click", () => {
+    strap.nudge(0.3);
+  }, circle);
+}
+
 
 // ---------------- Reset All ----------------
 /**
