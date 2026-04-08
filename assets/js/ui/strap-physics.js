@@ -1,3 +1,4 @@
+// 物理ストラップの生成、制御を担当するモジュール
 import { ce } from "./dom-helpers.js";
 
 /**
