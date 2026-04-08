@@ -5,6 +5,10 @@
   border: 2px solid var(--color-border-default);
   border-radius: var(--radius-md);
   padding: .75rem;
+  background-image: url(../../image/common/bg-decoIcon.png);
+  background-size: 130% auto;
+  background-position: 100% 0;
+  background-repeat: no-repeat;
 }
 
 .card__title {
@@ -27,4 +31,6 @@
   gap: .5rem;
 }
 
-.card--option { max-width: 300px; }
+.card--option {
+  max-width: 300px;
+}
