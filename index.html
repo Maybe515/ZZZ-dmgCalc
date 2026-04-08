@@ -2,451 +2,457 @@
 <html lang="ja">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <title>ZZZ Dmg Calc</title>
-    <link rel="icon" href="/assets/favicon/favicon-32x32.ico?v=1" type="image/x-icon">
+  <title>ZZZ Dmg Calc</title>
+  <link rel="icon" href="/assets/favicon/favicon-32x32.ico?v=1" type="image/x-icon">
 
-    <meta name="description"
-        content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。攻撃力や会心補正・バフ補正などを入力して、通常時ダメージ/会心時ダメージ/ダメージ期待値をシミュレーションできます。" />
+  <meta name="description"
+    content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。攻撃力や会心補正・バフ補正などを入力して、通常時ダメージ/会心時ダメージ/ダメージ期待値をシミュレーションできます。" />
 
-    <!-- SNSシェア用 -->
-    <meta property="og:title" content="ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -" />
-    <meta property="og:description" content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://maybe515.github.io/ZZZ-dmgCalc/" />
-    <meta property="og:image" content="https://github.com/Maybe515/ZZZ-dmgCalc/blob/main/assets/common/zzz-logo.svg" />
-    <meta property="og:site_name" content="ZZZ Dmg Calc" />
-    <meta property="og:locale" content="ja_JP" />
+  <!-- SNSシェア用 -->
+  <meta property="og:title" content="ゼンレスゾーンゼロ ダメージ計算ツール - ZZZ Dmg Calc -" />
+  <meta property="og:description" content="ゼンレスゾーンゼロのダメージを簡単に計算できる非公式ツール。" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://maybe515.github.io/ZZZ-dmgCalc/" />
+  <meta property="og:image" content="https://github.com/Maybe515/ZZZ-dmgCalc/blob/main/assets/common/zzz-logo.svg" />
+  <meta property="og:site_name" content="ZZZ Dmg Calc" />
+  <meta property="og:locale" content="ja_JP" />
 
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:site" content="@Maybe515" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@Maybe515" />
 
-    <!-- スクリプト -->
-    <script type="module" src="./assets/js/core/main.js"></script>
+  <!-- スクリプト -->
+  <script type="module" src="./assets/js/core/main.js"></script>
 </head>
 
 <body class="theme--zzz">
-    <main class="layout">
+  <main class="layout">
 
-        <!-- ヘッダー -->
-        <header class="header">
-            <div class="header__row">
-                <a href="https://wiki.hoyolab.com/pc/zzz/" target="_blank" class="header__logo-link tooltip">
-                    <img src="./assets/image/common/zzz-logo.svg" alt="Site Logo" class="header__logo">
-                    <span class="tooltip__content" data-i18n="linkWiki"></span>
-                </a>
-                <h1 class="header__title" data-i18n="headerTitle"></h1>
-                <div class="header__meta">
-                    <div class="custom-select" id="langSelect"></div>
-                    <div class="header__last-modified">
-                        <span data-i18n="lastModified"></span>
-                        <span id="lastModified"></span>
-                        <!-- <div class="info-circle info-btn" data-key="changeLog"></div> -->
-                    </div>
-                </div>
-            </div>
-        </header>
-
-        <!-- モード切替 -->
-        <section class="mode">
-            <div class="mode__grid">
-                <fieldset class="mode__toggle mode__toggle--md">
-                    <legend class="visually-hidden" data-i18n="calcMode">
-                        <div class="info-circle info-btn" data-key="modeCalc"></div>
-                    </legend>
-                    <input type="radio" name="calcMode" value="mode--normal" id="modeNormal" checked />
-                    <label for="modeNormal" class="mode__label" data-i18n="normalDamage"></label>
-
-                    <input type="radio" name="calcMode" value="mode--anomaly" id="modeAnomaly" />
-                    <label for="modeAnomaly" class="mode__label" data-i18n="anomalyDamage"></label>
-                </fieldset>
-                <button id="resetBtn" class="btn btn--rst" data-i18n="resetBtn"></button>
-            </div>
-        </section>
-
-        <!-- 入力欄 -->
-        <div class="content-section">
-            <!-- エージェントグリッド -->
-            <section class="grid">
-                <div class="card card--two-column">
-
-                    <!-- 左カラム -->
-                    <div class="card__col card__col--left">
-
-                        <!-- エージェント -->
-                        <article class="card card--agent">
-                            <h3 class="card__title" data-i18n="headerAgent"></h3>
-
-                            <!-- エージェント選択 -->
-                            <div class="agent-select">
-                                <div class="agent-select__left">
-                                    <a id="agentLink" href="#" target="_blank" rel="noopener noreferrer" class="tooltip">
-                                        <img id="agentImage" class="agent-select__image" alt="image_agent" />
-                                        <span class="tooltip__content" data-i18n="linkChara"></span>
-                                    </a>
-                                    <img id="rankImage" class="agent-rank-icon" alt="image_rank" />
-                                </div>
-                                <div class="agent-select__right">
-                                    <label class="visually-hidden" data-i18n="agentSelect"></label>
-                                    <div class="custom-select" id="agentSelect"></div>
-                                    <div class="kv-list agent-kv-list">
-                                        <div class="kv agent-kv">
-                                            <span class="kv__label" data-i18n="faction"></span>
-                                            <span class="kv__value" id="factionWrapper">
-                                                <img class="icon-kv icon--sm" id="factionIcon" alt="" />
-                                                <span class="text-ellipsis" id="faction"></span>
-                                            </span>
-                                        </div>
-                                        <div class="kv agent-kv">
-                                            <span class="kv__label" data-i18n="specialty"></span>
-                                            <span class="kv__value" id="specialtyWrapper">
-                                                <img class="icon-kv icon--sm" id="specialtyIcon" alt="" />
-                                                <span id="specialty"></span>
-                                            </span>
-                                        </div>
-                                        <div class="kv agent-kv">
-                                            <span class="kv__label" data-i18n="attribute"></span>
-                                            <span class="kv__value" id="attributeWrapper">
-                                                <img class="icon-kv icon--sm" id="attributeIcon" alt="" />
-                                                <span id="attribute"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- パラメータ -->
-                        <article class="card card--param">
-                            <h3 class="card__title" data-i18n="headerParameter"></h3>
-                            <div class="form form--grid">
-                                <label for="agentLevel" class="form__label" data-i18n="agentLevel"></label>
-                                <input type="number" id="agentLevel" class="form__input" min="1" max="60" />
-
-                                <label for="lvCorrPct" class="form__label is-disabled-normal" data-i18n="lvCorr">
-                                    <div class="info-circle info-btn" data-key="lvCorr"></div>
-                                </label>
-                                <input type="number" id="lvCorrPct" class="form__input is-disabled-normal" max="200" readonly />
-
-                                <label for="atk" class="form__label" data-i18n="atk"></label>
-                                <input type="number" id="atk" class="form__input" min="0" />
-
-                                <label for="sheerForce" class="form__label" data-i18n="sheerForce"></label>
-                                <input type="number" id="sheerForce" class="form__input" min="0" />
-
-                                <label for="anomalyMastery" class="form__label is-disabled-normal"
-                                    data-i18n="anomalyMastery"></label>
-                                <input type="number" id="anomalyMastery" class="form__input is-disabled-normal" min="0" />
-
-                                <label for="penRatioPct" class="form__label" data-i18n="penRatio"></label>
-                                <input type="number" id="penRatioPct" class="form__input" min="0" max="100" step="0.1" />
-
-                                <label for="pen" class="form__label" data-i18n="pen"></label>
-                                <input type="number" id="pen" class="form__input" min="0" />
-                            </div>
-                        </article>
-                    </div>
-
-                    <!-- 右カラム -->
-                    <div class="card__col card__col--right">
-
-                        <!-- 会心補正 -->
-                        <article class="card card--crit is-disabled-anomaly">
-                            <h3 class="card__title" data-i18n="headerCrit"></h3>
-                            <div class="form form--grid">
-                                <label for="critRatePct" class="form__label" data-i18n="critRate"></label>
-                                <input type="number" id="critRatePct" class="form__input" min="0" max="100" step="0.1" />
-
-                                <label for="critDmgPct" class="form__label" data-i18n="critDmg"></label>
-                                <input type="number" id="critDmgPct" class="form__input" min="0" step="0.1" />
-                            </div>
-                        </article>
-
-                        <!-- 属性・与ダメ補正 -->
-                        <article class="card card--dmgBonus">
-                            <h3 class="card__title" data-i18n="headerBonus"></h3>
-                            <div class="form form--grid">
-                                <label for="attrBonusPct" class="form__label" data-i18n="attrBonus"></label>
-                                <input type="number" id="attrBonusPct" class="form__input" min="0" />
-
-                                <label for="dmgBonusPct" class="form__label" data-i18n="dmgBonus"></label>
-                                <input type="number" id="dmgBonusPct" class="form__input" min="0" />
-
-                                <label for="dmgBonusPtPct" class="form__label" data-i18n="dmgBonusPt"></label>
-                                <input type="number" id="dmgBonusPtPct" class="form__input" min="0" />
-
-                                <label for="sheerForceDmgBonusPct" class="form__label" data-i18n="sheerForceDmgBonus"></label>
-                                <input type="number" id="sheerForceDmgBonusPct" class="form__input" min="0" />
-                            </div>
-                        </article>
-
-                        <!-- その他 -->
-                        <article class="card card--other-agent">
-                            <h3 class="card__title" data-i18n="headerOther"></h3>
-                            <div class="form form--grid">
-                                <label for="skillPct" class="form__label is-disabled-anomaly" data-i18n="skill"></label>
-                                <input type="number" id="skillPct" class="form__input is-disabled-anomaly" min="0" step="0.1" />
-                            </div>
-
-                            <label class="form__label is-disabled-normal" data-i18n="anomalyCorr">
-                                <div class="info-circle info-btn" data-key="anomalyCorr"></div>
-                            </label>
-                            <div class="form form--grid">
-                                <div class="custom-select is-disabled-normal" id="attrSelect"></div>
-                                <input type="number" id="anomalyCorrPct" class="form__input is-disabled-normal" min="0" />
-                            </div>
-
-                            <label class="form__label is-disabled-anomaly" data-i18n="weakRange">
-                                <div class="info-circle info-btn" data-key="weakRange"></div>
-                            </label>
-                            <div class="form form--grid">
-                                <div class="custom-select is-disabled-anomaly" id="rangeSelect"></div>
-                                <input type="number" id="weakRangePct" class="form__input is-disabled-anomaly" readonly />
-                            </div>
-                        </article>
-                    </div>
-                </div>
-            </section>
-
-            <!-- エネミーグリッド -->
-            <section class="grid">
-                <section class="card card--two-column">
-
-                    <!-- 左カラム -->
-                    <div class="card__col card__col--left">
-
-                        <!-- エネミー -->
-                        <article class="card card--enemy">
-                            <h3 class="card__title" data-i18n="headerEnemy"></h3>
-
-                            <!-- エネミー選択 -->
-                            <div class="enemy-select">
-                                <div class="enemy-select__left">
-                                    <a id="enemyLink" href="#" target="_blank" rel="noopener noreferrer" class="tooltip">
-                                        <img id="enemyImage" class="enemy-select__image" alt="image_enemy" />
-                                        <span class="tooltip__content" data-i18n="linkEnemy"></span>
-                                    </a>
-                                    <!-- <img id="materialImage" class="enemy-material-icon" alt="image_material" /> -->
-                                </div>
-                                <div class="enemy-select__right">
-                                    <label class="visually-hidden" data-i18n="enemySelect"></label>
-                                    <div class="custom-select" id="enemySelect"></div>
-                                    <div class="kv-list enemy-kv-list">
-                                        <div class="kv enemy-kv">
-                                            <span class="kv__label" data-i18n="weakAttr"></span>
-                                            <span class="kv__value" id="attributeWrapper" >
-                                                <span class="attr-item">
-                                                    <img class="icon-kv icon--sm" id="weakAttr1Icon" alt="" />
-                                                    <span id="weakAttr1"></span>
-                                                </span>
-                                                <span class="attr-item">
-                                                    <img class="icon-kv icon--sm" id="weakAttr2Icon" alt="" />
-                                                    <span id="weakAttr2"></span>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div class="kv enemy-kv">
-                                            <span class="kv__label" data-i18n="resistAttr"></span>
-                                            <span class="kv__value" id="attributeWrapper">
-                                                <span class="attr-item">
-                                                    <img class="icon-kv icon--sm" id="resistAttr1Icon" alt="" />
-                                                    <span id="resistAttr1"></span>
-                                                </span>
-                                                <span class="attr-item">
-                                                    <img class="icon-kv icon--sm" id="resistAttr2Icon" alt="" />
-                                                    <span id="resistAttr2"></span>
-                                                </span>
-                                            </span>
-                                        </div>
-                                        <div class="kv enemy-kv">
-                                            <span class="kv__label" data-i18n="dropItem"></span>
-                                            <span class="kv__value" id="dropItemWrapper">
-                                                <img class="icon-kv icon--mid" id="materialImage" alt="" />
-                                                <span class="text-ellipsis" id="material"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </article>
-
-                        <!-- パラメータ -->
-                        <article class="card card--param">
-                            <h3 class="card__title" data-i18n="headerParameter"></h3>
-                            <div class="form form--grid">
-                                <label for="enemyLevel" class="form__label" data-i18n="enemyLevel"></label>
-                                <input type="number" id="enemyLevel" class="form__input" min="1" max="70" />
-
-                                <label for="lvCoeff" class="form__label" data-i18n="lvCoeff">
-                                    <div class="info-circle info-btn" data-key="lvCoeff"></div>
-                                </label>
-                                <input type="number" id="lvCoeff" class="form__input" min="0" step="0.1" />
-
-                                <label for="def" class="form__label" data-i18n="def"></label>
-                                <input type="number" id="def" class="form__input" min="0" step="0.1" />
-                            </div>
-                        </article>
-                    </div>
-
-                    <!-- 右カラム -->
-                    <div class="card__col card__col--right">
-
-                        <!-- バフ補正 -->
-                        <article class="card card--buff">
-                            <h3 class="card__title" data-i18n="headerBuff"></h3>
-                            <div class="form form--grid">
-                                <label for="defUpPct" class="form__label" data-i18n="defUp"></label>
-                                <input type="number" id="defUpPct" class="form__input" min="0" step="0.1" />
-
-                                <label for="defDownPct" class="form__label" data-i18n="defDown"></label>
-                                <input type="number" id="defDownPct" class="form__input" min="0" step="0.1" />
-
-                                <label for="attrResistDownPct" class="form__label" data-i18n="attrResistDown"></label>
-                                <input type="number" id="attrResistDownPct" class="form__input" min="0" step="0.1" />
-
-                                <label for="attrResistIgnorePct" class="form__label" data-i18n="attrResistIgnore"></label>
-                                <input type="number" id="attrResistIgnorePct" class="form__input" min="0" max="100" step="0.1" />
-                            </div>
-
-                            <label class="form__label" data-i18n="attrMatch">
-                                <div class="info-circle info-btn" data-key="attrMatch"></div>
-                            </label>
-                            <div class="form form--grid">
-                                <div class="custom-select" id="matchSelect"></div>
-                                <input type="number" id="attrMatchPct" class="form__input" step="0.1" readonly />
-                            </div>
-                        </article>
-
-                        <!-- その他 -->
-                        <article class="card card--other-enemy">
-                            <h3 class="card__title" data-i18n="headerOther"></h3>
-                            <div class="form--break">
-                                <div class="form form--row">
-                                    <input type="checkbox" id="breakToggle" class="form__checkbox" />
-                                    <label for="breakToggle" class="form__label form__label--break" data-i18n="labelBreak"></label>
-                                </div>
-                                <div id="breakControls" class="form form--row">
-                                    <label for="breakBonusPct" class="form__label" data-i18n="breakBonus"></label>
-                                    <input type="number" id="breakBonusPct" class="form__input" min="0" />
-                                </div>
-                            </div>
-                            <div class="form--miasma">
-                                <div class="form form--row">
-                                    <input type="checkbox" id="miasmaToggle" class="form__checkbox" />
-                                    <label for="miasmaToggle" class="form__label form__label--miasma" data-i18n="labelMiasmaShield"></label>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </section>
-            </section>
+    <!-- ヘッダー -->
+    <header class="header">
+      <div class="header__row">
+        <a href="https://wiki.hoyolab.com/pc/zzz/" target="_blank" class="header__logo-link tooltip">
+          <img src="./assets/image/common/zzz-logo.svg" alt="Site Logo" class="header__logo">
+          <span class="tooltip__content" data-i18n="linkWiki"></span>
+        </a>
+        <h1 class="header__title" data-i18n="headerTitle"></h1>
+        <div class="header__meta">
+          <div class="custom-select" id="langSelect"></div>
+          <div class="header__last-modified">
+            <span data-i18n="lastModified"></span>
+            <span id="lastModified"></span>
+            <!-- <div class="info-circle info-btn" data-key="changeLog"></div> -->
+          </div>
         </div>
+      </div>
+    </header>
 
-        <!-- オプション -->
-        <details class="details">
-            <summary class="details__summary" data-i18n="headerOption"></summary>
-            <article class="card card--option">
-                <label for="digits" class="form__label" data-i18n="decimalPoint"></label>
-                <input type="number" id="digits" class="form__input" min="0" max="6" />
+    <!-- モード切替 -->
+    <section class="mode">
+      <div class="mode__grid">
+        <fieldset class="mode__toggle mode__toggle--md">
+          <legend class="visually-hidden" data-i18n="calcMode">
+            <div class="info-circle info-btn" data-key="modeCalc"></div>
+          </legend>
+          <input type="radio" name="calcMode" value="mode--normal" id="modeNormal" checked />
+          <label for="modeNormal" class="mode__label" data-i18n="normalDamage"></label>
+
+          <input type="radio" name="calcMode" value="mode--anomaly" id="modeAnomaly" />
+          <label for="modeAnomaly" class="mode__label" data-i18n="anomalyDamage"></label>
+        </fieldset>
+        <button id="resetBtn" class="btn btn--rst" data-i18n="resetBtn"></button>
+      </div>
+    </section>
+
+    <!-- 入力欄 -->
+    <div class="content-section">
+      <!-- エージェントグリッド -->
+      <section class="grid">
+        <div class="card card--two-column">
+
+          <!-- 左カラム -->
+          <div class="card__col card__col--left">
+
+            <!-- エージェント -->
+            <article class="card card--agent">
+              <h3 class="card__title" data-i18n="headerAgent"></h3>
+
+              <!-- エージェント選択 -->
+              <div class="agent-select">
+                <div class="agent-select__left">
+                  <a id="agentLink" href="#" target="_blank" rel="noopener noreferrer" class="tooltip">
+                    <img id="agentImage" class="agent-select__image" alt="image_agent" />
+                    <span class="tooltip__content" data-i18n="linkChara"></span>
+                  </a>
+                  <img id="rankImage" class="agent-rank-icon" alt="image_rank" />
+                </div>
+                <div class="agent-select__right">
+                  <label class="visually-hidden" data-i18n="agentSelect"></label>
+                  <div class="custom-select" id="agentSelect"></div>
+                  <div class="kv-list agent-kv-list">
+                    <div class="kv agent-kv">
+                      <span class="kv__label" data-i18n="faction"></span>
+                      <span class="kv__value" id="factionWrapper">
+                        <img class="icon-kv icon--sm" id="factionIcon" alt="" />
+                        <span class="text-ellipsis" id="faction"></span>
+                      </span>
+                    </div>
+                    <div class="kv agent-kv">
+                      <span class="kv__label" data-i18n="specialty"></span>
+                      <span class="kv__value" id="specialtyWrapper">
+                        <img class="icon-kv icon--sm" id="specialtyIcon" alt="" />
+                        <span id="specialty"></span>
+                      </span>
+                    </div>
+                    <div class="kv agent-kv">
+                      <span class="kv__label" data-i18n="attribute"></span>
+                      <span class="kv__value" id="attributeWrapper">
+                        <img class="icon-kv icon--sm" id="attributeIcon" alt="" />
+                        <span id="attribute"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </article>
-        </details>
 
-        <!-- 結果 -->
-        <section class="result">
-            <h2 class="result__title" data-i18n="result">
-                <div class="info-circle info-btn" data-key="result"></div>
-            </h2>
-            <div class="result__grid">
-                <article class="result__card is-hidden-anomaly" role="status">
-                    <h3 class="result__label" data-i18n="nonCrit"></h3>
-                    <div class="result__value" id="nonCrit"></div>
-                    <button type="button" class="copy-icon u-fade-hover" aria-label="通常時の値をコピー" data-i18n="resultCopy"></button>
-                </article>
-                <article class="result__card is-hidden-anomaly" role="status">
-                    <h3 class="result__label" data-i18n="crit"></h3>
-                    <div class="result__value" id="crit"></div>
-                    <button type="button" class="copy-icon u-fade-hover" aria-label="会心時の値をコピー" data-i18n="resultCopy"></button>
-                </article>
-                <article class="result__card" role="status">
-                    <h3 class="result__label" data-i18n="expected"></h3>
-                    <div class="result__value" id="expected"></div>
-                    <button type="button" class="copy-icon u-fade-hover" aria-label="期待値をコピー" data-i18n="resultCopy"></button>
-                </article>
-            </div>
-        </section>
+            <!-- パラメータ -->
+            <article class="card card--param">
+              <h3 class="card__title" data-i18n="headerParameter"></h3>
+              <div class="form form--grid">
+                <label for="agentLevel" class="form__label" data-i18n="agentLevel"></label>
+                <input type="number" id="agentLevel" class="form__input" min="1" max="60" />
 
-        <!-- 画面下部表示用 -->
-        <section class="result result--fixed"></section>
+                <label for="lvCorrPct" class="form__label is-disabled-normal" data-i18n="lvCorr">
+                  <div class="info-circle info-btn" data-key="lvCorr"></div>
+                </label>
+                <input type="number" id="lvCorrPct" class="form__input is-disabled-normal" max="200" readonly />
 
-        <!-- トースト通知 -->
-        <div id="toast" class="toast" role="alert" aria-live="assertive" data-i18n="toast"></div>
+                <label for="atk" class="form__label" data-i18n="atk"></label>
+                <input type="number" id="atk" class="form__input" min="0" />
 
-        <!-- 共通ポップアップ -->
-        <div id="infoPopup" class="popup" aria-hidden="true">
-            <div class="popup__backdrop" data-close></div>
-            <div class="popup__content">
-                <p id="popupText"></p>
-                <button class="popup__close" data-i18n="popupClose" data-close></button>
-            </div>
+                <label for="sheerForce" class="form__label" data-i18n="sheerForce"></label>
+                <input type="number" id="sheerForce" class="form__input" min="0" />
+
+                <label for="anomalyMastery" class="form__label is-disabled-normal" data-i18n="anomalyMastery"></label>
+                <input type="number" id="anomalyMastery" class="form__input is-disabled-normal" min="0" />
+
+                <label for="penRatioPct" class="form__label" data-i18n="penRatio"></label>
+                <input type="number" id="penRatioPct" class="form__input" min="0" max="100" step="0.1" />
+
+                <label for="pen" class="form__label" data-i18n="pen"></label>
+                <input type="number" id="pen" class="form__input" min="0" />
+              </div>
+            </article>
+          </div>
+
+          <!-- 右カラム -->
+          <div class="card__col card__col--right">
+
+            <!-- 会心補正 -->
+            <article class="card card--crit is-disabled-anomaly">
+              <h3 class="card__title" data-i18n="headerCrit"></h3>
+              <div class="form form--grid">
+                <label for="critRatePct" class="form__label" data-i18n="critRate"></label>
+                <input type="number" id="critRatePct" class="form__input" min="0" max="100" step="0.1" />
+
+                <label for="critDmgPct" class="form__label" data-i18n="critDmg"></label>
+                <input type="number" id="critDmgPct" class="form__input" min="0" step="0.1" />
+              </div>
+            </article>
+
+            <!-- 属性・与ダメ補正 -->
+            <article class="card card--dmgBonus">
+              <h3 class="card__title" data-i18n="headerBonus"></h3>
+              <div class="form form--grid">
+                <label for="attrBonusPct" class="form__label" data-i18n="attrBonus"></label>
+                <input type="number" id="attrBonusPct" class="form__input" min="0" />
+
+                <label for="dmgBonusPct" class="form__label" data-i18n="dmgBonus"></label>
+                <input type="number" id="dmgBonusPct" class="form__input" min="0" />
+
+                <label for="dmgBonusPtPct" class="form__label" data-i18n="dmgBonusPt"></label>
+                <input type="number" id="dmgBonusPtPct" class="form__input" min="0" />
+
+                <label for="sheerForceDmgBonusPct" class="form__label" data-i18n="sheerForceDmgBonus"></label>
+                <input type="number" id="sheerForceDmgBonusPct" class="form__input" min="0" />
+              </div>
+            </article>
+
+            <!-- その他 -->
+            <article class="card card--other-agent">
+              <h3 class="card__title" data-i18n="headerOther"></h3>
+              <div class="form form--grid">
+                <label for="skillPct" class="form__label is-disabled-anomaly" data-i18n="skill"></label>
+                <input type="number" id="skillPct" class="form__input is-disabled-anomaly" min="0" step="0.1" />
+              </div>
+
+              <label class="form__label is-disabled-normal" data-i18n="anomalyCorr">
+                <div class="info-circle info-btn" data-key="anomalyCorr"></div>
+              </label>
+              <div class="form form--grid">
+                <div class="custom-select is-disabled-normal" id="attrSelect"></div>
+                <input type="number" id="anomalyCorrPct" class="form__input is-disabled-normal" min="0" />
+              </div>
+
+              <label class="form__label is-disabled-anomaly" data-i18n="weakRange">
+                <div class="info-circle info-btn" data-key="weakRange"></div>
+              </label>
+              <div class="form form--grid">
+                <div class="custom-select is-disabled-anomaly" id="rangeSelect"></div>
+                <input type="number" id="weakRangePct" class="form__input is-disabled-anomaly" readonly />
+              </div>
+            </article>
+          </div>
         </div>
+      </section>
 
-        <!-- 中間倍率 -->
-        <details class="details">
-            <summary class="details__summary" data-i18n="summaryMagnification"></summary>
-            <div class="kv-list">
-                <div class="kv">
-                    <span class="kv__label" data-i18n="base"></span>
-                    <div class="info-circle info-btn" data-key="baseAtk"></div>
-                    <span id="base" class="kv__value"></span>
-                </div>
-                <div class="kv">
-                    <span class="kv__label" data-i18n="totalBonus"></span>
-                    <span id="totalBonus" class="kv__value"></span>
-                </div>
-                <div class="kv">
-                    <span class="kv__label" data-i18n="nonCritMul"></span>
-                    <span id="nonCritMul" class="kv__value"></span>
-                </div>
-                <div class="kv">
-                    <span class="kv__label" data-i18n="critMul"></span>
-                    <span id="critMul" class="kv__value"></span>
-                </div>
-                <div class="kv">
-                    <span class="kv__label" data-i18n="expCritMul"></span>
-                    <div class="info-circle info-btn" data-key="expCrit"></div>
-                    <span id="expCritMul" class="kv__value"></span>
-                </div>
-                <div class="kv">
-                    <span class="kv__label" data-i18n="defMul"></span>
-                    <div class="info-circle info-btn" data-key="defMul"></div>
-                    <span id="defMul" class="kv__value"></span>
-                </div>
-                <div class="kv">
-                    <span class="kv__label" data-i18n="resistMul"></span>
-                    <div class="info-circle info-btn" data-key="resistMul"></div>
-                    <span id="resistMul" class="kv__value"></span>
-                </div>
-            </div>
+      <!-- エネミーグリッド -->
+      <section class="grid">
+        <section class="card card--two-column">
 
-        </details>
+          <!-- 左カラム -->
+          <div class="card__col card__col--left">
 
-        <!-- フッター -->
-        <footer class="footer">
-            <p class="footer__text footer--disclaimer" data-i18n="disclaimer"></p>
-            <p class="footer__text footer--copyright" data-i18n="copyright"></p>
-            <p class="footer__text">
-                © 2025-2026 Maybe515. All rights reserved.<br>
-                Created by
-                <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
-                    rel="noopener noreferrer">Maybe515</a> ｜
-                Designed by
-                <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
-                    rel="noopener noreferrer">Maybe515</a>
-            </p>
-        </footer>
-    </main>
+            <!-- エネミー -->
+            <article class="card card--enemy">
+              <h3 class="card__title" data-i18n="headerEnemy"></h3>
+
+              <!-- エネミー選択 -->
+              <div class="enemy-select">
+                <div class="enemy-select__left">
+                  <a id="enemyLink" href="#" target="_blank" rel="noopener noreferrer" class="tooltip">
+                    <img id="enemyImage" class="enemy-select__image" alt="image_enemy" />
+                    <span class="tooltip__content" data-i18n="linkEnemy"></span>
+                  </a>
+                  <!-- <img id="materialImage" class="enemy-material-icon" alt="image_material" /> -->
+                </div>
+                <div class="enemy-select__right">
+                  <label class="visually-hidden" data-i18n="enemySelect"></label>
+                  <div class="custom-select" id="enemySelect"></div>
+                  <div class="kv-list enemy-kv-list">
+                    <div class="kv enemy-kv">
+                      <span class="kv__label" data-i18n="weakAttr"></span>
+                      <span class="kv__value" id="attributeWrapper">
+                        <span class="attr-item">
+                          <img class="icon-kv icon--sm" id="weakAttr1Icon" alt="" />
+                          <span id="weakAttr1"></span>
+                        </span>
+                        <span class="attr-item">
+                          <img class="icon-kv icon--sm" id="weakAttr2Icon" alt="" />
+                          <span id="weakAttr2"></span>
+                        </span>
+                      </span>
+                    </div>
+                    <div class="kv enemy-kv">
+                      <span class="kv__label" data-i18n="resistAttr"></span>
+                      <span class="kv__value" id="attributeWrapper">
+                        <span class="attr-item">
+                          <img class="icon-kv icon--sm" id="resistAttr1Icon" alt="" />
+                          <span id="resistAttr1"></span>
+                        </span>
+                        <span class="attr-item">
+                          <img class="icon-kv icon--sm" id="resistAttr2Icon" alt="" />
+                          <span id="resistAttr2"></span>
+                        </span>
+                      </span>
+                    </div>
+                    <div class="kv enemy-kv">
+                      <span class="kv__label" data-i18n="dropItem"></span>
+                      <span class="kv__value" id="dropItemWrapper">
+                        <img class="icon-kv icon--mid" id="materialImage" alt="" />
+                        <span class="text-ellipsis" id="material"></span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- パラメータ -->
+            <article class="card card--param">
+              <h3 class="card__title" data-i18n="headerParameter"></h3>
+              <div class="form form--grid">
+                <label for="enemyLevel" class="form__label" data-i18n="enemyLevel"></label>
+                <input type="number" id="enemyLevel" class="form__input" min="1" max="70" />
+
+                <label for="lvCoeff" class="form__label" data-i18n="lvCoeff">
+                  <div class="info-circle info-btn" data-key="lvCoeff"></div>
+                </label>
+                <input type="number" id="lvCoeff" class="form__input" min="0" step="0.1" />
+
+                <label for="def" class="form__label" data-i18n="def"></label>
+                <input type="number" id="def" class="form__input" min="0" step="0.1" />
+              </div>
+            </article>
+          </div>
+
+          <!-- 右カラム -->
+          <div class="card__col card__col--right">
+
+            <!-- バフ補正 -->
+            <article class="card card--buff">
+              <h3 class="card__title" data-i18n="headerBuff"></h3>
+              <div class="form form--grid">
+                <label for="defUpPct" class="form__label" data-i18n="defUp"></label>
+                <input type="number" id="defUpPct" class="form__input" min="0" step="0.1" />
+
+                <label for="defDownPct" class="form__label" data-i18n="defDown"></label>
+                <input type="number" id="defDownPct" class="form__input" min="0" step="0.1" />
+
+                <label for="attrResistDownPct" class="form__label" data-i18n="attrResistDown"></label>
+                <input type="number" id="attrResistDownPct" class="form__input" min="0" step="0.1" />
+
+                <label for="attrResistIgnorePct" class="form__label" data-i18n="attrResistIgnore"></label>
+                <input type="number" id="attrResistIgnorePct" class="form__input" min="0" max="100" step="0.1" />
+              </div>
+
+              <label class="form__label" data-i18n="attrMatch">
+                <div class="info-circle info-btn" data-key="attrMatch"></div>
+              </label>
+              <div class="form form--grid">
+                <div class="custom-select" id="matchSelect"></div>
+                <input type="number" id="attrMatchPct" class="form__input" step="0.1" readonly />
+              </div>
+            </article>
+
+            <!-- その他 -->
+            <article class="card card--other-enemy">
+              <h3 class="card__title" data-i18n="headerOther"></h3>
+              <div class="form--break">
+                <div class="form form--row">
+                  <input type="checkbox" id="breakToggle" class="form__checkbox" />
+                  <label for="breakToggle" class="form__label form__label--break" data-i18n="labelBreak"></label>
+                </div>
+                <div id="breakControls" class="form form--row">
+                  <label for="breakBonusPct" class="form__label" data-i18n="breakBonus"></label>
+                  <input type="number" id="breakBonusPct" class="form__input" min="0" />
+                </div>
+              </div>
+              <div class="form--miasma">
+                <div class="form form--row">
+                  <input type="checkbox" id="miasmaToggle" class="form__checkbox" />
+                  <label for="miasmaToggle" class="form__label form__label--miasma"
+                    data-i18n="labelMiasmaShield"></label>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </section>
+    </div>
+
+    <!-- 物理ストラップ -->
+    <div class="strap-wrapper">
+      <div id="strapAnchor" class="strap-anchor"></div>
+      <img id="strapCircle" src="./assets/image/common/eous.webp" class="strap-img" />
+    </div>
+
+    <!-- オプション -->
+    <details class="details">
+      <summary class="details__summary" data-i18n="headerOption"></summary>
+      <article class="card card--option">
+        <label for="digits" class="form__label" data-i18n="decimalPoint"></label>
+        <input type="number" id="digits" class="form__input" min="0" max="6" />
+      </article>
+    </details>
+
+    <!-- 結果 -->
+    <section class="result">
+      <h2 class="result__title" data-i18n="result">
+        <div class="info-circle info-btn" data-key="result"></div>
+      </h2>
+      <div class="result__grid">
+        <article class="result__card is-hidden-anomaly" role="status">
+          <h3 class="result__label" data-i18n="nonCrit"></h3>
+          <div class="result__value" id="nonCrit"></div>
+          <button type="button" class="copy-icon u-fade-hover" aria-label="通常時の値をコピー" data-i18n="resultCopy"></button>
+        </article>
+        <article class="result__card is-hidden-anomaly" role="status">
+          <h3 class="result__label" data-i18n="crit"></h3>
+          <div class="result__value" id="crit"></div>
+          <button type="button" class="copy-icon u-fade-hover" aria-label="会心時の値をコピー" data-i18n="resultCopy"></button>
+        </article>
+        <article class="result__card" role="status">
+          <h3 class="result__label" data-i18n="expected"></h3>
+          <div class="result__value" id="expected"></div>
+          <button type="button" class="copy-icon u-fade-hover" aria-label="期待値をコピー" data-i18n="resultCopy"></button>
+        </article>
+      </div>
+    </section>
+
+    <!-- 画面下部表示用 -->
+    <section class="result result--fixed"></section>
+
+    <!-- トースト通知 -->
+    <div id="toast" class="toast" role="alert" aria-live="assertive" data-i18n="toast"></div>
+
+    <!-- 共通ポップアップ -->
+    <div id="infoPopup" class="popup" aria-hidden="true">
+      <div class="popup__backdrop" data-close></div>
+      <div class="popup__content">
+        <p id="popupText"></p>
+        <button class="popup__close" data-i18n="popupClose" data-close></button>
+      </div>
+    </div>
+
+    <!-- 中間倍率 -->
+    <details class="details">
+      <summary class="details__summary" data-i18n="summaryMagnification"></summary>
+      <div class="kv-list">
+        <div class="kv">
+          <span class="kv__label" data-i18n="base"></span>
+          <div class="info-circle info-btn" data-key="baseAtk"></div>
+          <span id="base" class="kv__value"></span>
+        </div>
+        <div class="kv">
+          <span class="kv__label" data-i18n="totalBonus"></span>
+          <span id="totalBonus" class="kv__value"></span>
+        </div>
+        <div class="kv">
+          <span class="kv__label" data-i18n="nonCritMul"></span>
+          <span id="nonCritMul" class="kv__value"></span>
+        </div>
+        <div class="kv">
+          <span class="kv__label" data-i18n="critMul"></span>
+          <span id="critMul" class="kv__value"></span>
+        </div>
+        <div class="kv">
+          <span class="kv__label" data-i18n="expCritMul"></span>
+          <div class="info-circle info-btn" data-key="expCrit"></div>
+          <span id="expCritMul" class="kv__value"></span>
+        </div>
+        <div class="kv">
+          <span class="kv__label" data-i18n="defMul"></span>
+          <div class="info-circle info-btn" data-key="defMul"></div>
+          <span id="defMul" class="kv__value"></span>
+        </div>
+        <div class="kv">
+          <span class="kv__label" data-i18n="resistMul"></span>
+          <div class="info-circle info-btn" data-key="resistMul"></div>
+          <span id="resistMul" class="kv__value"></span>
+        </div>
+      </div>
+
+    </details>
+
+    <!-- フッター -->
+    <footer class="footer">
+      <p class="footer__text footer--disclaimer" data-i18n="disclaimer"></p>
+      <p class="footer__text footer--copyright" data-i18n="copyright"></p>
+      <p class="footer__text">
+        © 2025-2026 Maybe515. All rights reserved.<br>
+        Created by
+        <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
+          rel="noopener noreferrer">Maybe515</a> ｜
+        Designed by
+        <a href="https://www.hoyolab.com/accountCenter/postList?id=144180942" target="_blank"
+          rel="noopener noreferrer">Maybe515</a>
+      </p>
+    </footer>
+  </main>
 </body>
 
 </html>
