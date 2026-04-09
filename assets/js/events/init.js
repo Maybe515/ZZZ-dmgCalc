@@ -70,10 +70,10 @@ export function initCustomSelects() {
  * 物理ストラップを生成する
  */
 export function initStrapPhysics() {
-  const circle = $("strapCircle");
   const anchor = $("strapAnchor");
-
-  if (!circle || !anchor) return;
+  const circle = $("strapCircle");
+  
+  if (!anchor || !circle) return;
 
   const wrapperRect = anchor.parentElement.getBoundingClientRect();
   const circleRect = circle.getBoundingClientRect();
@@ -83,9 +83,7 @@ export function initStrapPhysics() {
 
   const line = createStrapLine(anchor, circle);
   const strap = createStrapPhysics(circle, {
-    anchorX: 0,
-    anchorY: 0,
-    length: 140,
+    length: 60,
     gravity: 0.003,
     damping: 0.992,
     initialAngle: 0.2,

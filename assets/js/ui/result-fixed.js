@@ -37,7 +37,7 @@ function initFallbackVisibility(normal, fixed) {
 export function initResultFixedObserver() {
   const normal = q(".result:not(.result--fixed)");
   const fixed = q(".result.result--fixed");
-
+  
   if (!normal || !fixed) return;
 
   // 内容同期
