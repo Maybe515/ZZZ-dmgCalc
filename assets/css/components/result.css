@@ -33,11 +33,11 @@
 
 .result__label {
   color: var(--color-muted);
-  font-size: .9rem;
+  font-size: clamp(.6rem, 4vw, .9rem);
 }
 
 .result__value {
-  font-size: 1.6rem;
+  font-size: clamp(1.5rem, 4vw, 1.6rem);
   margin-top: .4rem;
   color: var(--color-ok);
 }

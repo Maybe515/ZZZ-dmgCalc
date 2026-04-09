@@ -1,7 +1,7 @@
 .strap-wrapper {
-    position: relative;
-    top: -9px;
-    left: 90%;
+    position: absolute;
+    bottom: -3px;
+    right: 60px;
 }
 
 .strap-anchor {

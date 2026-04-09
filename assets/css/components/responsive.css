@@ -1,16 +1,16 @@
-@media (min-width: 1251px) {
+@media (min-width: 1351px) {
   .result--fixed {
     display: none !important;
   }
 }
 
-@media (max-width: 1250px) {
+@media (max-width: 1350px) {
   .grid {
     flex-direction: column;
     align-items: stretch;
   }
 
-  .grid > .card {
+  .grid>.card {
     flex: none;
     width: 100%;
   }
@@ -23,13 +23,13 @@
     position: fixed;
     bottom: 0;
     left: 0;
+    padding: .5rem 1rem 0;
     width: 100%;
     z-index: 999;
     background: rgba(20, 20, 20, 0.6);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     border-top: 1px solid var(--color-border-default);
-    padding: .5rem 1rem;
     opacity: 0;
     transform: translateY(20px);
     pointer-events: none;
@@ -42,20 +42,45 @@
     pointer-events: auto;
   }
 
-  .result--fixed.is-visible ~ .toast {
+  .result--fixed.is-visible~.toast {
     bottom: 150px;
   }
 
   .result--fixed .result__grid {
     display: flex;
-    flex-wrap: nowrap;
     gap: .5rem;
     overflow-x: auto;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    scroll-padding-left: 0;
     -webkit-overflow-scrolling: touch;
   }
 
   .result--fixed .result__card {
-    min-width: 150px;
+    min-width: 170px;
+    margin-bottom: 6px;
+  }
+
+  /* スクロールバー全体 */
+  .result--fixed .result__grid::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  /* スクロールバーのつまみ（ドラッグ部分） */
+  .result--fixed .result__grid::-webkit-scrollbar-thumb {
+    background: var(--color-scrollbar-thumb);
+    border-radius: 4px;
+    transition: background .2s;
+    cursor: pointer;
+  }
+
+  .result--fixed .result__grid::-webkit-scrollbar-thumb:hover {
+    background: var(--color-scrollbar-thumb-hover);
+  }
+
+  /* ▼ スクロールバーの背景 */
+  .result--fixed .result__grid::-webkit-scrollbar-track {
+    background: var(--color-card-bg);
   }
 }
 
@@ -77,5 +102,166 @@
 
   [data-mode="mode--anomaly"] .result__card {
     max-width: 100%;
+  }
+}
+
+/* モバイル表示（スマホ） */
+@media (max-width: 500px) {
+
+  /* ----- layout ----- */
+  .card {
+    padding: .5rem;
+  }
+
+  .grid {
+    gap: .5rem;
+  }
+
+  .grid>.card {
+    flex: 1 1 240px;
+  }
+
+  /* ----- card ----- */
+  .card--two-column {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card--two-column>* {
+    min-width: 0;
+  }
+
+  /* ----- form ----- */
+  .form--grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ----- header ----- */
+  .header__logo {
+    width: 25px;
+  }
+
+  .header__title {
+    font-size: 1rem;
+    max-width: 175px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .header__meta {
+    gap: .4rem;
+    font-size: 0.75rem;
+  }
+
+  /* ----- mode toggle ----- */
+  .mode__grid {
+    display: block;
+  }
+
+  .mode__toggle {
+    width: fit-content;
+    gap: .5rem;
+  }
+
+  .mode__label {
+    font-size: clamp(0.75rem, 4vw, 1.0rem);
+  }
+
+  /* ----- button ----- */
+  .btn--rst {
+    display: block;
+    padding: 0 .5rem;
+    margin: 8px 0 0 8px;
+  }
+
+  /* ----- select ----- */
+  input,
+  select,
+  textarea,
+  .custom-select-display {
+    width: 100%;
+    min-width: 0;
+  }
+
+  input,
+  .custom-select-display {
+    min-width: 0;
+    padding: .3rem .25rem;
+    gap: 3px;
+    display: flex;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+
+  #langSelect .custom-select-display {
+    padding: .3rem .25rem;
+    gap: 3px;
+  }
+
+  .custom-select-icon {
+    width: 10px;
+    height: 10px;
+  }
+
+    /* ----- agent, enemy select ----- */
+  .agent-select,
+  .enemy-select {
+    gap: .5rem;
+  }
+
+  .agent-select__left,
+  .enemy-select__left {
+    width: 90px;
+    height: 120px;
+  }
+
+  .agent-rank-icon {
+    width: 25px;
+    height: 25px;
+  }
+
+  /* ----- key value ----- */
+  .agent-kv,
+  .enemy-kv {
+    display: block;
+    padding: .4rem .25rem;
+  }
+
+  .agent-kv .kv__label,
+  .enemy-kv .kv__label {
+    display: inline;
+    font-size: .8rem;
+  }
+
+  /* ----- result ----- */
+  .result__card .copy-icon {
+    opacity: 1;
+  }
+
+  /* ----- icon ----- */
+  .icon--sm {
+    margin: .4px;
+  }
+
+  .icon--mid {
+    width: 35px;
+    height: 35px;
+  }
+
+  /* ----- strap ----- */
+  .strap-wrapper {
+    right: 10px;
+    bottom: 10px;
+  }
+
+  /* ----- footer ----- */
+  .footer__text {
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 1px) {
+  .result__card {
+    padding: .7rem;
   }
 }

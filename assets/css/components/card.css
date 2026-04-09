@@ -12,7 +12,7 @@
 }
 
 .card__title {
-  font-size: 1.05rem;
+  font-size: clamp(.95rem, 4vw, 1.05rem);
   margin: 0 0 .5rem;
   color: var(--color-card-heading);
 }
@@ -20,6 +20,7 @@
 .card--two-column {
   display: grid;
   grid-template-columns: minmax(370px, 1fr) 1fr;
+  position: relative;
   gap: .5rem;
   background: var(--color-bg);
   border: thick double var(--color-border-strong);
