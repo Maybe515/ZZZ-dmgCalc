@@ -19,30 +19,33 @@
     flex-direction: column;
   }
 
-  .result--fixed {
+  .result--fixed-wrapper {
     position: fixed;
     bottom: 0;
     left: 0;
+    width: 100%;
+    transform: translateY(100%);
+    transition: transform .35s ease;
+    pointer-events: none;
+  }
+
+  .result--fixed-wrapper.is-visible {
+    transform: translateY(0);
+  }
+
+  .result--fixed {
+    position: relative;
     padding: .5rem 1rem 0;
     width: 100%;
-    z-index: 999;
-    background: rgba(20, 20, 20, 0.6);
+    background: var(--color-result-fixed-bg);
+    border-top: 1px solid var(--color-border-default);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    border-top: 1px solid var(--color-border-default);
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: none;
-    transition: opacity .3s ease, transform .3s ease;
-  }
-
-  .result--fixed.is-visible {
-    opacity: 1;
-    transform: translateY(0);
     pointer-events: auto;
+    z-index: 999;
   }
 
-  .result--fixed.is-visible~.toast {
+  .result--fixed-wrapper.is-visible~.toast {
     bottom: 150px;
   }
 
@@ -78,9 +81,39 @@
     background: var(--color-scrollbar-thumb-hover);
   }
 
-  /* ▼ スクロールバーの背景 */
+  /* スクロールバーの背景 */
   .result--fixed .result__grid::-webkit-scrollbar-track {
     background: var(--color-card-bg);
+  }
+
+  /* 開閉タブ本体 */
+  .result--fixed-tab {
+    display: flex;
+    position: absolute;
+    top: calc(-30px + 1.2px);
+    right: 20px;
+    width: 60px;
+    height: 30px;
+    background: var(--color-result-fixed-bg);
+    border: 1px solid var(--color-border-default);
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    cursor: pointer;
+    pointer-events: auto;
+    align-items: center;
+    justify-content: center;
+    transition: transform .35s ease;
+    z-index: 1001;
+  }
+
+  .result--fixed-tab .tab-icon {
+    width: 40px;
+    height: 20px;
+    background: currentColor;
+    mask: url("data:image/svg+xml;utf8,<svg width='1em' height='1em' viewBox='0 0 1024 1024' fill='%23fff' xmlns='http://www.w3.org/2000/svg'><path d='M896 307.2h-768a25.6 25.6 0 0 1 0-51.2h768a25.6 25.6 0 0 1 0 51.2zM896 563.2h-768a25.6 25.6 0 0 1 0-51.2h768a25.6 25.6 0 0 1 0 51.2zM896 819.2h-768a25.6 25.6 0 0 1 0-51.2h768a25.6 25.6 0 0 1 0 51.2z'/></svg>") center / 60% no-repeat;
+    mask-size: 60%;
   }
 }
 
@@ -203,7 +236,7 @@
     height: 10px;
   }
 
-    /* ----- agent, enemy select ----- */
+  /* ----- agent, enemy select ----- */
   .agent-select,
   .enemy-select {
     gap: .5rem;

@@ -52,6 +52,9 @@
   --color-details-bg: #f5e642;
   --color-details-arrow: #1a1a1a;
 
+  /* Result */
+  --color-result-fixed-bg: rgba(20, 20, 20, 0.6);
+
   /* Spacing */
   --space-xs: .25rem;
   --space-sm: .5rem;
