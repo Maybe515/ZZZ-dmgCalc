@@ -1,30 +1,51 @@
-.kv-list { margin: 0; padding: 0; }
+.kv-list {
+  margin: 0;
+  padding: 0;
+}
 
 .kv {
   display: flex;
   align-items: center;
-  gap: .3rem;
-  padding: .5rem 0;
+  gap: .4rem;
+  padding: .5rem .25rem;
+  margin: 0 3px;
   color: var(--color-muted);
   border-top: 1px dashed var(--color-border-default);
 }
 
 .kv__label {
+  display: inline-block;
+  min-width: 5ch;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow-wrap: break-word;
   font-weight: 500;
-  min-width: 6ch;
-  max-width: 50%;
+}
+
+html[lang="en"] .agent-kv .kv__label {
+  min-width: 8ch;
+}
+
+.enemy-kv .kv__label {
+  min-width: 10ch;
+  max-width: 90px;
+  white-space: normal;
 }
 
 .kv__value {
   flex: 1;
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: .25rem;
+  min-width: 0;
+  max-width: 100%;
   color: var(--color-fg);
 }
 
 .attr-item {
   display: inline-flex;
-  gap: .25rem;
   white-space: nowrap;
+  gap: .25rem;
+  min-width: 0;
 }

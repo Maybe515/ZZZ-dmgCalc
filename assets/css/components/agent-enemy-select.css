@@ -10,8 +10,12 @@
 .enemy-select__left {
   flex: 0 0 auto;
   position: relative;
-  width: 100px;
+  width: 130px;
   gap: 3px;
+}
+
+.enemy-select__left {
+  height: 200px;
 }
 
 .agent-select__right,
@@ -20,9 +24,9 @@
   min-width: 0;
 }
 
-.agent-select__right .form__input,
-.enemy-select__right .form__input {
-  margin: 5px 0;
+.agent-select__right .custom-select,
+.enemy-select__right .custom-select {
+  margin: 4px 0;
 }
 
 .agent-select__image,
@@ -31,26 +35,19 @@
   height: 100%;
   object-fit: cover;
   border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-default);
+  border: 2px solid var(--color-border-default);
+  transition: border 0.2s;
+}
+
+.agent-select__image:hover,
+.enemy-select__image:hover {
+  border: 2px solid var(--color-card-heading);
 }
 
 .agent-rank-icon {
   position: absolute;
-  top: 1px;
-  left: 1px;
+  top: 4px;
+  left: 4px;
   width: 25px;
-  height: 25px; 
-}
-
-.enemy-material-icon {
-  position: absolute;
-  bottom: 1px;
-  right: 1px;
-  width: 45px;
-  height: 45px; 
-  padding: 2px;
-  margin: 2px;
-  background: url("../../image/common/bg_icon.png");
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-border-default);
+  height: 25px;
 }

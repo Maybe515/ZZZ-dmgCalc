@@ -1,4 +1,6 @@
-// 「結果カード」の値をコピーする
+// 「結果カード」の値をコピーするモジュール
+import { q } from "./dom-helpers.js";
+
 /**
  * クリックされた要素からコピー対象のテキストを取得
  */
@@ -6,7 +8,7 @@ export function getCopyResult(target) {
   const card = target.closest(".result__card");
   if (!card) return null;
 
-  const valueEl = card.querySelector(".result__value");
+  const valueEl = q(".result__value", card);
   const text = valueEl?.textContent?.trim();
 
   return text && text !== "-" ? text : null;

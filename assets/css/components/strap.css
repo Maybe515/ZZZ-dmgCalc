@@ -1,0 +1,30 @@
+.strap-wrapper {
+    position: absolute;
+    bottom: -3px;
+    right: 60px;
+}
+
+.strap-anchor {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+}
+
+.strap-img {
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  transform-origin: top center;
+  will-change: transform;
+  z-index: 10;
+}
+
+.strap-line {
+  position: absolute;
+  height: 2px;
+  background: var(--color-fg);
+  transform-origin: 0 50%;
+  pointer-events: none;
+  z-index: 10;
+}

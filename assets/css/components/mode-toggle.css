@@ -16,10 +16,26 @@
   background: var(--color-bg);
   border: 3px solid var(--color-border-strong);
   border-radius: var(--radius-md);
-  gap: .5rem 1rem;
+  gap: .5rem;
 }
 
-.mode__toggle input[type="radio"] { display: none; }
+.mode__toggle input[type="radio"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.mode__toggle input[type="radio"]:focus-visible + .mode__label {
+  outline: 2px solid var(--color-field-focus-ring);
+  outline-offset: 4px;
+}
 
 .mode__toggle input[type="radio"]:checked + .mode__label {
   background: var(--color-mode-active-bg);
@@ -30,11 +46,12 @@
   color: #fff;
 }
 
-.mode__toggle .visually-hidden {
-  padding: 0 5px;
+.mode__toggle legend {
+  padding: 0 6px;
 }
 
 .mode__label {
+  position: relative;
   border: 2px solid var(--color-mode-bg);
   border-radius: 30px;
   background: var(--color-mode-bg);

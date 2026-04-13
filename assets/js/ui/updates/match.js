@@ -1,24 +1,47 @@
-// 属性相性の自動判定
-
-import { $ } from "../dom-helpers.js";
+// 属性相性の自動判定を担当するモジュール
+import { agents, enemies, selects, state } from "../../data/state.js";
 import { updateAttrMatchPct } from "./derived.js";
+import { attrAliasMapping } from "../../data/form-config.js";
 
 export function updateMatchSelect() {
-  const attribute = $("attribute").textContent.trim();
-  const weak1 = $("weakAttr1").textContent.trim();
-  const weak2 = $("weakAttr2").textContent.trim();
-  const resist1 = $("resistAttr1").textContent.trim();
-  const resist2 = $("resistAttr2").textContent.trim();
+  // ----- Agent -----
+  const agentSel = state.agentId;
+  const agent = agents[agentSel] || {};
 
-  const matchSelect = $("matchSelect");
+  // 属性
+  const rawAttr = agent.attributeId;
+  const attribute = attrAliasMapping[rawAttr] ?? rawAttr;
 
-  if (attribute === weak1 || attribute === weak2) {
-    matchSelect.value = "weak";
-  } else if (attribute === resist1 || attribute === resist2) {
-    matchSelect.value = "resist";
-  } else {
-    matchSelect.value = "none";
+  // ----- Enemy -----
+  const enemySel = state.enemyId;
+  const enemy = enemies[enemySel] || {};
+  const weak = enemy.weakAttrId ?? [];
+  const resist = enemy.resistAttrId ?? [];
+
+  // 弱点属性
+  const weak1 = weak[0] ?? "";
+  const weak2 = weak[1] ?? "";
+
+  // 耐性属性
+  const resist1 = resist[0] ?? "";
+  const resist2 = resist[1] ?? "";
+
+  const weakSet = new Set([weak1, weak2]);
+  const resistSet = new Set([resist1, resist2]);
+
+  // 属性相性チェック
+  let match = "none";
+
+  if (attribute && weakSet.has(attribute)) {
+    match = "weak";
+  } else if (attribute && resistSet.has(attribute)) {
+    match = "resist";
   }
+
+  state.match = match;
+
+  // ---------------- UI 反映（カスタムセレクト） ----------------
+  selects.matchSelect.setValue(state.match);
 
   updateAttrMatchPct();
 }

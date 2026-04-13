@@ -1,5 +1,4 @@
 // JSON ロード後に内容が書き込まれる「アプリ内データストア」
-
 /**
  * エージェント情報（agents.json からロード）
  * key: agentId, value: agentData
@@ -33,6 +32,18 @@ export const rangeTable = {};
 export const matchTable = {};
 
 /**
+ * ミアズマシールド補正テーブル（miasma-buff.json からロード）
+ * - depUp: 防御力UP
+ * - dmgCut: ダメージカット
+ */
+export const miasmaBuffTable = {};
+
+/**
+ * 言語リスト（languages.json からロード）
+ */
+export const languages = {};
+
+/**
  * ヘルプテキスト（helpTexts.json からロード）
  */
 export const helpTexts = {};
@@ -42,3 +53,20 @@ export const helpTexts = {};
  * UI の翻訳に使用
  */
 export const i18nDict = {};
+
+/**
+ * カスタムセレクト ID（カスタムセレクト生成時にセットされる）
+ */
+export const selects = {};
+
+/**
+ * カスタムセレクトにセットされたステータス（Custom Select の イベントが発火すると更新される）
+ */
+export const state = {
+  lang: "",
+  agentId: "",
+  enemyId: "",
+  attrId: "",
+  range: "",
+  match: ""
+};

@@ -1,36 +1,128 @@
-select {
+input,
+.custom-select-display {
   background: var(--color-field-bg);
   color: #eee;
   border: 1px solid var(--color-field-border);
   border-radius: var(--radius-md);
   padding: 0.4rem 0.6rem;
-  padding-right: 1.8rem;
-  font-size: 0.95rem;
+  font-size: clamp(.8rem, 4vw, .95rem);
   transition: background .15s, border-color .15s, box-shadow .15s;
 }
 
-select option {
-  background-color: #222;
-  color: #eee;
-}
-
-select option:disabled {
-  color: #777;
-}
-
-select:focus {
-  outline: none;
-}
-
 input:hover,
-select:hover {
+.custom-select-display:hover {
   background: var(--color-field-hover-bg);
   border-color: var(--color-field-hover-border);
   box-shadow: var(--shadow-sm);
 }
 
 input:focus-visible,
-select:focus-visible {
+.custom-select-display:focus-visible {
   outline: 2px solid var(--color-field-focus-ring);
   outline-offset: 2px;
+}
+
+.custom-select {
+  position: relative;
+}
+
+.custom-select-display {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg);
+  cursor: pointer;
+  user-select: none;
+  gap: 6px;
+}
+
+.custom-select-label {
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+}
+
+.custom-select-icon {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  opacity: 0.9;
+  margin: 0 5px;
+}
+
+.custom-select-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  max-height: 250px;
+  overflow-y: auto;
+  color: #eee;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition: opacity .2s ease, transform .2s ease;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.custom-select-list.open {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* スクロールバー全体 */
+.custom-select-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* スクロールバーのつまみ（ドラッグ部分） */
+.custom-select-list::-webkit-scrollbar-thumb {
+  background: var(--color-scrollbar-thumb);
+  border-radius: 4px;
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.custom-select-list::-webkit-scrollbar-thumb:hover {
+  background: var(--color-scrollbar-thumb-hover);
+}
+
+/* スクロールバーの背景 */
+.custom-select-list::-webkit-scrollbar-track {
+  background: var(--color-card-bg);
+}
+
+.custom-select-item {
+  padding: 8px 12px;
+  font-size: clamp(.8rem, 4vw, .95rem);
+  white-space: nowrap;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: background .15s, box-shadow .15s;
+}
+
+.custom-select-item:hover {
+  background-color: var(--color-field-hover-bg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* ▼アイコン */
+.custom-select-caret {
+  display: inline-block;
+  transition: transform 0.25s ease;
+  opacity: 0.7;
+}
+
+/* 開いているときに回転 */
+.custom-select-display.open .custom-select-caret {
+  transform: rotate(180deg);
 }

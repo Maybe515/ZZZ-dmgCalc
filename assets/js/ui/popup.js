@@ -1,6 +1,11 @@
-// ポップアップの表示制御
-
+// ポップアップの表示制御をするモジュール
 // ---------------- Popup control ----------------
+
+import { al } from "./dom-helpers.js";
+
+/**
+ * ポップアップを開く
+ */
 export function openPopup(popup) {
   popup.style.display = "block";
   popup.classList.add("is-open");
@@ -8,6 +13,9 @@ export function openPopup(popup) {
   popup.setAttribute("aria-hidden", "false");
 }
 
+/**
+ * ポップアップを閉じる
+ */
 export function closePopup(popup) {
   popup.classList.add("is-closing");
   popup.classList.remove("is-open");
@@ -15,9 +23,7 @@ export function closePopup(popup) {
   // フォーカスを外す
   document.activeElement?.blur();   // WAI-ARIA の仕様違反回避
 
-  popup.addEventListener(
-    "animationend",
-    () => {
+  popup.addEventListener("animationend", () => {
       popup.classList.remove("is-closing");
       popup.style.display = "none";
       popup.setAttribute("aria-hidden", "true");

@@ -1,5 +1,4 @@
 // 入力フィールドおよびセレクト要素のデフォルト値
-
 /**
  * 数値入力フィールドのデフォルト値
  * 計算ロジックの基礎となる初期パラメータ
@@ -8,6 +7,7 @@ export const defaults = {
   agentLevel: 60,
   lvCorrPct: 200,
   atk: 1500,
+  sheerForce: 1000,
   anomalyMastery: 100,
 
   penRatioPct: 0,
@@ -19,6 +19,7 @@ export const defaults = {
   attrBonusPct: 0,
   dmgBonusPct: 0,
   dmgBonusPtPct: 0,
+  sheerForceDmgBonusPct: 0,
 
   skillPct: 240,
   anomalyCorrPct: 0,
@@ -41,15 +42,23 @@ export const defaults = {
 };
 
 /**
- * セレクト・トグル UI のデフォルト値
+ * セレクト UI のデフォルト値
  * UI 初期化や resetAll() で使用
  */
 export const selectDefaults = {
-  modeNormal: true,
-  agentSelect: "",
-  attrSelect: "",
-  rangeSelect: "0-15",
-  enemySelect: "",
-  matchSelect: "none",
-  breakToggle: false
+  agent: "",
+  enemy: "",
+  attribute: "",
+  range: "0-15",
+  attrMatch: "none"
 };
+
+/**
+ * トグル UI のデフォルト値
+ * UI 初期化や resetAll() で使用
+ */
+export const toggleDefaults = {
+  breakToggle: false,
+  miasmaToggle: false
+};
+

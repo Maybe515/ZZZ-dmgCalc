@@ -1,5 +1,4 @@
-// 状態異常モードのダメージ計算
-
+// 状態異常時のダメージ計算を行うモジュール
 import { percent } from "./math-utils.js";
 import { fmt } from "./fmt.js";
 
@@ -8,25 +7,23 @@ import { fmt } from "./fmt.js";
  */
 export function computeAnomaly(
   v,
+  base,
   digits,
   totalBonus,
   breakBonusMul,
   defMul,
   resistMul,
+  dmgCutMul,
   setText
 ) {
-  // --- 状態異常固有係数 ---
-  const anomaly = v.anomalyMastery / 100;
-
-  // レベル補正
-  const lvCorrMul = percent.toMul(v.lvCorrPct);
-
-  // 状態異常相性補正
-  const anomalyMul = percent.toMul(v.anomalyCorrPct);
+  
+  const anomaly = v.anomalyMastery / 100;               // 異常マスタリー
+  const lvCorrMul = percent.toMul(v.lvCorrPct);         // キャラレベル補正
+  const anomalyMul = percent.toMul(v.anomalyCorrPct);   // 状態異常ダメージ補正
 
   // --- ダメージ関数 ---
   const dmgFn = anomalyMultiplier =>
-    v.atk *
+    base *
     totalBonus *
     anomalyMultiplier *
     breakBonusMul *
@@ -34,14 +31,15 @@ export function computeAnomaly(
     lvCorrMul *
     anomalyMul *
     defMul *
-    resistMul;
+    resistMul *
+    dmgCutMul;
 
   // --- UI 更新 ---
-  setText("base", fmt(v.atk, digits));
+  setText("base", fmt(base, digits));
 
-  // 状態異常モードではクリティカル概念が無い
+  // 状態異常時は会心が発生しないため、中間倍率に値を表示しない
   ["nonCritMul", "critMul", "expCritMul"].forEach(id => setText(id, "-"));
 
-  // 期待値 = クリティカル無しのダメージ
+  // クリティカル無しのダメージを期待値として表示
   setText("expected", fmt(dmgFn(1), digits));
 }

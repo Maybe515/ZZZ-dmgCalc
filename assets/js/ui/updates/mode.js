@@ -1,4 +1,4 @@
-// モード切り替えによる UI 更新
+// モード切り替えによる UI 更新をするモジュール
 import { qa } from "../dom-helpers.js";
 import { getCalcMode } from "../mode.js";
 

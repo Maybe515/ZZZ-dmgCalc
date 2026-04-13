@@ -1,8 +1,7 @@
 // UI のイベントバインドを担当するモジュール
-
 // ---------------- Imports ----------------
-// Calc
-import { compute } from "../calc/compute-handler.js";
+// Calculate
+import { compute } from "../calculate/compute-handler.js";
 
 // Data loading
 import { loadLanguage } from "../data/data-loader.js";
@@ -11,7 +10,7 @@ import { loadLanguage } from "../data/data-loader.js";
 import { updateAgentInfo } from "../ui/updates/agent.js";
 import { updateEnemyInfo } from "../ui/updates/enemy.js";
 import { updateMatchSelect } from "../ui/updates/match.js";
-import { updateLevelCorrect, updateLevelCoefficient, updateAnomalyCorr, updateWeakRange, updateAttrMatchPct } from "../ui/updates/derived.js";
+import { updateLevelCorrect, updateLevelCoefficient, updateAnomalyCorr, updateWeakRange, updateAttrMatchPct, refreshSheerField, refreshAttackField } from "../ui/updates/derived.js";
 import { updateVisibilityByMode } from "../ui/updates/mode.js";
 import { updateBreakControls } from "../ui/updates/break.js";
 
@@ -23,14 +22,14 @@ import { showToast } from "../ui/toast.js";
 import { getCopyResult } from "../ui/copy.js";
 
 // Init helpers
-import { loadLastModified, resetAll } from "./init.js";
+import { resetAll } from "./init.js";
 
 // Data
-import { i18nDict, helpTexts } from "../data/state.js";
+import { i18nDict, helpTexts, state, agents, selects } from "../data/state.js";
 import { fields } from "../data/form-config.js";
 
 // DOM helpers
-import { $, qa } from "../ui/dom-helpers.js";
+import { $, al, qa, sa } from "../ui/dom-helpers.js";
 
 // ---------------- Helper: bind change event ----------------
 /**
@@ -41,89 +40,128 @@ function bindChange(id, handler) {
   const el = $(id);
   if (!el) return;
 
-  el.addEventListener("change", () => {
+  al("change", () => {
     handler();
     compute();
-  });
-}
-
-// ---------------- Language change handler ----------------
-async function handleLanguageChange() {
-  await loadLanguage();
-
-  updateAgentInfo(i18nDict);
-  updateEnemyInfo(i18nDict);
-  loadLastModified();
-
-  localStorage.setItem("lang", $("langSelect").value);
+  }, el);
 }
 
 // ---------------- Main binding ----------------
 export function bindEvents() {
   // 入力フィールド（input / change）
   ["input", "change"].forEach(type => {
-    fields.forEach(id => $(id)?.addEventListener(type, compute));
+    fields.forEach(id => al(type, compute, $(id)));
   });
 
-  // セレクト系
-  bindChange("langSelect", handleLanguageChange);
-  bindChange("agentLevel", updateLevelCorrect);
-  bindChange("agentLevel", updateLevelCoefficient);
-  bindChange("attrSelect", updateAnomalyCorr);
-  bindChange("rangeSelect", updateWeakRange);
-  bindChange("matchSelect", updateAttrMatchPct);
+  // ---------------- Custom Selects ----------------
+  qa(".custom-select").forEach(root => {
+    al("select:change", async e => {
+      const { id, value } = e.detail;
 
-  bindChange("agentSelect", () => {
-    updateAgentInfo(i18nDict);
-    updateMatchSelect();
+      switch (id) {
+        case "langSelect":
+          sa("lang", value || "jp");
+          state.lang = value;
+          await loadLanguage();
+          updateAgentInfo(i18nDict);
+          updateEnemyInfo(i18nDict);
+          break;
+
+        case "agentSelect":
+          state.agentId = value;
+          updateAgentInfo(i18nDict);
+          updateMatchSelect();
+          refreshAttackField();
+          refreshSheerField();
+
+          // エージェントの属性を attrSelect に反映
+          const attrId = agents[value] ? agents[value].attributeId : "";
+          selects.attrSelect.setValue(attrId);
+          break;
+
+        case "enemySelect":
+          state.enemyId = value;
+          updateEnemyInfo(i18nDict);
+          updateMatchSelect();
+          break;
+
+        case "attrSelect":
+          state.attrId = value;
+          updateAnomalyCorr();
+          break;
+
+        case "rangeSelect":
+          state.range = value;
+          updateWeakRange();
+          break;
+
+        case "matchSelect":
+          state.match = value;
+          updateAttrMatchPct();
+          break;
+      }
+
+      await loadLanguage();
+      compute();
+    }, root);
   });
 
-  bindChange("enemySelect", () => {
-    updateEnemyInfo(i18nDict);
-    updateMatchSelect();
-  });
-
-  // モード切替
+  // ---------------- Mode ----------------
   qa('input[name="calcMode"]').forEach(el =>
-    el.addEventListener("change", () => {
+    al("change", () => {
       updateVisibilityByMode();
       compute();
-    })
+    }, el)
   );
 
-  // ブレイクトグル
-  $("breakToggle")?.addEventListener("change", () => {
+  // ---------------- Input ----------------
+  bindChange("agentLevel", updateLevelCorrect);
+  bindChange("agentLevel", updateLevelCoefficient);
+
+  // ---------------- Toggle ----------------
+  const breakToggle = $("breakToggle");
+  al("change", () => {
+    if (breakToggle.checked) miasmaToggle.checked = false;
+
     updateBreakControls();
     compute();
-  });
+  }, breakToggle);
 
-  // リセット
-  $("resetBtn")?.addEventListener("click", e => {
+  const miasmaToggle = $("miasmaToggle");
+  al("change", () => {
+    if (miasmaToggle.checked) breakToggle.checked = false;
+
+    updateBreakControls();
+    compute();
+  }, miasmaToggle);
+
+  // ---------------- Button ----------------
+  const resetBtn = $("resetBtn");
+  al("click", e => {
     e.preventDefault();
     resetAll();
-  });
+  }, resetBtn);
 
   // ---------------- Popup ----------------
   const popup = $("infoPopup");
-  
-  document.querySelectorAll(".info-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
+  qa(".info-btn").forEach(btn => {
+    al("click", () => {
       const key = btn.dataset.key;
       const info = helpTexts[key];
       if (!info) return;
-      
+
       const popupText = $("popupText");
       popupText.innerHTML = info.text.join("<br>");
       openPopup(popup);
-    });
+    }, btn);
   });
 
-  popup.querySelectorAll("[data-close]").forEach(el => {
-    el.addEventListener("click", () => closePopup(popup));
-  });
+  qa("[data-close]").forEach(el => {
+    al("click", () => closePopup(popup), el);
+  }, popup);
 
   // ---------------- Toast ----------------
-  document.addEventListener("click", async e => {
+  al("click", async e => {
     const btn = e.target.closest(".copy-icon");
     if (!btn) return;
 
@@ -138,4 +176,12 @@ export function bindEvents() {
       showToast(); // エラー時も通知は出す
     }
   });
+
+  // ---------------- Result ----------------
+  const wrapper = $("resultFixedWrapper");
+  const tab = $("resultFixedTab");
+  
+  al("click", () => {
+    wrapper.classList.toggle("is-visible");
+  }, tab);
 }

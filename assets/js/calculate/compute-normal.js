@@ -1,5 +1,4 @@
-// 通常モードのダメージ計算
-
+// 通常攻撃時のダメージ計算を行うモジュール
 import { percent } from "./math-utils.js";
 import { fmt } from "./fmt.js";
 
@@ -8,36 +7,37 @@ import { fmt } from "./fmt.js";
  */
 export function computeNormal(
   v,
+  base,
   digits,
   totalBonus,
   breakBonusMul,
   weakRangeMul,
   defMul,
   resistMul,
+  dmgCutMul,
   setText
 ) {
-  // --- 基礎ダメージ ---
-  const base = v.atk * percent.toFrac(v.skillPct);
+  
+  const baseMul = base * percent.toFrac(v.skillPct);    // 基礎ダメージ（攻撃力 × スキルダメージ倍率）
+  const critMul = 1 + percent.toFrac(v.critDmgPct);   // 会心倍率
 
-  // --- クリティカル倍率 ---
-  const critMul = 1 + percent.toFrac(v.critDmgPct);
-
-  // 期待クリ倍率 = 1 + (クリ率 × クリダメ)
-  const expCritMul =
+  // 期待値会心倍率 = 1 + (会心率 × 会心ダメージ倍率)
+  const expCritMul =    
     1 + percent.toFrac(v.critRatePct) * percent.toFrac(v.critDmgPct);
 
   // --- ダメージ関数 ---
   const dmgFn = critMultiplier =>
-    base *
+    baseMul *
     totalBonus *
     critMultiplier *
     breakBonusMul *
     weakRangeMul *
     defMul *
-    resistMul;
+    resistMul *
+    dmgCutMul;
 
   // --- UI 更新 ---
-  setText("base", fmt(base, digits));
+  setText("base", fmt(baseMul, digits));
 
   setText("nonCritMul", fmt(1, digits + 2));
   setText("critMul", fmt(critMul, digits + 2));

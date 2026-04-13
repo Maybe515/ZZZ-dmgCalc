@@ -2,3 +2,31 @@
   height: 20px;
   margin: 0 5px;
 }
+
+.icon--mid {
+  height: 40px;
+  margin-right: 7px;
+}
+
+.info-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 .25rem;
+  width: 1.4em;
+  height: 1.4em;
+  font-size: 0.8em;
+  color: #fff;
+  border-radius: 50%;
+  background-color: var(--color-icon-bg);
+  transition: background 0.2s;
+  cursor: pointer;
+}
+
+.info-circle::before {
+  content: "？";
+}
+
+.info-circle:hover {
+  background: var(--color-icon-hover-bg);
+}

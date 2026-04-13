@@ -7,32 +7,45 @@ import { loadAllData, loadLanguage } from "../data/data-loader.js";
 import { loadFromLocalStorage } from "../storage/local-storage.js";
 
 // ---------------- UI ----------------
-import { applyDefaults, loadLastModified } from "../events/init.js";
+import { applyDefaults, initCustomSelects, initStrapPhysics, loadLastModified } from "../events/init.js";
 import { bindEvents } from "../events/bind-events.js";
 import { initDetailsAnimation } from "../ui/details-animation.js";
 import { initResultFixedObserver } from "../ui/result-fixed.js";
 
 // ---------------- Compute ----------------
-import { compute } from "../calc/compute-handler.js";
+import { compute } from "../calculate/compute-handler.js";
+
+// ---------------- DOM helper ----------------
+import { al } from "../ui/dom-helpers.js";
 
 async function init() {
-  loadCssFiles();         // CSS読み込み
+  // --- Load data ---
+  loadCssFiles();             // CSS読み込み
+  await loadAllData();        // JSONデータロード
+  
+  // --- Populate UI ---
+  initCustomSelects();        // カスタムセレクトを生成する
+  
+  // --- Set Events ---
+  bindEvents();               // イベントバインド
 
-  await loadAllData();    // JSONデータロード
-  loadFromLocalStorage(); // 保存データ復元
-  loadLastModified();     // 最終更新日表示
-  applyDefaults();        // UI 初期値適用 (ロード後に実施)
-  await loadLanguage();   // 言語ロード
+  // --- Local Storage ---
+  loadFromLocalStorage();     // 保存データ復元
 
-  bindEvents();           // イベントバインド
-
+  // --- Initialize UX ---
   initDetailsAnimation();     // Details 開閉アニメーション
   initResultFixedObserver();  // Result 固定表示（モバイル用）
+  initStrapPhysics();
 
-  compute();  // 初回計算
+  // --- Initialize UI ---
+  loadLastModified();         // 最終更新日表示
+  applyDefaults();            // UI 初期値適用 (ロード後に実施)
+  await loadLanguage();       // 言語ロード
+  
+  compute();                  // 初回計算
 }
 
 // DOM 準備後に実行
 document.readyState === "loading"
-  ? document.addEventListener("DOMContentLoaded", init)
+  ? al("DOMContentLoaded", init)
   : init();

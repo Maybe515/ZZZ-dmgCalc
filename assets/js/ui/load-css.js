@@ -1,4 +1,5 @@
 // CSS を動的に読み込むユーティリティ
+import { ce } from "./dom-helpers.js";
 import { getBasePath } from "../core/base-path.js";
 
 // CSS のベースパス
@@ -27,6 +28,7 @@ const cssFiles = [
   "/components/responsive.css",
   "/components/result.css",
   "/components/select.css",
+  "/components/strap.css",
   "/components/toast.css",
   "/components/tooltip.css",
   "/utils/utilities.css"
@@ -43,7 +45,7 @@ export function loadCssFiles() {
   const base = getCssBasePath();
 
   cssFiles.forEach(path => {
-    const link = document.createElement("link");
+    const link = ce("link");
     link.rel = "stylesheet";
     link.href = base + path;
     document.head.appendChild(link);

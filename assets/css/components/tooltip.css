@@ -1,17 +1,3 @@
-.info-circle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 .25rem;
-  width: 1.4em;
-  height: 1.4em;
-  border-radius: 50%;
-  background-color: #444;
-  color: #fff;
-  font-size: 0.8em;
-  cursor: pointer;
-}
-
 .tooltip {
   position: relative;
 }
@@ -20,7 +6,7 @@
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  top: 105%;
+  top: calc(100% + 5px);
   left: 20%;
   background: #333;
   color: #fff;
@@ -29,6 +15,7 @@
   font-size: 0.75rem;
   white-space: nowrap;
   transition: opacity .2s, visibility .2s;
+  transition-delay: 0s;
   z-index: 1001;
 }
 
@@ -36,4 +23,5 @@
 .tooltip:focus-within .tooltip__content {
   visibility: visible;
   opacity: 1;
+  transition-delay: 1s;
 }

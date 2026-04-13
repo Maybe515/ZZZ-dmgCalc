@@ -11,6 +11,10 @@
   pointer-events: none;
 }
 
+.is-invisible { 
+  display: none;
+}
+
 .u-mt-sm { margin-top: .5rem; }
 .u-mt-md { margin-top: 1rem; }
 .u-mt-lg { margin-top: 1.5rem; }
