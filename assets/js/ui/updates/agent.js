@@ -8,8 +8,8 @@ export function updateAgentInfo(dict = i18nDict) {
   const sel = state.agentId;
   const agent = agents[sel] || {};
   
-  updateImage("agentImage", agent.image ? `${imgPaths.base}${imgPaths.agent}${agent.image}` : `${imgPaths.base}${imgPaths.common}` + "empty.webp", "");
-  updateImage("rankImage", agent.rank ? `${imgPaths.base}${imgPaths.rank}rank_${agent.rank}.png` : "", "");
+  updateImage("agentImage", agent.image ? `${imgPaths.base}${imgPaths.agent}${agent.image}` : `${imgPaths.base}${imgPaths.common}` + "empty.webp", agent.image);
+  updateIcon("rank", agent.rank ? `rank_${agent.rank}` : "", `${imgPaths.base}${imgPaths.rank}`, `rank_${agent.rank}`, ".png");
   updateLink("agentLink", agent.link ? urls.hoyowiki + agent.link : "");
   
   updateIcon("faction", agent.factionId, `${imgPaths.base}${imgPaths.faction}`, t(dict, "ui.factionLabel"));

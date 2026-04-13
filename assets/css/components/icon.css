@@ -8,6 +8,12 @@
   margin-right: 7px;
 }
 
+.icon-kv {
+  min-width: 20px;
+  min-height: 20px;
+  flex-shrink: 0;
+}
+
 .info-circle {
   display: inline-flex;
   align-items: center;

@@ -1,8 +1,10 @@
 // 派生フィールド更新
 import { $, q, setValue } from "../dom-helpers.js";
-import { rangeTable, matchTable, attributes, state, agents } from "../../data/state.js";
+import { rangeTable, state } from "../../data/state.js";
 import { lvCoeffTable } from "../../data/lv-coefficient-table.js";
 import { calcurateLevelCorrect } from "../../calculate/math-utils.js";
+import { getAnomalyCorr, getMatchValue } from "./helpers.js";
+import { isValidSpecialty } from "../../core/validation.js";
 
 export const updateLevelCorrect = () =>
   setValue("lvCorrPct", calcurateLevelCorrect($("agentLevel")?.value) ?? 0);
@@ -18,34 +20,6 @@ export const updateWeakRange = () =>
 
 export const updateAttrMatchPct = () =>
   setValue("attrMatchPct", getMatchValue(state.match));
-
-/**
- * アプリ内データストアから属性ダメージ補正を取得する
- * @param {string} attrId 
- */
-function getAnomalyCorr(attrId) {
-  return attributes[attrId]?.anomalyCorr ?? 0;
-}
-
-/**
- * アプリ内データストアから属性相性補正を取得する
- * @param {string} matchId 
- */
-function getMatchValue(matchId) {
-  return matchTable[matchId]?.value ?? 0;
-}
-
-/**
- * 指定した役割と選択されているエージェントの役割が一致しているか判別する
- * @param {string} target 
- * @returns {Boolean} true / false
- */
-export function isValidSpecialty(target) {
-  const sel = state.agentId;
-  const agent = agents[sel] || {};
-  const specialty = agent.specialtyId;
-  return specialty === target;
-}
 
 /**
  * 最終攻撃力フィールドを制御する
@@ -77,3 +51,4 @@ export function refreshSheerField() {
   sheerForceDmgBonus.classList.toggle("is-invisible", invisible);
   sheerForceDmgBonusLabel.classList.toggle("is-invisible", invisible);
 }
+

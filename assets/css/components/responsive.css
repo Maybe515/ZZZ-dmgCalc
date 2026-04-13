@@ -19,6 +19,10 @@
     flex-direction: column;
   }
 
+  .result.result--fixed {
+    margin: 0;
+  }
+  
   .result--fixed-wrapper {
     position: fixed;
     bottom: 0;
@@ -47,6 +51,10 @@
 
   .result--fixed-wrapper.is-visible~.toast {
     bottom: 150px;
+  }
+
+  html[lang="en"] .result--fixed-wrapper.is-visible~.toast {
+    bottom: 170px;
   }
 
   .result--fixed .result__grid {
@@ -114,6 +122,25 @@
     background: currentColor;
     mask: url("data:image/svg+xml;utf8,<svg width='1em' height='1em' viewBox='0 0 1024 1024' fill='%23fff' xmlns='http://www.w3.org/2000/svg'><path d='M896 307.2h-768a25.6 25.6 0 0 1 0-51.2h768a25.6 25.6 0 0 1 0 51.2zM896 563.2h-768a25.6 25.6 0 0 1 0-51.2h768a25.6 25.6 0 0 1 0 51.2zM896 819.2h-768a25.6 25.6 0 0 1 0-51.2h768a25.6 25.6 0 0 1 0 51.2z'/></svg>") center / 60% no-repeat;
     mask-size: 60%;
+  }
+}
+
+/* モバイル表示（パッド） */
+@media (max-width: 900px) {
+
+  /* ----- result ----- */
+  .result__card .copy-icon {
+    opacity: 1;
+  }
+
+  html[lang="en"] .result__card .copy-icon {
+    width: 45px;
+    height: auto;
+    text-align: center;
+  }
+
+  html[lang="en"] .result__label {
+    width: 90px;
   }
 }
 
@@ -264,11 +291,6 @@
   .enemy-kv .kv__label {
     display: inline;
     font-size: .8rem;
-  }
-
-  /* ----- result ----- */
-  .result__card .copy-icon {
-    opacity: 1;
   }
 
   /* ----- icon ----- */

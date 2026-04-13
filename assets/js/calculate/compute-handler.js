@@ -12,14 +12,15 @@ import { saveToLocalStorage } from "../storage/local-storage.js";
 // Config / Data
 import { fields } from "../data/form-config.js";
 import { defaults } from "../data/default.js";
-import { agents, miasmaBuffTable, state } from "../data/state.js";
+import { miasmaBuffTable, state } from "../data/state.js";
 
 // Calculation modules
 import { computeNormal } from "./compute-normal.js";
 import { computeAnomaly } from "./compute-anomaly.js";
 import { percent } from "./math-utils.js";
 import { fmt } from "./fmt.js";
-import { isValidSpecialty } from "../ui/updates/derived.js";
+import { isValidSpecialty } from "../core/validation.js";
+
 
 // ---------------- Cached DOM ----------------
 const breakToggle = $("breakToggle");

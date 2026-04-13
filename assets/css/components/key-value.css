@@ -43,6 +43,10 @@ html[lang="en"] .agent-kv .kv__label {
   color: var(--color-fg);
 }
 
+.kv-icon {
+  min-width: 20px;
+}
+
 .attr-item {
   display: inline-flex;
   white-space: nowrap;
