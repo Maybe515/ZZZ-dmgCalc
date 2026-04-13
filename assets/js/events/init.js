@@ -83,7 +83,7 @@ export function initStrapPhysics() {
 
   const line = createStrapLine(anchor, circle);
   const strap = createStrapPhysics(circle, {
-    length: 60,
+    length: 60,         // 線の長さ
     gravity: 0.003,
     damping: 0.992,
     initialAngle: 0.2,

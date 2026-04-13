@@ -176,4 +176,12 @@ export function bindEvents() {
       showToast(); // エラー時も通知は出す
     }
   });
+
+  // ---------------- Result ----------------
+  const wrapper = $("resultFixedWrapper");
+  const tab = $("resultFixedTab");
+  
+  al("click", () => {
+    wrapper.classList.toggle("is-visible");
+  }, tab);
 }
