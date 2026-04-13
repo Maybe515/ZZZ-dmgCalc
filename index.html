@@ -383,7 +383,12 @@
     </section>
 
     <!-- 画面下部表示用 -->
-    <section class="result result--fixed"></section>
+    <div class="result--fixed-wrapper" id="resultFixedWrapper">
+      <div class="result--fixed-tab" id="resultFixedTab">
+        <div class="tab-icon"></div>
+      </div>
+      <section class="result result--fixed" id="resultFixed"></section>
+    </div>
 
     <!-- トースト通知 -->
     <div id="toast" class="toast" role="alert" aria-live="assertive" data-i18n="toast"></div>
