@@ -37,7 +37,7 @@
 }
 
 .result__value {
-  font-size: clamp(1.5rem, 4vw, 1.6rem);
+  font-size: clamp(1.5rem, 3.5vw, 1.6rem);
   margin-top: .4rem;
   color: var(--color-ok);
 }

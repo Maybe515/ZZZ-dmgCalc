@@ -8,6 +8,11 @@
   margin-right: 7px;
 }
 
+.icon--mid[style="visibility: hidden;"] {
+  width: 20px;
+  height: 20px;
+}
+
 .icon-kv {
   min-width: 20px;
   min-height: 20px;
