@@ -22,7 +22,7 @@ export function createCustomSelect(root, options) {
 
   // langSelect のときだけ 🌎 を入れる
   if (root.id === "langSelect") {
-    icon.src = "/assets/image/common/globe.svg";
+    icon.src = "./assets/image/common/globe.svg";
     icon.alt = "";
     display.appendChild(icon);
   }
