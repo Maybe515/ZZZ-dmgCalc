@@ -17,7 +17,7 @@
   position: absolute;
   transform-origin: top center;
   will-change: transform;
-  z-index: 10;
+  z-index: 9;
 }
 
 .strap-line {
@@ -26,5 +26,5 @@
   background: var(--color-fg);
   transform-origin: 0 50%;
   pointer-events: none;
-  z-index: 10;
+  z-index: 9;
 }
