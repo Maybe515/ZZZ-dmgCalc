@@ -87,7 +87,7 @@ body {
   background-image: url("../../image/common/bg-pages.png");
   background-position: top center;
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: cover;
   font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
   cursor: url("../../image/common/cursor-pointer.png") 4 4, auto;
 }
