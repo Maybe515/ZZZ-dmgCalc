@@ -78,19 +78,33 @@ html {
 }
 
 body {
+  position: relative;
   margin: 0;
   min-height: 100vh;
   min-width: 340px;
   padding-top: 1.25rem;
   color: var(--color-fg);
   background: var(--color-body-bg);
+  font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
+  cursor: url("../../image/common/cursor-pointer.png") 4 4, auto;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed; /* 画面に固定 */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
   background-image: url("../../image/common/bg-pages.png");
   background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
-  font-family: ui-sans-serif, system-ui, Segoe UI, Roboto, Helvetica, Arial;
-  cursor: url("../../image/common/cursor-pointer.png") 4 4, auto;
+  pointer-events: none;
+  z-index: -1;
 }
+
 
 .container {
   width: 100%;
