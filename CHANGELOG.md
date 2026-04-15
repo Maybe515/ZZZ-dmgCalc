@@ -135,7 +135,7 @@ Author：Maybe515
   - `card--two-column` の `grid-template-columns` を修正
     - `1fr 1fr` → `minmax(350px, 1fr) 1fr`
 
-## [2026/4/X] - Ver.1.3.0
+## [2026/4/14] - Ver.1.3.0
 Author：Maybe515
 ### - 2026/3/24 -
 #### Refactored
