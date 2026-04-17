@@ -1,30 +1,65 @@
 .strap-wrapper {
-    position: absolute;
-    bottom: -3px;
-    right: 60px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  /* display: none; */
+}
+
+.strap-mount {
+  position: absolute;
+  bottom: -10px;
+  right: 30px;
+  width: 32px;
+  height: 20px;
+  border: 6px solid var(--color-border-strong);
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .strap-anchor {
   position: absolute;
-  width: 1px;
-  height: 1px;
+  width: 0;
+  height: 0;
   pointer-events: none;
-}
-
-.strap-img {
-  width: 40px;
-  height: 40px;
-  position: absolute;
-  transform-origin: top center;
-  will-change: transform;
-  z-index: 9;
 }
 
 .strap-line {
   position: absolute;
-  height: 2px;
-  background: var(--color-fg);
-  transform-origin: 0 50%;
+  top: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.9),
+      rgba(255, 255, 255, 0.4));
+  border-radius: 4px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  opacity: 0.8;
+  transform-origin: left center;
   pointer-events: none;
   z-index: 9;
+}
+
+.strap-circle {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  will-change: transform;
+  transform-origin: center center;
+  background-image: url("../../image/common/eous.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  cursor: grab;
+  pointer-events: auto;
+  z-index: 9;
+
 }
