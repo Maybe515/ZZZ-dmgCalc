@@ -1,5 +1,5 @@
 // Custom Select を生成するモジュール
-import { al, ce, qa } from "./dom-helpers.js";
+import { ce, qa, sa } from "./dom-helpers.js";
 
 /**
  * カスタムセレクトを生成する
@@ -33,15 +33,15 @@ export function createCustomSelect(root, options) {
 
   // ▼アイコン（SVG）
   const caret = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  caret.setAttribute("class", "custom-select-caret");
-  caret.setAttribute("width", "20");
-  caret.setAttribute("height", "20");
-  caret.setAttribute("viewBox", "0 0 24 24");
+  sa("class", "custom-select-caret", caret);
+  sa("width", "20", caret);
+  sa("height", "20", caret);
+  sa("viewBox", "0 0 24 24", caret);
 
   // ▼のパス
   const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
-  path.setAttribute("d", "M7 10l5 5 5-5z"); // ▼の形
-  path.setAttribute("fill", "currentColor");
+  sa("d", "M7 10l5 5 5-5z", path);  // ▼の形
+  sa("fill", "currentColor", path);
 
   caret.appendChild(path);
 
@@ -72,50 +72,32 @@ export function createCustomSelect(root, options) {
   // 初期表示
   updateDisplay(currentValue);
 
-  // リスト生成
-  options.forEach(opt => {
+  // リストアイテム生成
+  const items = options.map(opt => {
     const item = ce("div");
     item.className = "custom-select-item";
-
     item.textContent = opt.labelLong ?? opt.i18n ?? opt.value;
     item.dataset.value = opt.value;
     item.dataset.i18n = opt.i18n;
 
-    al("click", () => {
-      updateDisplay(opt.value);
-      display.classList.remove("open");
-      list.classList.remove("open");
-
-      // ★ カスタムイベントを発火する
-      root.dispatchEvent(
-        new CustomEvent("select:change", {
-          detail: { id, value: opt.value }
-        })
-      );
-    }, item);
-
     list.appendChild(item);
+    return item;
   });
-
-  // 開閉
-  al("click", () => {
-    const isOpenList = list.classList.toggle("open");
-    display.classList.toggle("open", isOpenList);
-  }, display);
 
   root.appendChild(display);
   root.appendChild(list);
 
-  // --- 外側クリックで閉じる ---
-  al("click", e => {
-    if (!root.contains(e.target)) {
-      display.classList.remove("open");
-      list.classList.remove("open");
-    }
-  });
-
   // ★ 外部から値をセットできる API を返す
   return {
+    id,
+    root,
+    display,
+    list,
+    items,
+    updateDisplay,
+    get value() {
+      return currentValue;
+    },
     setValue(value) {
       updateDisplay(value);
 

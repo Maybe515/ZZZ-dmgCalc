@@ -97,3 +97,33 @@ export function getAnomalyCorr(attrId) {
 export function getMatchValue(matchId) {
   return matchTable[matchId]?.value ?? 0;
 }
+
+
+// メモ：これ以降の関数らは別ファイルに分割する　2026-4-17
+/**
+ * 指定したドキュメントの中央座標を取得する
+ * @param {Element} el 
+ */
+export function getDocumentCenter(el) {
+  const rect = el.getBoundingClientRect();
+  return {
+    x: rect.left + window.scrollX + rect.width / 2,
+    y: rect.top + window.scrollY + rect.height / 2
+  };
+}
+
+/**
+ * ラッパーの座標を取得する
+ * @param {Element} wrapperEl 
+ * @param {Double} docX 
+ * @param {Double} docY 
+ */
+export function toWrapperCoords(wrapperEl, docX, docY) {
+  const rect = wrapperEl.getBoundingClientRect();
+  const wx = rect.left + window.scrollX;
+  const wy = rect.top + window.scrollY;
+  return {
+    x: docX - wx,
+    y: docY - wy
+  };
+}

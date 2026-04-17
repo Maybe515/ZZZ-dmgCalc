@@ -22,14 +22,15 @@ import { showToast } from "../ui/toast.js";
 import { getCopyResult } from "../ui/copy.js";
 
 // Init helpers
-import { resetAll } from "./init.js";
+import { resetAll, setupStrap } from "./init.js";
 
 // Data
 import { i18nDict, helpTexts, state, agents, selects } from "../data/state.js";
 import { fields } from "../data/form-config.js";
 
 // DOM helpers
-import { $, al, qa, sa } from "../ui/dom-helpers.js";
+import { $, al, q, qa, sa } from "../ui/dom-helpers.js";
+import { getDocumentCenter, toWrapperCoords } from "../ui/updates/helpers.js";
 
 // ---------------- Helper: bind change event ----------------
 /**
@@ -180,8 +181,127 @@ export function bindEvents() {
   // ---------------- Result ----------------
   const wrapper = $("resultFixedWrapper");
   const tab = $("resultFixedTab");
-  
+
   al("click", () => {
     wrapper.classList.toggle("is-visible");
   }, tab);
+}
+
+export function bindDetailsEvents() {
+  const ANIMATION_DURATION = 400;     // CSS のアニメーション時間と合わせる
+  const detailsList = qa("details");
+
+  detailsList.forEach(details => {
+    const summary = q("summary", details);
+    if (!summary) return;
+
+    al("click", e => {
+      if (!details.open) return;
+
+      // デフォルトの即閉じを止める
+      e.preventDefault();
+
+      // アニメーション開始
+      details.classList.add("is-closing");
+
+      // アニメーション終了後に閉じる
+      setTimeout(() => {
+        details.classList.remove("is-closing");
+        details.removeAttribute("open");
+      }, ANIMATION_DURATION);
+    }, summary);
+  });
+}
+
+export function bindCustomSelectEvents(select) {
+  const { root, display, list, items, updateDisplay, id } = select;
+
+  // アイテム選択
+  items.forEach(item => {
+    al("click", () => {
+      const value = item.dataset.value;
+      updateDisplay(value);
+
+      display.classList.remove("open");
+      list.classList.remove("open");
+
+      root.dispatchEvent(
+        new CustomEvent("select:change", {
+          detail: { id, value }
+        })
+      );
+    }, item);
+  });
+
+  // 開閉
+  al("click", () => {
+    const isOpen = list.classList.toggle("open");
+    display.classList.toggle("open", isOpen);
+  }, display);
+
+  // 外側クリックで閉じる
+  al("click", e => {
+    if (!root.contains(e.target)) {
+      display.classList.remove("open");
+      list.classList.remove("open");
+    }
+  });
+}
+
+export function bindStrapEvents() {
+  let dragging = false;
+  let moved = false;
+
+  const debounce = 150;
+  let resizeTimer = null;
+
+  al("click", e => {
+    if (moved) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      return; // ← ドラッグ後の click を無効化
+    }
+    window.strapState?.strap?.nudge(0.3);
+  }, $("strapCircle"));
+
+  al("dragstart", e => { e.preventDefault(); }, $("strapCircle"));
+
+  al("mousedown", () => {
+    dragging = true;
+    moved = false;
+    window.strapState?.strap?.pause();
+  }, $("strapCircle"));
+
+  al("mouseup", () => {
+    if (!dragging) return;
+    dragging = false;
+    window.strapState?.strap?.resume();
+  });
+
+  al("mousemove", e => {
+    if (!dragging) return;
+
+    const { strap, wrapper, anchor, line } = window.strapState;
+
+    // ★ アンカーの画面上の中心座標を原点にする
+    const anchorCenter = getDocumentCenter(anchor);
+    const dx = e.pageX - anchorCenter.x;
+    const dy = e.pageY - anchorCenter.y;
+
+    if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;   // ← ドラッグと判定
+    
+    const angle = Math.atan2(dx, dy); // 単振り子の角度に合わせる
+    const local = toWrapperCoords(wrapper, e.pageX, e.pageY);
+    const newLength = line.updateWithPoint(local.x, local.y);
+
+    strap.setLength(newLength);
+    strap.setAngle(angle);
+  });
+
+  al("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      window.strapState = setupStrap();   // 再初期化のみ
+    }, debounce);
+  }, window);
 }

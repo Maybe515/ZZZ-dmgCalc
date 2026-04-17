@@ -1,5 +1,8 @@
 // ポップアップの表示制御をするモジュール
 // ---------------- Popup control ----------------
+
+import { sa } from "./dom-helpers.js";
+
 /**
  * ポップアップを開く
  */
@@ -7,7 +10,7 @@ export function openPopup(popup) {
   popup.style.display = "block";
   popup.classList.add("is-open");
   popup.classList.remove("is-closing");
-  popup.setAttribute("aria-hidden", "false");
+  sa("aria-hidden", "false", popup);
 }
 
 /**
@@ -23,7 +26,7 @@ export function closePopup(popup) {
   popup.addEventListener("animationend", () => {
       popup.classList.remove("is-closing");
       popup.style.display = "none";
-      popup.setAttribute("aria-hidden", "true");
+      sa("aria-hidden", "true", popup);
     },
     { once: true }
   );

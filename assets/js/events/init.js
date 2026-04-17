@@ -21,7 +21,9 @@ import { selectMapping, fields, toggleMapping } from "../data/form-config.js";
 import { defaults, selectDefaults, toggleDefaults } from "../data/default.js";
 
 // DOM
-import { $, al } from "../ui/dom-helpers.js";
+import { $, q } from "../ui/dom-helpers.js";
+import { bindCustomSelectEvents } from "./bind-events.js";
+import { getDocumentCenter, toWrapperCoords } from "../ui/updates/helpers.js";
 
 // ---------------- Apply Defaults ----------------
 /**
@@ -64,6 +66,9 @@ export function initCustomSelects() {
   selects.attrSelect = createCustomSelect($("attrSelect"), getAttrOptions());
   selects.rangeSelect = createCustomSelect($("rangeSelect"), getRangeOptions());
   selects.matchSelect = createCustomSelect($("matchSelect"), getMatchOptions());
+
+  // イベント登録
+  Object.values(selects).forEach(bindCustomSelectEvents);
 }
 
 /**
@@ -72,29 +77,60 @@ export function initCustomSelects() {
 export function initStrapPhysics() {
   const anchor = $("strapAnchor");
   const circle = $("strapCircle");
-  
+
   if (!anchor || !circle) return;
 
-  const wrapperRect = anchor.parentElement.getBoundingClientRect();
-  const circleRect = circle.getBoundingClientRect();
+  const grid = q(".grid.grid--enemy");
+  const mount = q(".strap-mount", grid);
+  if (!mount) return;
 
-  anchor.style.left = `${circleRect.left - wrapperRect.left + circleRect.width / 2}px`;
-  anchor.style.top = `${circleRect.top - wrapperRect.top}px`;
+  const wrapper = anchor.parentElement;
 
-  const line = createStrapLine(anchor, circle);
+  // mount → wrapper 内座標へ変換
+  const mountCenter = getDocumentCenter(mount);
+  const wrapperRect = wrapper.getBoundingClientRect();
+  const wrapperDocX = wrapperRect.left + window.scrollX;
+  const wrapperDocY = wrapperRect.top + window.scrollY;
+
+  const anchorX = mountCenter.x - wrapperDocX;
+  const anchorY = mountCenter.y - wrapperDocY;
+
+  anchor.style.left = `${anchorX}px`;
+  anchor.style.top = `${anchorY}px`;
+
+  const line = createStrapLine(anchor, circle, wrapper);
   const strap = createStrapPhysics(circle, {
-    length: 60,         // 線の長さ
+    anchorEl: anchor,
+    length: 80,         // 線の長さ
     gravity: 0.003,
     damping: 0.992,
     initialAngle: 0.2,
-    onUpdate: () => line.update()
+    lineEl: line.el,
+    onUpdate: ({ x, y, angle }) => {
+      const local = toWrapperCoords(wrapper, x, y);     
+      line.updateWithPoint(local.x, local.y);
+    }
   });
 
-  al("click", () => {
-    strap.nudge(0.3);
-  }, circle);
+  return { strap, wrapper, anchor, circle, line };
 }
 
+let strapState = null;
+
+export function setupStrap() {
+  if (strapState?.strap?.destroy) {
+    strapState.strap.destroy();
+  }
+  strapState = initStrapPhysics();
+  return strapState;
+}
+
+// ★ ResizeObserver（レイアウト変化を監視）
+const grid = q(".grid.grid--enemy");
+const ro = new ResizeObserver(() => {
+  window.strapState = setupStrap();
+});
+ro.observe(grid);
 
 // ---------------- Reset All ----------------
 /**
@@ -127,7 +163,6 @@ export function resetAll() {
   applyDefaults(true);
   compute();
 }
-
 
 // ---------------- Last Modified ----------------
 /**
