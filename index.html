@@ -34,7 +34,7 @@
     <header class="header">
       <div class="header__row">
         <a href="https://wiki.hoyolab.com/pc/zzz/" target="_blank" class="header__logo-link tooltip">
-          <img src="./assets/image/common/zzz-logo.svg" alt="Site Logo" class="header__logo">
+          <div class="header__logo" alt="Site Logo"></div>
           <span class="tooltip__content" data-i18n="linkWiki"></span>
         </a>
         <h1 class="header__title" data-i18n="headerTitle"></h1>
@@ -339,13 +339,10 @@
               </div>
             </article>
           </div>
-
-          <!-- 物理ストラップ -->
-          <!-- <div id="strapWrapper" class="strap-wrapper">
-            <div id="strapAnchor" class="strap-anchor"></div>
-            <img id="strapCircle" src="./assets/image/common/eous.webp" class="strap-img" />
-          </div> -->
         </section>
+
+        <!-- 物理ストラップ留め具 -->
+        <div class="strap-mount"></div>
       </section>
     </div>
 
@@ -400,6 +397,12 @@
         <p id="popupText"></p>
         <button class="popup__close" data-i18n="popupClose" data-close></button>
       </div>
+    </div>
+
+    <!-- 物理ストラップ -->
+    <div id="strapWrapper" class="strap-wrapper">
+      <div id="strapAnchor" class="strap-anchor"></div>
+      <div id="strapCircle" class="strap-circle"></div>
     </div>
 
     <!-- 中間倍率 -->
