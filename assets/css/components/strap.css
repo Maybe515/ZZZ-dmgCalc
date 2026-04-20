@@ -49,11 +49,11 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   will-change: transform;
   transform-origin: center center;
-  background-image: url("../../image/common/eous.webp");
+  background-image: url("../../image/common/eous.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -61,5 +61,4 @@
   cursor: grab;
   pointer-events: auto;
   z-index: 9;
-
 }
