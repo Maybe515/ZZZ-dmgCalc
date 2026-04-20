@@ -301,3 +301,13 @@ Author：Maybe515
 #### Refactored
 - 物理ストラップに関する部分をリファクタリング
   - 座標計算を共通化
+  - 座標計算の共通関数を `coords.js` ファイルに分割
+
+### - 2026/4/20 -
+#### Refactored
+- 以下、jsファイルをリネーム
+  - `helpers.js` → `update-helpers.js`
+- 以下、jsファイルを utilsフォルダへ移動
+  - `dom-helpers.js`
+  - `math-utils.js`
+- `header__logo` のエレメントを `<img>` → `<div>` に変更
