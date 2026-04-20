@@ -22,7 +22,16 @@
 }
 
 .header__logo-link { display: flex; align-items: center; }
-.header__logo { width: 30px; cursor: pointer; }
+
+.header__logo { 
+  width: 30px; 
+  height: 30px;
+  cursor: pointer; 
+  background-image: url(../../image/common/zzz-logo.svg);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
 
 .header__title {
   font-size: clamp(1.2rem, 4vw, 1.3rem);
