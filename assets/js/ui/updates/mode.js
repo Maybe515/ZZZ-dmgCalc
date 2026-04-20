@@ -1,5 +1,5 @@
 // モード切り替えによる UI 更新をするモジュール
-import { qa } from "../dom-helpers.js";
+import { qa } from "../../utils/dom-helpers.js";
 import { getCalcMode } from "../mode.js";
 
 export function updateVisibilityByMode() {

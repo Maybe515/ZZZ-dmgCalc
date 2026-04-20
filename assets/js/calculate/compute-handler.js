@@ -1,7 +1,7 @@
 // 計算処理の中心ロジックを担当するモジュール
 // ---------------- Imports ----------------
 // DOM
-import { $, setText } from "../ui/dom-helpers.js";
+import { $, setText } from "../utils/dom-helpers.js";
 
 // Mode
 import { getCalcMode } from "../ui/mode.js";
@@ -17,7 +17,7 @@ import { miasmaBuffTable, state } from "../data/state.js";
 // Calculation modules
 import { computeNormal } from "./compute-normal.js";
 import { computeAnomaly } from "./compute-anomaly.js";
-import { percent } from "./math-utils.js";
+import { percent } from "../utils/math-utils.js";
 import { fmt } from "./fmt.js";
 import { isValidSpecialty } from "../core/validation.js";
 

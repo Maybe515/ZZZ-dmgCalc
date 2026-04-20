@@ -15,7 +15,7 @@ import { initResultFixedObserver } from "../ui/result-fixed.js";
 import { compute } from "../calculate/compute-handler.js";
 
 // ---------------- DOM helper ----------------
-import { al } from "../ui/dom-helpers.js";
+import { al } from "../utils/dom-helpers.js";
 
 async function init() {
   // --- Load data ---

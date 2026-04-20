@@ -29,8 +29,8 @@ import { i18nDict, helpTexts, state, agents, selects } from "../data/state.js";
 import { fields } from "../data/form-config.js";
 
 // DOM helpers
-import { $, al, q, qa, sa } from "../ui/dom-helpers.js";
-import { getDocumentCenter, toWrapperCoords } from "../ui/updates/helpers.js";
+import { $, al, q, qa, sa } from "../utils/dom-helpers.js";
+import { getDocumentCenter, toWrapperCoords } from "../utils/coords.js";
 
 // ---------------- Helper: bind change event ----------------
 /**

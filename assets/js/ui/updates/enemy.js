@@ -1,7 +1,7 @@
 // エネミーUI の更新をするモジュール
 import { enemies, i18nDict, state } from "../../data/state.js";
 import { imgPaths, urls } from "../../data/paths.js";
-import { updateText, updateImage, updateLink, updateAttrGroup } from "./helpers.js";
+import { updateText, updateImage, updateLink, updateAttrGroup } from "./update-helpers.js";
 import { t } from "../../i18n/i18n-helpers.js";
 
 export function updateEnemyInfo(dict = i18nDict) {

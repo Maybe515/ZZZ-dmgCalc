@@ -1,9 +1,9 @@
 // 派生フィールド更新
-import { $, q, setValue } from "../dom-helpers.js";
+import { $, q, setValue } from "../../utils/dom-helpers.js";
 import { rangeTable, state } from "../../data/state.js";
 import { lvCoeffTable } from "../../data/lv-coefficient-table.js";
-import { calcurateLevelCorrect } from "../../calculate/math-utils.js";
-import { getAnomalyCorr, getMatchValue } from "./helpers.js";
+import { calcurateLevelCorrect } from "../../utils/math-utils.js";
+import { getAnomalyCorr, getMatchValue } from "./update-helpers.js";
 import { isValidSpecialty } from "../../core/validation.js";
 
 export const updateLevelCorrect = () =>

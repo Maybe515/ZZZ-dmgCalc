@@ -1,5 +1,5 @@
 // 「結果カード」の値をコピーするモジュール
-import { q } from "./dom-helpers.js";
+import { q } from "../utils/dom-helpers.js";
 
 /**
  * クリックされた要素からコピー対象のテキストを取得

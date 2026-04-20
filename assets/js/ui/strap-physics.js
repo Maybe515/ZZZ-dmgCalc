@@ -1,5 +1,5 @@
 // 物理ストラップの生成、制御を担当するモジュール
-import { ce } from "./dom-helpers.js";
+import { ce } from "../utils/dom-helpers.js";
 
 /**
  * 物理ストラップ本体を生成する

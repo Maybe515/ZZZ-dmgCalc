@@ -1,7 +1,7 @@
 // ポップアップの表示制御をするモジュール
 // ---------------- Popup control ----------------
 
-import { sa } from "./dom-helpers.js";
+import { sa } from "../utils/dom-helpers.js";
 
 /**
  * ポップアップを開く

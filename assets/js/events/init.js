@@ -21,9 +21,9 @@ import { selectMapping, fields, toggleMapping } from "../data/form-config.js";
 import { defaults, selectDefaults, toggleDefaults } from "../data/default.js";
 
 // DOM
-import { $, q } from "../ui/dom-helpers.js";
+import { $, q } from "../utils/dom-helpers.js";
 import { bindCustomSelectEvents } from "./bind-events.js";
-import { getDocumentCenter, toWrapperCoords } from "../ui/updates/helpers.js";
+import { getDocumentCenter, toWrapperCoords } from "../utils/coords.js";
 
 // ---------------- Apply Defaults ----------------
 /**
