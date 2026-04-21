@@ -55,6 +55,9 @@
   /* Result */
   --color-result-fixed-bg: rgba(20, 20, 20, 0.6);
 
+  /* Strap */
+  --color-strap-outline: #f5e642;
+
   /* Spacing */
   --space-xs: .25rem;
   --space-sm: .5rem;
