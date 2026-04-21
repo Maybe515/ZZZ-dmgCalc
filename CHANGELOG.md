@@ -311,3 +311,10 @@ Author：Maybe515
   - `dom-helpers.js`
   - `math-utils.js`
 - `header__logo` のエレメントを `<img>` → `<div>` に変更
+
+### - 2026/4/21 -
+#### Refactored
+- 物理ストラップに関する一部 ID, Class をリネーム
+  - strapCircle → strapIcon
+  - strap-circle → strap-icon
+- 上記リネームに伴い、css, js の指定表記も修正
