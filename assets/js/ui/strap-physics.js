@@ -98,7 +98,7 @@ export function createStrapPhysics(el, options = {}) {
       cancelAnimationFrame(rafId);
       rafId = null;
 
-      // strap-circle の transform をリセット
+      // strap-icon の transform をリセット
       el.style.transform = "";
 
       // strap-line を削除
@@ -114,13 +114,13 @@ export function createStrapPhysics(el, options = {}) {
 /**
  * 物理ストラップの紐を描画する
  */
-export function createStrapLine(anchorEl, circleEl, wrapperEl) {
+export function createStrapLine(anchorEl, iconEl, wrapperEl) {
   const line = ce("div");
   line.className = "strap-line";
   anchorEl.appendChild(line);
 
   function update() {
-    const rect = circleEl.getBoundingClientRect();
+    const rect = iconEl.getBoundingClientRect();
     return updateLine(rect.left + rect.width / 2, rect.top + rect.height / 2);
   }
 
@@ -128,7 +128,7 @@ export function createStrapLine(anchorEl, circleEl, wrapperEl) {
     return updateLine(x, y);
   }
 
-  function updateLine(circleX, circleY) {
+  function updateLine(iconX, iconY) {
     // wrapper の絶対座標
     const wrapperRect = wrapperEl.getBoundingClientRect();
     const wrapperDocX = wrapperRect.left + window.scrollX;
@@ -143,8 +143,8 @@ export function createStrapLine(anchorEl, circleEl, wrapperEl) {
     const anchorX = anchorAbsX - wrapperDocX;
     const anchorY = anchorAbsY - wrapperDocY;
 
-    const dx = circleX - anchorX;
-    const dy = circleY - anchorY;
+    const dx = iconX - anchorX;
+    const dy = iconY - anchorY;
 
     const length = Math.sqrt(dx * dx + dy * dy);
     const angle = Math.atan2(dy, dx);
