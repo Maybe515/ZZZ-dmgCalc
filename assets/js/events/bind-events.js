@@ -189,6 +189,8 @@ export function bindEvents() {
 
 export function bindDetailsEvents() {
   const ANIMATION_DURATION = 400;     // CSS のアニメーション時間と合わせる
+  const details = q("details");
+  const summary = q("summary");
   const detailsList = qa("details");
 
   detailsList.forEach(details => {
@@ -262,15 +264,15 @@ export function bindStrapEvents() {
       return; // ← ドラッグ後の click を無効化
     }
     window.strapState?.strap?.nudge(0.3);
-  }, $("strapCircle"));
+  }, $("strapIcon"));
 
-  al("dragstart", e => { e.preventDefault(); }, $("strapCircle"));
+  al("dragstart", e => { e.preventDefault(); }, $("strapIcon"));
 
   al("mousedown", () => {
     dragging = true;
     moved = false;
     window.strapState?.strap?.pause();
-  }, $("strapCircle"));
+  }, $("strapIcon"));
 
   al("mouseup", () => {
     if (!dragging) return;
@@ -289,7 +291,7 @@ export function bindStrapEvents() {
     const dy = e.pageY - anchorCenter.y;
 
     if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;   // ← ドラッグと判定
-    
+
     const angle = Math.atan2(dx, dy); // 単振り子の角度に合わせる
     const local = toWrapperCoords(wrapper, e.pageX, e.pageY);
     const newLength = line.updateWithPoint(local.x, local.y);

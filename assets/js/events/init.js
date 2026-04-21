@@ -76,9 +76,9 @@ export function initCustomSelects() {
  */
 export function initStrapPhysics() {
   const anchor = $("strapAnchor");
-  const circle = $("strapCircle");
+  const icon = $("strapIcon");
 
-  if (!anchor || !circle) return;
+  if (!anchor || !icon) return;
 
   const grid = q(".grid.grid--enemy");
   const mount = q(".strap-mount", grid);
@@ -98,8 +98,8 @@ export function initStrapPhysics() {
   anchor.style.left = `${anchorX}px`;
   anchor.style.top = `${anchorY}px`;
 
-  const line = createStrapLine(anchor, circle, wrapper);
-  const strap = createStrapPhysics(circle, {
+  const line = createStrapLine(anchor, icon, wrapper);
+  const strap = createStrapPhysics(icon, {
     anchorEl: anchor,
     length: 80,         // 線の長さ
     gravity: 0.003,
@@ -112,7 +112,7 @@ export function initStrapPhysics() {
     }
   });
 
-  return { strap, wrapper, anchor, circle, line };
+  return { strap, wrapper, anchor, icon, line };
 }
 
 let strapState = null;
