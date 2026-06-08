@@ -51,5 +51,8 @@
     "nangong_yu": { "factionId": "angel_of_delusion", "specialtyId": "stun", "attributeId": "ether", "image": "nangong_yu.webp", "rank": "s", "link": "1038" },
     "cissia": { "factionId": "neps_mod", "specialtyId": "attack", "attributeId": "electric", "image": "cissia.webp", "rank": "s", "link": "1039" },
     "promeia": { "factionId": "krampus", "specialtyId": "anomaly", "attributeId": "ice", "image": "promeia.webp", "rank": "s", "link": "1072" },
-    "starlight_billy": { "factionId": "cunning_hares", "specialtyId": "rupture", "attributeId": "physical", "image": "starlight_billy.webp", "rank": "s", "link": "1073" }
+    "starlight_billy": { "factionId": "cunning_hares", "specialtyId": "rupture", "attributeId": "physical", "image": "starlight_billy.webp", "rank": "s", "link": "1073" },
+    "pyrois": { "factionId": "phaethon", "specialtyId": "attack", "attributeId": "ether", "image": "pyrois.webp", "rank": "s", "link": "1082" },
+    "velina": { "factionId": "external_strategy_department", "specialtyId": "anomaly", "attributeId": "wind", "image": "velina.webp", "rank": "s", "link": "1084" },
+    "norma": { "factionId": "external_strategy_department", "specialtyId": "stun", "attributeId": "fire", "image": "norma.webp", "rank": "s", "link": "1085" }
   }
