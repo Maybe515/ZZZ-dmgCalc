@@ -17,7 +17,14 @@ import { compute } from "../calculate/compute-handler.js";
 // ---------------- DOM helper ----------------
 import { al } from "../utils/dom-helpers.js";
 
+// ---------------- feature flag ----------------
+import { featureFlags, loadFeatureFlags } from "./feature-flags.js";
+
 async function init() {
+  // --- load flag ---
+  loadFeatureFlags();
+  if (featureFlags.beta) document.body.classList.add("beta-mode");
+
   // --- Load data ---
   loadCssFiles();             // CSS読み込み
   await loadAllData();        // JSONデータロード
