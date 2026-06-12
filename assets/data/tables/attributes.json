@@ -30,5 +30,9 @@
   "honed_edge": {
     "anomalyCorr": 713,
     "label": "attribute.honed_edge"
+  },
+  "wind": {
+    "anomalyCorr": 0,
+    "label": "attribute.wind"
   }
 }
