@@ -1,5 +1,5 @@
 // 通常攻撃時のダメージ計算を行うモジュール
-import { percent } from "./math-utils.js";
+import { percent } from "../utils/math-utils.js";
 import { fmt } from "./fmt.js";
 
 /**

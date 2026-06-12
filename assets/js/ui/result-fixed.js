@@ -1,5 +1,5 @@
 // モバイル時の「結果パネル」を制御するモジュール
-import { al, ce, q } from "./dom-helpers.js";
+import { al, ce, q } from "../utils/dom-helpers.js";
 
 /**
  * 通常の result セクションの内容を固定パネルへコピーする

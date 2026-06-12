@@ -1,7 +1,7 @@
 // エージェントUI を更新するモジュール
 import { agents, i18nDict, state } from "../../data/state.js";
 import { imgPaths, urls } from "../../data/paths.js";
-import { updateText, updateIcon, updateImage, updateLink } from "./helpers.js";
+import { updateText, updateIcon, updateImage, updateLink } from "./update-helpers.js";
 import { t } from "../../i18n/i18n-helpers.js";
 
 export function updateAgentInfo(dict = i18nDict) {

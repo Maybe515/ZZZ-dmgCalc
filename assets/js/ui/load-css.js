@@ -1,5 +1,5 @@
 // CSS を動的に読み込むユーティリティ
-import { ce } from "./dom-helpers.js";
+import { ce } from "../utils/dom-helpers.js";
 import { getBasePath } from "../core/base-path.js";
 
 // CSS のベースパス

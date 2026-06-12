@@ -1,5 +1,5 @@
 // UI 状態の保存・復元を担当するモジュール
-import { $, sa } from "../ui/dom-helpers.js";
+import { $, sa } from "../utils/dom-helpers.js";
 import { getCalcMode } from "../ui/mode.js";
 import { getElementValue, setElementValue, collectValues } from "../calculate/compute-handler.js";
 import { selectMapping, numericKeys, toggleMapping } from "../data/form-config.js";

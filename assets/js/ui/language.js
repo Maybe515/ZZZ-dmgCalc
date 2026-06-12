@@ -1,5 +1,5 @@
 // data-i18n 系属性を使用して UI テキストを更新するモジュール
-import { qa } from "./dom-helpers.js";
+import { qa } from "../utils/dom-helpers.js";
 
 /**
  * 指定された属性（例: data-i18n）を持つ要素に辞書を適用する

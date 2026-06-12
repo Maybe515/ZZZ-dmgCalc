@@ -1,5 +1,5 @@
 // UI 更新の基礎関数モジュール
-import { $ } from "../dom-helpers.js";
+import { $ } from "../../utils/dom-helpers.js";
 import { t } from "../../i18n/i18n-helpers.js";
 import { attributes, i18nDict, matchTable } from "../../data/state.js";
 

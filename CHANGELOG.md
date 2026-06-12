@@ -285,7 +285,7 @@ Author：Maybe515
 #### Fixed
 - ホスティング先で表示した時の `favicon`, `glove.svg` のパスが誤っていたため修正
 
-## [2026/6/9] - Ver.1.3.1
+## [2026/6/12] - Ver.1.3.1
 Author：Maybe515
 #### Added
 - エージェント 追加
@@ -303,3 +303,10 @@ Author：Maybe515
 - 属性テーブルに風属性を追加　※状態異常ダメージ倍率は未登録
 #### Fixed
 - チェックボックスをマウスホバーした時に一瞬表示が乱れるバグを修正
+
+### - 2026/6/12 -
+#### Added
+- location.hash で `beta` を指定すると開発中の機能を有効にするよう制御
+  - 指定 `https://maybe515.github.io/ZZZ-dmgCalc/#beta`
+  - フラグを管理する `feature-flags.js` を追加
+

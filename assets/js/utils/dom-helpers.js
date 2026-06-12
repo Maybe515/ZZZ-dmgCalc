@@ -1,6 +1,6 @@
 // DOM 操作の基盤ユーティリティ（UI 全体で使用）
 /**
- * ID で要素を取得：document.getElementById
+ * ID で要素を取得：getElementById
  * @param {string} id
  * @returns {HTMLElement|null}
  */
@@ -31,11 +31,12 @@ export const qa = (sel, root = document) => [...root.querySelectorAll(sel)];
 export const al = (type, lis, root = document) => root.addEventListener(type, lis)
 
 /**
- * 指定された要素の属性の値をセット：document.documentElement.setAttribute
+ * 指定された要素の属性の値をセット：setAttribute
  * @param {string} qual
  * @param {string} val
+ * @param {ParentNode} root
  */
-export const sa = (qual, val) => document.documentElement.setAttribute(qual, val);
+export const sa = (qual, val, root = document.documentElement) => root.setAttribute(qual, val);
 
 /**
  * エレメントを生成：createElement
