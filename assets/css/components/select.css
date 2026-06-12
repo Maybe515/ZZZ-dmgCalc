@@ -9,6 +9,10 @@ input,
   transition: background .15s, border-color .15s, box-shadow .15s;
 }
 
+input[type="checkbox"] {
+  transition: none;
+}
+
 input:hover,
 .custom-select-display:hover {
   background: var(--color-field-hover-bg);
