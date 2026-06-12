@@ -309,3 +309,4 @@ Author：Maybe515
 - location.hash で `beta` を指定すると開発中の機能を有効にするよう制御
   - 指定 `https://maybe515.github.io/ZZZ-dmgCalc/#beta`
   - フラグを管理する `feature-flags.js` を追加
+
