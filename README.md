@@ -3,7 +3,7 @@
 本ツールは、ゲーム内の数値をもとに検証を目的としたツールです。  
 ゲーム内の仕様変更により、実際の数値と異なる場合があります。
 
-- 本プロジェクトについてやご利用方法は本プロジェクトの [Wikiページ](https://github.com/Maybe515/ZZZ-dmgCalc/wiki) をご覧ください。
+- 本プロジェクトについてやご利用方法は本プロジェクトの [Wikiページ](https://github.com/Maybe515/ZZZ-dmgCalc/wiki/Top) をご覧ください。
 - 本ツールをご利用の方は以下のURLよりアクセスください。  
   https://maybe515.github.io/ZZZ-dmgCalc/
 
