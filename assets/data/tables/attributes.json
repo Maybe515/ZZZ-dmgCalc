@@ -32,7 +32,7 @@
     "label": "attribute.honed_edge"
   },
   "wind": {
-    "anomalyCorr": 0,
+    "anomalyCorr": 1250,
     "label": "attribute.wind"
   }
 }
