@@ -21,6 +21,7 @@
 - MDN References: https://developer.mozilla.org/ja/docs/Web/CSS/Reference
 - 崩壊インパクトレール学園3rd全レス無関係ゾーン Wiki*: [ダメージ・状態異常・混沌の計算式](https://wikiwiki.jp/mukankeizone/%E3%83%80%E3%83%A1%E3%83%BC%E3%82%B8%E3%83%BB%E7%8A%B6%E6%85%8B%E7%95%B0%E5%B8%B8%E3%83%BB%E6%B7%B7%E6%B2%8C%E3%81%AE%E8%A8%88%E7%AE%97%E5%BC%8F)
 - ゼンレスゾーンゼロ Wiki*: [ダメージ計算式](https://wikiwiki.jp/zenless/%E3%83%80%E3%83%A1%E3%83%BC%E3%82%B8%E8%A8%88%E7%AE%97%E5%BC%8F)
+- ゼンレスゾーンゼロ Wiki*： [状態異常](https://wikiwiki.jp/zenless/%E7%8A%B6%E6%85%8B%E7%95%B0%E5%B8%B8)
 
 ## 🤝 Contributing
 改善提案やバグ報告、ご要望等は以下よりご連絡ください。
